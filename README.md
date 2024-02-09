@@ -20,9 +20,3 @@
 
 Have you ever been unsure about your next semester of ECSE courses? ClassChamp is the one-stop-shop for all your course concerns. Every ECSE course will have an individual page with the official course description, with associated ratings such as difficulty and tutorial helpfulness, tags, student reviews, a typical grade breakdown and grade breakdown by major. It is all determined by student reviews on the website. The co- and pre-requisites of a course are also commented on, for students to understand the knowledge required to do well in the course. Course recommendations for technical complementaries as well as courses to take together in a semester will also be provided.
 A more detailed view of our project can be found in our wiki:
-
-##SprintA
-
-#Week 1
-- [UML Class Diagram]()
-- []()
