@@ -1,3 +1,5 @@
+package ca.mcgill.ecse428.CourseChamp.model;
+
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
@@ -13,7 +15,7 @@ public class Vote
   //------------------------
 
   //Vote Attributes
-  private bool type;
+  private boolean type;
 
   //Vote Associations
   private Student student;
@@ -23,7 +25,7 @@ public class Vote
   // CONSTRUCTOR
   //------------------------
 
-  public Vote(bool aType, Student aStudent, Review aReview)
+  public Vote(boolean aType, Student aStudent, Review aReview)
   {
     type = aType;
     boolean didAddStudent = setStudent(aStudent);
@@ -42,7 +44,7 @@ public class Vote
   // INTERFACE
   //------------------------
 
-  public boolean setType(bool aType)
+  public boolean setType(boolean aType)
   {
     boolean wasSet = false;
     type = aType;
@@ -50,7 +52,7 @@ public class Vote
     return wasSet;
   }
 
-  public bool getType()
+  public boolean getType()
   {
     return type;
   }
@@ -123,7 +125,7 @@ public class Vote
   public String toString()
   {
     return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "type" + "=" + (getType() != null ? !getType().equals(this)  ? getType().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "type" + "=" + getType() +
             "  " + "student = "+(getStudent()!=null?Integer.toHexString(System.identityHashCode(getStudent())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "review = "+(getReview()!=null?Integer.toHexString(System.identityHashCode(getReview())):"null");
   }

@@ -1,3 +1,5 @@
+package ca.mcgill.ecse428.CourseChamp.model;
+
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
@@ -192,7 +194,7 @@ public class Student extends Account
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Vote addVote(bool aType, Review aReview)
+  public Vote addVote(boolean aType, Review aReview)
   {
     return new Vote(aType, this, aReview);
   }

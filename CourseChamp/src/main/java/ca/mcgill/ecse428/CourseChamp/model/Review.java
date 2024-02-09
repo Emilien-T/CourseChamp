@@ -1,3 +1,5 @@
+package ca.mcgill.ecse428.CourseChamp.model;
+
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
@@ -321,7 +323,7 @@ public class Review
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Vote addVote(bool aType, Student aStudent)
+  public Vote addVote(boolean aType, Student aStudent)
   {
     return new Vote(aType, aStudent, this);
   }
