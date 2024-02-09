@@ -1,0 +1,61 @@
+enum Major { Software, Computer, Electrical }
+enum TagType { Bird_Course, Course_from_Hell }
+
+class Account
+{
+  email;
+  password;
+}
+
+class Student
+{
+  Major major;
+isA Account;
+}
+
+class Admin
+{
+  isA Account;
+}
+
+class Review
+{
+  * -- 1 Student;
+  * <@>- 0..3 Tag;
+  int rating;
+  text;
+}
+
+class Tag
+{
+  TagType tag;
+}
+
+class CourseOffering
+{
+  semester;
+  1 -- * Review;
+  * -- 1..* Professor;
+}
+
+class Professor
+{
+}
+
+class Course
+{
+  int code;
+  name;
+  description;
+  syllabus;
+  * -- * CourseOffering;
+  * Prerequirement -- * Course Prerequesite;
+  * Corequirement -- * Course Corequesite;
+}
+
+class Vote
+{
+  bool type;
+  * -- 1 Student;
+  * -<@> 1 Review;
+}
