@@ -24,9 +24,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// cucumber.io dependencies
-	testImplementation "io.cucumber:cucumber-java:6.6.0"
-	testImplementation "io.cucumber:cucumber-junit:6.6.0"
+    testImplementation "io.cucumber:cucumber-java:6.6.0"
+    testImplementation "io.cucumber:cucumber-junit:6.6.0"
+
+	testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
