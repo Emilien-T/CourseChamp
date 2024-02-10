@@ -8,7 +8,7 @@
 | Al Sabbagh, Karim           | Mechanical Engineering    |                                                      |
 | Boyd, Evan                  | Software Engineering      |                                                      |
 | Bretones, Marc              | Computer Engineering      |                                                      | 
-| Bridi, Karl                 | Software Engineering      | [Karl Bridi](https://github.com/Kalamar136)          |
+| Bridi, Karl                 | Software Engineering      | [Kalamar136](https://github.com/Kalamar136)          |
 | Corbier, Adam               | Computer Engineering      | [Ad2Am2](https://github.com/Ad2Am2)                  |  
 | Friesen, Emma               | Chemical Engineering      |                                                      |
 | Mokhtari, Bilar             | Software Engineering      |                                                      |
