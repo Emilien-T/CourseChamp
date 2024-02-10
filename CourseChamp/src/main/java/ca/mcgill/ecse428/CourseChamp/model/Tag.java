@@ -4,9 +4,8 @@ package ca.mcgill.ecse428.CourseChamp.model;
 /*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 
-import java.util.*;
 
-// line 30 "model.ump"
+// line 31 "model.ump"
 // line 95 "model.ump"
 public class Tag
 {
@@ -22,24 +21,37 @@ public class Tag
   //------------------------
 
   //Tag Attributes
+  private int id;
   private TagType tag;
 
   //Tag Associations
-  private List<Review> reviews;
+  private Review review;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Tag(TagType aTag)
+  public Tag(int aId, TagType aTag, Review aReview)
   {
+    id = aId;
     tag = aTag;
-    reviews = new ArrayList<Review>();
+    if (!setReview(aReview))
+    {
+      throw new RuntimeException("Unable to create Tag due to aReview. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setId(int aId)
+  {
+    boolean wasSet = false;
+    id = aId;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setTag(TagType aTag)
   {
@@ -49,137 +61,43 @@ public class Tag
     return wasSet;
   }
 
+  public int getId()
+  {
+    return id;
+  }
+
   public TagType getTag()
   {
     return tag;
   }
-  /* Code from template association_GetMany */
-  public Review getReview(int index)
+  /* Code from template association_GetOne */
+  public Review getReview()
   {
-    Review aReview = reviews.get(index);
-    return aReview;
+    return review;
   }
-
-  public List<Review> getReviews()
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setReview(Review aNewReview)
   {
-    List<Review> newReviews = Collections.unmodifiableList(reviews);
-    return newReviews;
-  }
-
-  public int numberOfReviews()
-  {
-    int number = reviews.size();
-    return number;
-  }
-
-  public boolean hasReviews()
-  {
-    boolean has = reviews.size() > 0;
-    return has;
-  }
-
-  public int indexOfReview(Review aReview)
-  {
-    int index = reviews.indexOf(aReview);
-    return index;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfReviews()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addReview(Review aReview)
-  {
-    boolean wasAdded = false;
-    if (reviews.contains(aReview)) { return false; }
-    reviews.add(aReview);
-    if (aReview.indexOfTag(this) != -1)
+    boolean wasSet = false;
+    if (aNewReview != null)
     {
-      wasAdded = true;
+      review = aNewReview;
+      wasSet = true;
     }
-    else
-    {
-      wasAdded = aReview.addTag(this);
-      if (!wasAdded)
-      {
-        reviews.remove(aReview);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeReview(Review aReview)
-  {
-    boolean wasRemoved = false;
-    if (!reviews.contains(aReview))
-    {
-      return wasRemoved;
-    }
-
-    int oldIndex = reviews.indexOf(aReview);
-    reviews.remove(oldIndex);
-    if (aReview.indexOfTag(this) == -1)
-    {
-      wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aReview.removeTag(this);
-      if (!wasRemoved)
-      {
-        reviews.add(oldIndex,aReview);
-      }
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addReviewAt(Review aReview, int index)
-  {  
-    boolean wasAdded = false;
-    if(addReview(aReview))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfReviews()) { index = numberOfReviews() - 1; }
-      reviews.remove(aReview);
-      reviews.add(index, aReview);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveReviewAt(Review aReview, int index)
-  {
-    boolean wasAdded = false;
-    if(reviews.contains(aReview))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfReviews()) { index = numberOfReviews() - 1; }
-      reviews.remove(aReview);
-      reviews.add(index, aReview);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addReviewAt(aReview, index);
-    }
-    return wasAdded;
+    return wasSet;
   }
 
   public void delete()
   {
-    ArrayList<Review> copyOfReviews = new ArrayList<Review>(reviews);
-    reviews.clear();
-    for(Review aReview : copyOfReviews)
-    {
-      aReview.removeTag(this);
-    }
+    review = null;
   }
 
 
   public String toString()
   {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "tag" + "=" + (getTag() != null ? !getTag().equals(this)  ? getTag().toString().replaceAll("  ","    ") : "this" : "null");
+    return super.toString() + "["+
+            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "tag" + "=" + (getTag() != null ? !getTag().equals(this)  ? getTag().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "review = "+(getReview()!=null?Integer.toHexString(System.identityHashCode(getReview())):"null");
   }
 }

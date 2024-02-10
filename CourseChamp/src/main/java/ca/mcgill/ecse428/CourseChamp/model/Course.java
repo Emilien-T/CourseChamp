@@ -6,8 +6,7 @@ package ca.mcgill.ecse428.CourseChamp.model;
 
 import java.util.*;
 
-// line 46 "model.ump"
-// line 66 "model.ump"
+// line 51 "model.ump"
 // line 112 "model.ump"
 public class Course
 {
@@ -17,7 +16,7 @@ public class Course
   //------------------------
 
   //Course Attributes
-  private int code;
+  private String courseCode;
   private String name;
   private String description;
   private String syllabus;
@@ -33,9 +32,9 @@ public class Course
   // CONSTRUCTOR
   //------------------------
 
-  public Course(int aCode, String aName, String aDescription, String aSyllabus)
+  public Course(String aCourseCode, String aName, String aDescription, String aSyllabus)
   {
-    code = aCode;
+    courseCode = aCourseCode;
     name = aName;
     description = aDescription;
     syllabus = aSyllabus;
@@ -50,10 +49,10 @@ public class Course
   // INTERFACE
   //------------------------
 
-  public boolean setCode(int aCode)
+  public boolean setCourseCode(String aCourseCode)
   {
     boolean wasSet = false;
-    code = aCode;
+    courseCode = aCourseCode;
     wasSet = true;
     return wasSet;
   }
@@ -82,9 +81,9 @@ public class Course
     return wasSet;
   }
 
-  public int getCode()
+  public String getCourseCode()
   {
-    return code;
+    return courseCode;
   }
 
   public String getName()
@@ -700,7 +699,7 @@ public class Course
   public String toString()
   {
     return super.toString() + "["+
-            "code" + ":" + getCode()+ "," +
+            "courseCode" + ":" + getCourseCode()+ "," +
             "name" + ":" + getName()+ "," +
             "description" + ":" + getDescription()+ "," +
             "syllabus" + ":" + getSyllabus()+ "]";

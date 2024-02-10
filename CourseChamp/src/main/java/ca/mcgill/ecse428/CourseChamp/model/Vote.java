@@ -5,8 +5,8 @@ package ca.mcgill.ecse428.CourseChamp.model;
 
 
 
-// line 57 "model.ump"
-// line 117 "model.ump"
+// line 62 "model.ump"
+// line 118 "model.ump"
 public class Vote
 {
 
@@ -15,6 +15,7 @@ public class Vote
   //------------------------
 
   //Vote Attributes
+  private int id;
   private boolean type;
 
   //Vote Associations
@@ -25,18 +26,17 @@ public class Vote
   // CONSTRUCTOR
   //------------------------
 
-  public Vote(boolean aType, Student aStudent, Review aReview)
+  public Vote(int aId, boolean aType, Student aStudent, Review aReview)
   {
+    id = aId;
     type = aType;
-    boolean didAddStudent = setStudent(aStudent);
-    if (!didAddStudent)
+    if (!setStudent(aStudent))
     {
-      throw new RuntimeException("Unable to create vote due to student. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create Vote due to aStudent. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    boolean didAddReview = setReview(aReview);
-    if (!didAddReview)
+    if (!setReview(aReview))
     {
-      throw new RuntimeException("Unable to create vote due to review. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create Vote due to aReview. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -44,12 +44,25 @@ public class Vote
   // INTERFACE
   //------------------------
 
+  public boolean setId(int aId)
+  {
+    boolean wasSet = false;
+    id = aId;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setType(boolean aType)
   {
     boolean wasSet = false;
     type = aType;
     wasSet = true;
     return wasSet;
+  }
+
+  public int getId()
+  {
+    return id;
   }
 
   public boolean getType()
@@ -66,66 +79,41 @@ public class Vote
   {
     return review;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setStudent(Student aStudent)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setStudent(Student aNewStudent)
   {
     boolean wasSet = false;
-    if (aStudent == null)
+    if (aNewStudent != null)
     {
-      return wasSet;
+      student = aNewStudent;
+      wasSet = true;
     }
-
-    Student existingStudent = student;
-    student = aStudent;
-    if (existingStudent != null && !existingStudent.equals(aStudent))
-    {
-      existingStudent.removeVote(this);
-    }
-    student.addVote(this);
-    wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setReview(Review aReview)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setReview(Review aNewReview)
   {
     boolean wasSet = false;
-    if (aReview == null)
+    if (aNewReview != null)
     {
-      return wasSet;
+      review = aNewReview;
+      wasSet = true;
     }
-
-    Review existingReview = review;
-    review = aReview;
-    if (existingReview != null && !existingReview.equals(aReview))
-    {
-      existingReview.removeVote(this);
-    }
-    review.addVote(this);
-    wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    Student placeholderStudent = student;
-    this.student = null;
-    if(placeholderStudent != null)
-    {
-      placeholderStudent.removeVote(this);
-    }
-    Review placeholderReview = review;
-    this.review = null;
-    if(placeholderReview != null)
-    {
-      placeholderReview.removeVote(this);
-    }
+    student = null;
+    review = null;
   }
 
 
   public String toString()
   {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "type" + "=" + getType() +
+    return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
+            "type" + ":" + getType()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "student = "+(getStudent()!=null?Integer.toHexString(System.identityHashCode(getStudent())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "review = "+(getReview()!=null?Integer.toHexString(System.identityHashCode(getReview())):"null");
   }

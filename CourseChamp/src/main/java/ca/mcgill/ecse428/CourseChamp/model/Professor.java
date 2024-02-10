@@ -6,7 +6,7 @@ package ca.mcgill.ecse428.CourseChamp.model;
 
 import java.util.*;
 
-// line 42 "model.ump"
+// line 45 "model.ump"
 // line 107 "model.ump"
 public class Professor
 {
@@ -15,6 +15,10 @@ public class Professor
   // MEMBER VARIABLES
   //------------------------
 
+  //Professor Attributes
+  private int id;
+  private String name;
+
   //Professor Associations
   private List<CourseOffering> courseOfferings;
 
@@ -22,14 +26,42 @@ public class Professor
   // CONSTRUCTOR
   //------------------------
 
-  public Professor()
+  public Professor(int aId, String aName)
   {
+    id = aId;
+    name = aName;
     courseOfferings = new ArrayList<CourseOffering>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setId(int aId)
+  {
+    boolean wasSet = false;
+    id = aId;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setName(String aName)
+  {
+    boolean wasSet = false;
+    name = aName;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public int getId()
+  {
+    return id;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
   /* Code from template association_GetMany */
   public CourseOffering getCourseOffering(int index)
   {
@@ -160,4 +192,11 @@ public class Professor
     }
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
+            "name" + ":" + getName()+ "]";
+  }
 }

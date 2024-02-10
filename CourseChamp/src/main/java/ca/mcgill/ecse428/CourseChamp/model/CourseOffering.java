@@ -6,7 +6,7 @@ package ca.mcgill.ecse428.CourseChamp.model;
 
 import java.util.*;
 
-// line 35 "model.ump"
+// line 37 "model.ump"
 // line 100 "model.ump"
 public class CourseOffering
 {
@@ -16,10 +16,10 @@ public class CourseOffering
   //------------------------
 
   //CourseOffering Attributes
+  private int id;
   private String semester;
 
   //CourseOffering Associations
-  private List<Review> reviews;
   private List<Professor> professors;
   private List<Course> courses;
 
@@ -27,10 +27,10 @@ public class CourseOffering
   // CONSTRUCTOR
   //------------------------
 
-  public CourseOffering(String aSemester, Professor... allProfessors)
+  public CourseOffering(int aId, String aSemester, Professor... allProfessors)
   {
+    id = aId;
     semester = aSemester;
-    reviews = new ArrayList<Review>();
     professors = new ArrayList<Professor>();
     boolean didAddProfessors = setProfessors(allProfessors);
     if (!didAddProfessors)
@@ -44,6 +44,14 @@ public class CourseOffering
   // INTERFACE
   //------------------------
 
+  public boolean setId(int aId)
+  {
+    boolean wasSet = false;
+    id = aId;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setSemester(String aSemester)
   {
     boolean wasSet = false;
@@ -52,39 +60,14 @@ public class CourseOffering
     return wasSet;
   }
 
+  public int getId()
+  {
+    return id;
+  }
+
   public String getSemester()
   {
     return semester;
-  }
-  /* Code from template association_GetMany */
-  public Review getReview(int index)
-  {
-    Review aReview = reviews.get(index);
-    return aReview;
-  }
-
-  public List<Review> getReviews()
-  {
-    List<Review> newReviews = Collections.unmodifiableList(reviews);
-    return newReviews;
-  }
-
-  public int numberOfReviews()
-  {
-    int number = reviews.size();
-    return number;
-  }
-
-  public boolean hasReviews()
-  {
-    boolean has = reviews.size() > 0;
-    return has;
-  }
-
-  public int indexOfReview(Review aReview)
-  {
-    int index = reviews.indexOf(aReview);
-    return index;
   }
   /* Code from template association_GetMany */
   public Professor getProfessor(int index)
@@ -145,78 +128,6 @@ public class CourseOffering
   {
     int index = courses.indexOf(aCourse);
     return index;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfReviews()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public Review addReview(int aRating, String aText, Student aStudent)
-  {
-    return new Review(aRating, aText, aStudent, this);
-  }
-
-  public boolean addReview(Review aReview)
-  {
-    boolean wasAdded = false;
-    if (reviews.contains(aReview)) { return false; }
-    CourseOffering existingCourseOffering = aReview.getCourseOffering();
-    boolean isNewCourseOffering = existingCourseOffering != null && !this.equals(existingCourseOffering);
-    if (isNewCourseOffering)
-    {
-      aReview.setCourseOffering(this);
-    }
-    else
-    {
-      reviews.add(aReview);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeReview(Review aReview)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aReview, as it must always have a courseOffering
-    if (!this.equals(aReview.getCourseOffering()))
-    {
-      reviews.remove(aReview);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addReviewAt(Review aReview, int index)
-  {  
-    boolean wasAdded = false;
-    if(addReview(aReview))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfReviews()) { index = numberOfReviews() - 1; }
-      reviews.remove(aReview);
-      reviews.add(index, aReview);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveReviewAt(Review aReview, int index)
-  {
-    boolean wasAdded = false;
-    if(reviews.contains(aReview))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfReviews()) { index = numberOfReviews() - 1; }
-      reviews.remove(aReview);
-      reviews.add(index, aReview);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addReviewAt(aReview, index);
-    }
-    return wasAdded;
   }
   /* Code from template association_IsNumberOfValidMethod */
   public boolean isNumberOfProfessorsValid()
@@ -437,11 +348,6 @@ public class CourseOffering
 
   public void delete()
   {
-    for(int i=reviews.size(); i > 0; i--)
-    {
-      Review aReview = reviews.get(i - 1);
-      aReview.delete();
-    }
     ArrayList<Professor> copyOfProfessors = new ArrayList<Professor>(professors);
     professors.clear();
     for(Professor aProfessor : copyOfProfessors)
@@ -460,6 +366,7 @@ public class CourseOffering
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "semester" + ":" + getSemester()+ "]";
   }
 }

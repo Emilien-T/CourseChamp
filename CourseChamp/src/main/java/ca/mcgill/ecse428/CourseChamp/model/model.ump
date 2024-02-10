@@ -20,31 +20,36 @@ class Admin
 
 class Review
 {
-  * -- 1 Student;
-  * <@>- 0..3 Tag;
+   int id;
+  * -> 1 Student;
+  1 <- * Tag;
   int rating;
   text;
 }
 
 class Tag
 {
+  int id;
   TagType tag;
 }
 
 class CourseOffering
 {
+  int id;
   semester;
-  1 -- * Review;
+  1 <- * Review;
   * -- 1..* Professor;
 }
 
 class Professor
 {
+  int id;
+  name;
 }
 
 class Course
 {
-  int code;
+  String courseCode;
   name;
   description;
   syllabus;
@@ -55,7 +60,8 @@ class Course
 
 class Vote
 {
-  bool type;
-  * -- 1 Student;
-  * -<@> 1 Review;
+  int id;
+  boolean type;
+  * -> 1 Student;
+  * -> 1 Review;
 }
