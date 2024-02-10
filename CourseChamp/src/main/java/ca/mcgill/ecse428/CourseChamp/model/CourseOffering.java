@@ -1,13 +1,18 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
 import java.util.*;
 
-// line 37 "model.ump"
-// line 100 "model.ump"
+import org.hibernate.annotations.ManyToAny;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+
+@Entity
 public class CourseOffering
 {
 
@@ -16,11 +21,20 @@ public class CourseOffering
   //------------------------
 
   //CourseOffering Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String semester;
 
   //CourseOffering Associations
+  @ManyToMany
+  @JoinTable(
+    name = "CourseOfferings_Professors",
+    joinColumns = { @JoinColumn(name = "id")},
+    inverseJoinColumns = {@JoinColumn(name = "id")}
+  )
   private List<Professor> professors;
+  @ManyToMany(mappedBy = "courseOfferings")
   private List<Course> courses;
 
   //------------------------

@@ -1,12 +1,10 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+import jakarta.persistence.*;
+import jakarta.persistence.Inheritance;
 
-
-
-// line 5 "model.ump"
-// line 73 "model.ump"
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Account
 {
 
@@ -15,6 +13,7 @@ public class Account
   //------------------------
 
   //Account Attributes
+  @Id
   private String email;
   private String password;
 

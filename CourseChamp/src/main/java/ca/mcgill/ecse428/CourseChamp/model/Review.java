@@ -1,12 +1,14 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+import org.hibernate.annotations.IdGeneratorType;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
-
-// line 22 "model.ump"
-// line 88 "model.ump"
+@Entity
 public class Review
 {
 
@@ -15,12 +17,16 @@ public class Review
   //------------------------
 
   //Review Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private int rating;
   private String text;
 
   //Review Associations
+  @ManyToOne
   private Student student;
+  @ManyToOne
   private CourseOffering courseOffering;
 
   //------------------------

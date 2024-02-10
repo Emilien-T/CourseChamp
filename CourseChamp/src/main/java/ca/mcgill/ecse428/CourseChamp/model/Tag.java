@@ -1,12 +1,14 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToOne;
 
-
-// line 31 "model.ump"
-// line 95 "model.ump"
+@Entity
 public class Tag
 {
 
@@ -22,9 +24,12 @@ public class Tag
 
   //Tag Attributes
   private int id;
+  @Enumerated(EnumType.STRING)
   private TagType tag;
 
   //Tag Associations
+  @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Review review;
 
   //------------------------

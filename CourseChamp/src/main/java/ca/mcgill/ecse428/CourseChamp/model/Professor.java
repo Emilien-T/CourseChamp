@@ -1,13 +1,14 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
 import java.util.*;
 
-// line 45 "model.ump"
-// line 107 "model.ump"
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+@Entity
 public class Professor
 {
 
@@ -16,10 +17,13 @@ public class Professor
   //------------------------
 
   //Professor Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String name;
 
   //Professor Associations
+  @ManyToMany(mappedBy = "courseOfferings")
   private List<CourseOffering> courseOfferings;
 
   //------------------------

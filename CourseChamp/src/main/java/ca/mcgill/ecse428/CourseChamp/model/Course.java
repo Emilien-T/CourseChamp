@@ -1,13 +1,17 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
 import java.util.*;
 
-// line 51 "model.ump"
-// line 112 "model.ump"
+import org.hibernate.annotations.ManyToAny;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Course
 {
 
@@ -16,16 +20,35 @@ public class Course
   //------------------------
 
   //Course Attributes
+  @Id
   private String courseCode;
   private String name;
   private String description;
   private String syllabus;
 
   //Course Associations
+  @ManyToMany
+  @JoinTable(
+    name = "Course_CourseOfferings",
+    joinColumns = { @JoinColumn(name = "courseCode")},
+    inverseJoinColumns = {@JoinColumn(name = "id")}
+  )
   private List<CourseOffering> courseOfferings;
+  @ManyToMany
+  @JoinTable(name = "Prerequesite_Prerequirement",
+    joinColumns = @JoinColumn(name = "Prerequesite"),
+    inverseJoinColumns = @JoinColumn(name = "Prerequirement")
+  )
   private List<Course> Prerequesite;
+  @ManyToMany
+  @JoinTable(name = "Corequesite_Corequirement",
+    joinColumns = @JoinColumn(name = "Corequesite"),
+    inverseJoinColumns = @JoinColumn(name = "Corequeriment")
+  )
   private List<Course> Corequesite;
+  @ManyToMany(mappedBy = "Prerequesite")
   private List<Course> Prerequirement;
+  @ManyToMany(mappedBy = "Corequesite")
   private List<Course> Corequirement;
 
   //------------------------

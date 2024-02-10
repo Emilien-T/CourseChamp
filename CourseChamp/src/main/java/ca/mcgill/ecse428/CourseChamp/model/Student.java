@@ -1,12 +1,8 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+import jakarta.persistence.Entity;
 
-
-
-// line 11 "model.ump"
-// line 78 "model.ump"
+@Entity
 public class Student extends Account
 {
 
