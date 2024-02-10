@@ -7,7 +7,7 @@
 | Aissa, Walid                | Computer Engineering      | [Walid_Aissa](https://github.com/WalidAissa)         | 
 | Al Sabbagh, Karim           | Mechanical Engineering    |                                                      |
 | Boyd, Evan                  | Software Engineering      | [evanboyd31](https://github.com/evanboyd31)          |
-| Bretones, Marc              | Computer Engineering      |                                                      | 
+| Bretones, Marc              | Computer Engineering      |[BretonesMarc](https://github.com/bretonesmarc)       | 
 | Bridi, Karl                 | Software Engineering      | [Kalamar136](https://github.com/Kalamar136)          |
 | Corbier, Adam               | Computer Engineering      | [Ad2Am2](https://github.com/Ad2Am2)                  |  
 | Friesen, Emma               | Chemical Engineering      |                                                      |
