@@ -30,9 +30,9 @@ public class Student extends Account
   // CONSTRUCTOR
   //------------------------
 
-  public Student(String aEmail, String aPassword, Major aMajor)
+  public Student(String aEmail, String aUsername, String aPassword, Major aMajor)
   {
-    super(aEmail, aPassword);
+    super(aEmail, aUsername, aPassword);
     major = aMajor;
   }
 

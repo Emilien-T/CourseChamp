@@ -1,7 +1,6 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Inheritance;
 
 /**
  * Abstract class that is part of the domain model of the CourseChamp System
@@ -22,15 +21,17 @@ public class Account
   //Account Attributes
   @Id
   private String email;
+  private String username;
   private String password;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Account(String aEmail, String aPassword)
+  public Account(String aEmail, String aUsername, String aPassword)
   {
     email = aEmail;
+    username = aUsername;
     password = aPassword;
   }
 
@@ -42,6 +43,14 @@ public class Account
   {
     boolean wasSet = false;
     email = aEmail;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setUsername(String aUsername)
+  {
+    boolean wasSet = false;
+    username = aUsername;
     wasSet = true;
     return wasSet;
   }
@@ -59,6 +68,11 @@ public class Account
     return email;
   }
 
+  public String getUsername()
+  {
+    return username;
+  }
+
   public String getPassword()
   {
     return password;
@@ -72,6 +86,7 @@ public class Account
   {
     return super.toString() + "["+
             "email" + ":" + getEmail()+ "," +
+            "username" + ":" + getUsername()+ "," +
             "password" + ":" + getPassword()+ "]";
   }
 }
