@@ -51,7 +51,7 @@ Feature: View and React to Reviews
 
   Scenario: User removes an downvote from a review
     Given the user has already downvoted a review
-    When the user selects the option to downvote a review with the following details:
+    When the user selects the option to remove downvote a review with the following details:
       | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
       | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         1 |
     And then the user selects the option to upvote the same review again
