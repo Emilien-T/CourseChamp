@@ -16,7 +16,7 @@ import jakarta.persistence.ManyToMany;
  * This class is also JPA anotated for ORM
  */
 @Entity
-@IdClass(CourseId.class)
+// @IdClass(CourseId.class)
 public class Course
 {
 
@@ -25,7 +25,7 @@ public class Course
   //------------------------
 
   //Course Attributes
-  @Id
+  // @Id
   private String department;
   @Id
   private int courseCode;

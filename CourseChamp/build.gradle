@@ -20,14 +20,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation group: 'io.cucumber', name: 'cucumber-spring', version: '6.10.4'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// cucumber.io dependencies
-    testImplementation "io.cucumber:cucumber-java:6.6.0"
-    testImplementation "io.cucumber:cucumber-junit:6.6.0"
-
-	testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
+	testImplementation 'com.h2database:h2'
+	testImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
+    testImplementation 'io.cucumber:cucumber-java:6.10.4'
+    testImplementation 'io.cucumber:cucumber-junit:6.10.4'
+    
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
 }
 
 
