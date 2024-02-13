@@ -25,7 +25,7 @@ Feature: Add a Course
   Scenario: Admin adds a new course with various incomplete details (Error Flow)
     Given the admin is logged in and on the "Course Management" page
     When the admin adds a course with Department abbreviation "<Department>" course number "<Course Number>" and course name "<Name>":
-    Then the system should display error message "Incomplete Details"
+    Then the system should display an error message "Incomplete Details"
     And the course should not be added to the course pool
       | Department | Course Number | Name                            |
       |            |           223 | Software Engineering Principles |
