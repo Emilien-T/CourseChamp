@@ -1,8 +1,9 @@
-package ca.mcgill.ecse428.CourseChamp;
+package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import ca.mcgill.ecse428.CourseChamp.DummyRepo;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

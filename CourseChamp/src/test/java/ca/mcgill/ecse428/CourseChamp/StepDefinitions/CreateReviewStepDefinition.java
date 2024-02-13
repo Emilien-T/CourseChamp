@@ -1,5 +1,6 @@
-package ca.mcgill.ecse428.CourseChamp;
+package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
+import ca.mcgill.ecse428.CourseChamp.DummyRepo;
 import ca.mcgill.ecse428.CourseChamp.controller.ReviewController;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import static org.junit.jupiter.api.Assertions.assertEquals;
