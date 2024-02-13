@@ -4,7 +4,7 @@ Feature: View and React to Reviews
     so that I can quickly and confidently react to posts.
 
   Background: 
-    Given the user is on the course details page for a specific course
+    Given the user is on the course details page for a specific course "<course>"
     And there are reviews for the course with the following details:
       | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
       | ECSE       |    321 |      4 | Great course, very informative!       |       5 |         2 |
