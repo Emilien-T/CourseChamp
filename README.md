@@ -11,7 +11,7 @@
 | Bridi, Karl                 | Software Engineering      | [Kalamar136](https://github.com/Kalamar136)          |
 | Corbier, Adam               | Computer Engineering      | [Ad2Am2](https://github.com/Ad2Am2)                  |  
 | Friesen, Emma               | Chemical Engineering      |                                                      |
-| Mokhtari, Bilar             | Software Engineering      |                                                      |
+| Mokhtari, Bilar             | Software Engineering      | [bmokhtari](https://github.com/bmokhtari)            |
 | Taisne, Emilien             | Software Engineering      |  [Emilien-T](https://github.com/Emilien-T)           |
 | Sofia Velasquez Sierra      | Computer Engineering      | [sofiavelasquezsierra](https://github.com/sofiavelasquezsierra) | 
 

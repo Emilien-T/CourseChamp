@@ -18,96 +18,103 @@ import jakarta.persistence.ManyToOne;
  * This class is also JPA anotated for ORM
  */
 @Entity
-public class Tag {
+public class Tag
+{
 
-  // ------------------------
-  // ENUMERATIONS
-  // ------------------------
-
-  public enum TagType {
-    Bird_Course, Course_from_Hell
-  }
-
-  // ------------------------
+  //------------------------
   // MEMBER VARIABLES
-  // ------------------------
+  //------------------------
 
-  // Tag Attributes
+  //Tag Attributes
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
-  @Enumerated(EnumType.STRING)
-  private TagType tag;
 
-  // Tag Associations
+  //Tag Associations
+  @ManyToOne
+  private TagType tagType;
   @ManyToOne
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Review review;
 
-  // ------------------------
+  //------------------------
   // CONSTRUCTOR
-  // ------------------------
+  //------------------------
 
-  public Tag(int aId, TagType aTag, Review aReview) {
+  public Tag(int aId, TagType aTagType, Review aReview)
+  {
     id = aId;
-    tag = aTag;
-    if (!setReview(aReview)) {
-      throw new RuntimeException(
-          "Unable to create Tag due to aReview. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    if (!setTagType(aTagType))
+    {
+      throw new RuntimeException("Unable to create Tag due to aTagType. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    if (!setReview(aReview))
+    {
+      throw new RuntimeException("Unable to create Tag due to aReview. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
-  // ------------------------
+  //------------------------
   // INTERFACE
-  // ------------------------
+  //------------------------
 
-  public boolean setId(int aId) {
+  public boolean setId(int aId)
+  {
     boolean wasSet = false;
     id = aId;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setTag(TagType aTag) {
-    boolean wasSet = false;
-    tag = aTag;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public int getId() {
+  public int getId()
+  {
     return id;
   }
-
-  public TagType getTag() {
-    return tag;
-  }
-
   /* Code from template association_GetOne */
-  public Review getReview() {
+  public TagType getTagType()
+  {
+    return tagType;
+  }
+  /* Code from template association_GetOne */
+  public Review getReview()
+  {
     return review;
   }
-
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setReview(Review aNewReview) {
+  public boolean setTagType(TagType aNewTagType)
+  {
     boolean wasSet = false;
-    if (aNewReview != null) {
+    if (aNewTagType != null)
+    {
+      tagType = aNewTagType;
+      wasSet = true;
+    }
+    return wasSet;
+  }
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setReview(Review aNewReview)
+  {
+    boolean wasSet = false;
+    if (aNewReview != null)
+    {
       review = aNewReview;
       wasSet = true;
     }
     return wasSet;
   }
 
-  public void delete() {
+  public void delete()
+  {
+    tagType = null;
     review = null;
   }
 
-  public String toString() {
-    return super.toString() + "[" +
-        "id" + ":" + getId() + "]" + System.getProperties().getProperty("line.separator") +
-        "  " + "tag" + "="
-        + (getTag() != null ? !getTag().equals(this) ? getTag().toString().replaceAll("  ", "    ") : "this" : "null")
-        + System.getProperties().getProperty("line.separator") +
-        "  " + "review = " + (getReview() != null ? Integer.toHexString(System.identityHashCode(getReview())) : "null");
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "tagType = "+(getTagType()!=null?Integer.toHexString(System.identityHashCode(getTagType())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "review = "+(getReview()!=null?Integer.toHexString(System.identityHashCode(getReview())):"null");
   }
 }

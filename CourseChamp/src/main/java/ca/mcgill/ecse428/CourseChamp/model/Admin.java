@@ -21,9 +21,9 @@ public class Admin extends Account
   // CONSTRUCTOR
   //------------------------
 
-  public Admin(String aEmail, String aPassword)
+  public Admin(String aEmail, String aUsername, String aPassword)
   {
-    super(aEmail, aPassword);
+    super(aEmail, aUsername, aPassword);
   }
 
   //------------------------

@@ -1,9 +1,9 @@
 enum Major { Software, Computer, Electrical }
-enum TagType { Bird_Course, Course_from_Hell }
 
 class Account
 {
   email;
+  username;
   password;
 }
 
@@ -30,7 +30,7 @@ class Review
 class Tag
 {
   int id;
-  TagType tag;
+  * -> 1 TagType;
 }
 
 class CourseOffering
@@ -49,11 +49,12 @@ class Professor
 
 class Course
 {
-  String courseCode;
+  department;
+  int courseCode;
   name;
   description;
   syllabus;
-  * -- * CourseOffering;
+  1 <- * CourseOffering;
   * Prerequirement -- * Course Prerequesite;
   * Corequirement -- * Course Corequesite;
 }
@@ -64,4 +65,10 @@ class Vote
   boolean type;
   * -> 1 Student;
   * -> 1 Review;
+}
+
+class TagType
+{
+  int id;
+  description;
 }
