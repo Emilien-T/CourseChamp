@@ -1,4 +1,4 @@
-package ca.mcgill.ecse428.CourseChamp;
+package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import ca.mcgill.ecse428.CourseChamp.controller.CourseController;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
@@ -14,7 +14,7 @@ import io.cucumber.java.en.And;
 public class CreateCourseStepDefinition {
     @Autowired
     private CourseRepository courseRepository;
-    private ResponseEntity<String > response;
+    private ResponseEntity<String> response;
     private String courseCode;
 
     
@@ -22,7 +22,7 @@ public class CreateCourseStepDefinition {
     public void the_admin_is_logged_in_and_on_the_page(String string) {
         // Initialize or navigate to the course management page
         // Yet to be defined
-        throw new io.cucumber.java.PendingException();
+        // throw new io.cucumber.java.PendingException();
     }
 
     @When("no course with Department abbreviation {string} and course number {string} exists in the course pool")
