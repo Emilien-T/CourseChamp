@@ -31,7 +31,7 @@ public class CreateCourseStepDefinition {
         assertNull(courseRepository.findCourseByCourseCode(department+courseNumber));
     }
 
-    @When("the admin adds a course with Department abbreviation {string} course number {string} and course name {string}")
+    @When("the admin adds a course with Department abbreviation {string} course number {string} and course name {string}:")
     public void theAdminAddsANewCourseWithDepartmentCourseNumberAndCourseDescription(String department, String courseNumber, String name) {
         // Add a new course with provided details
         response = CourseController.addCourse(courseNumber, name, "");
