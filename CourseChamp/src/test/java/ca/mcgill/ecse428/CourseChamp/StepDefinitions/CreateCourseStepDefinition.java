@@ -39,7 +39,6 @@ public class CreateCourseStepDefinition {
     @Then("the system should confirm the successful addition")
     public void theSystemShouldConfirmTheSuccessfulAddition() {
         // Verify that the successful addition message is displayed
-        assertNotNull(response);
         assertTrue(response.getBody().contains("Course added successfully"));
     }
 
@@ -54,7 +53,6 @@ public class CreateCourseStepDefinition {
     @Then("the system should display an error message {string}")
     public void theSystemShouldDisplayAnErrorMessage(String errorMessage) {
         // Verify that an error message is displayed
-        assertNotNull(response);
         assertEquals(errorMessage, response.getBody());
     }
 

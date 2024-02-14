@@ -7,6 +7,8 @@ So that I can describe my experience with a course.
     Given a user logged in the system has the username "<username>"
     When a user attempts to leave a review with the rating "<rating>", with the content "<content>", for a course number "<number>" in the department "<department>"
     Then the system shall contain a review with a unique ID, username "<username>", rating "<rating>" , content "<content>" and course "<course>"
+
+    Examples:
       | username      | rating | content                   | number | department |
       | John          |      5 | You need to be organized  |    321 | ECSE       |
       | TigerLover123 |      5 | Great content             |    428 | ECSE       |
@@ -16,6 +18,8 @@ So that I can describe my experience with a course.
     Given a user logged in the system has the username "<username>"
     When a user attempts to leave a review with the rating "<rating>", with the content "<content>", for a course number "<number>" in the department "<department>"
     Then a "<message>" message is issued
+
+    Examples:
       | username | rating | content                 | number | department | message                   |
       | John     |      4 |                         |    321 |            | All fields must be filled |
       | Tiger123 |      5 | 10-person group project |        |            | All fields must be filled |
