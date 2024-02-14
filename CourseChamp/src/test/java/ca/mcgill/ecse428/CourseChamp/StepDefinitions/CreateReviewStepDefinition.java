@@ -2,9 +2,7 @@ package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import ca.mcgill.ecse428.CourseChamp.DummyRepo;
 import ca.mcgill.ecse428.CourseChamp.controller.ReviewController;
-import ca.mcgill.ecse428.CourseChamp.model.Review;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

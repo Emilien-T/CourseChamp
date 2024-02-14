@@ -1,7 +1,6 @@
 package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import ca.mcgill.ecse428.CourseChamp.controller.CourseController;
-import ca.mcgill.ecse428.CourseChamp.model.Course;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

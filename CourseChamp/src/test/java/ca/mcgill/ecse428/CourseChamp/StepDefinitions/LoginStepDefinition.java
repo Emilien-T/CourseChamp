@@ -1,10 +1,7 @@
 package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
-import ca.mcgill.ecse428.CourseChamp.DummyRepo;
 import ca.mcgill.ecse428.CourseChamp.controller.AccountController;
 import ca.mcgill.ecse428.CourseChamp.model.Account;
 import ca.mcgill.ecse428.CourseChamp.repository.AccountRepository;
