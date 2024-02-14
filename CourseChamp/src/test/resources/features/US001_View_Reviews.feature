@@ -4,7 +4,7 @@ Feature: View and React to Reviews
     so that I can quickly and confidently react to posts.
 
   Background: 
-    Given the user is on the course details page for a specific course
+    Given the user is on the course details page for a specific course "<course>"
     And there are reviews for the course with the following details:
       | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
       | ECSE       |    321 |      4 | Great course, very informative!       |       5 |         2 |
@@ -51,7 +51,7 @@ Feature: View and React to Reviews
 
   Scenario: User removes an downvote from a review
     Given the user has already downvoted a review
-    When the user selects the option to downvote a review with the following details:
+    When the user selects the option to remove downvote a review with the following details:
       | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
       | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         1 |
     And then the user selects the option to upvote the same review again

@@ -28,6 +28,7 @@ public class Account
   // CONSTRUCTOR
   //------------------------
 
+  public Account(){}
   public Account(String aEmail, String aUsername, String aPassword)
   {
     email = aEmail;

@@ -16,7 +16,7 @@ import jakarta.persistence.ManyToMany;
  * This class is also JPA anotated for ORM
  */
 @Entity
-@IdClass(CourseId.class)
+// @IdClass(CourseId.class)
 public class Course
 {
 
@@ -25,10 +25,11 @@ public class Course
   //------------------------
 
   //Course Attributes
-  @Id
+  // @Id
   private String department;
+  private int courseNumber;
   @Id
-  private int courseCode;
+  private String courseCode;
   private String name;
   private String description;
   private String syllabus;
@@ -49,10 +50,11 @@ public class Course
   // CONSTRUCTOR
   //------------------------
 
-  public Course(String aDepartment, int aCourseCode, String aName, String aDescription, String aSyllabus)
+  public Course(String aDepartment, int aCourseNumber, String aName, String aDescription, String aSyllabus)
   {
     department = aDepartment;
-    courseCode = aCourseCode;
+    courseNumber = aCourseNumber;
+    courseCode = department + String.valueOf(courseNumber);
     name = aName;
     description = aDescription;
     syllabus = aSyllabus;
@@ -70,14 +72,24 @@ public class Course
   {
     boolean wasSet = false;
     department = aDepartment;
+    courseCode = department + String.valueOf(courseNumber);
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setCourseCode(int aCourseCode)
+  public boolean setCourseCode(String aCourseCode)
   {
     boolean wasSet = false;
     courseCode = aCourseCode;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setCourseNumber(int aCourseNumber)
+  {
+    boolean wasSet = false;
+    courseNumber = aCourseNumber;
+    courseCode = department + String.valueOf(courseNumber);
     wasSet = true;
     return wasSet;
   }
@@ -111,9 +123,14 @@ public class Course
     return department;
   }
 
-  public int getCourseCode()
+  public String getCourseCode()
   {
     return courseCode;
+  }
+
+  public int getCourseNumber()
+  {
+    return courseNumber;
   }
 
   public String getName()
@@ -612,6 +629,7 @@ public class Course
   {
     return super.toString() + "["+
             "department" + ":" + getDepartment()+ "," +
+            "couseNumber" + ":" + getCourseNumber()+ "," +
             "courseCode" + ":" + getCourseCode()+ "," +
             "name" + ":" + getName()+ "," +
             "description" + ":" + getDescription()+ "," +
