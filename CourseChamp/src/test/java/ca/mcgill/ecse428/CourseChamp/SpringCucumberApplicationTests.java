@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @CucumberContextConfiguration
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SpringCucumberApplicationTests {
     @Test
     void contextLoads() {

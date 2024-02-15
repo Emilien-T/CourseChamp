@@ -32,7 +32,7 @@ public class AccountService {
      * @throws PLMSException - If an account already exists
      */
     @Transactional
-    public Account createAccountAccount(Account account) {
+    public Account createAccount(Account account) {
         //TODO
         return null;
     }
