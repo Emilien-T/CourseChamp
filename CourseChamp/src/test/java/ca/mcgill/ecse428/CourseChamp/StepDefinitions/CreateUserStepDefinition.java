@@ -1,8 +1,7 @@
 package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import ca.mcgill.ecse428.CourseChamp.DummyRepo;
-import ca.mcgill.ecse428.CourseChamp.controller.AccountController;
-import ca.mcgill.ecse428.CourseChamp.dto.AccountRequestDto;
+import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse428.CourseChamp.model.Account;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
+import ca.mcgill.ecse428.CourseChamp.model.Student.Major;
 import ca.mcgill.ecse428.CourseChamp.repository.AccountRepository;
+import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -21,11 +23,11 @@ import io.cucumber.java.en.When;
 public class CreateUserStepDefinition {
   
   @Autowired
-  AccountRepository accountRepository;
+  StudentRepository studentRepository;
   @Autowired
   private TestRestTemplate client;
 
-  private ResponseEntity<AccountRequestDto> response;
+  private ResponseEntity<StudentRequestDto> response;
 
   //=-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
   @Given("no account in the system has the email {string} and username {string}")
@@ -38,15 +40,15 @@ public class CreateUserStepDefinition {
   @Given("an account in the system has the email {string}")
   public void AnAccountWithEmailExistInSystem(String string) {
     //Add the account to the system
-    Account account = new Account(string,"username", "password");
-    accountRepository.save(account);
+    Student student = new Student(string,"username", "password", Major.Software);
+    studentRepository.save(student);
   }
 
   @Given("an account in the system has the username {string}")
   public void AnAccountWithUsernameExistInSystem(String string) {
     //Add the account to the system
-    Account account = new Account("email@gmail.com",string, "password");
-    accountRepository.save(account);
+    Student student = new Student("email@gmail.com",string, "password", Major.Software);
+    studentRepository.save(student);
   }
   //=-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
 
@@ -54,13 +56,13 @@ public class CreateUserStepDefinition {
   //=-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
   @When("a new user attempts to register with email {string}, username {string} and password {string}")
   public void RegisterUserStepDefinition(String string, String string2, String string3) {
-    AccountRequestDto request = new AccountRequestDto();
+    StudentRequestDto request = new StudentRequestDto();
     //Uncommment these 3 lines after AccountRequestDto is implemented
     // request.setEmail(string);
     // request.setName(string2);
     // request.setPassword(string3);
 
-    response =  client.postForEntity("/employee/create", request, AccountRequestDto.class);
+    response =  client.postForEntity("/employee/create", request, StudentRequestDto.class);
   }
   //=-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
 
@@ -70,10 +72,10 @@ public class CreateUserStepDefinition {
   public void CheckIfUserExists(String string, String string2, String string3) {
     assertEquals(HttpStatus.CREATED, response.getStatusCode());
     assertNotNull(response.getBody());
-    Account account = accountRepository.findAccountByEmail(string);
-    assertEquals(string, account.getEmail());
-    assertEquals(string2, account.getUsername());
-    assertEquals(string3, account.getPassword());
+    Student student = studentRepository.findStudentByEmail(string);
+    assertEquals(string, student.getEmail());
+    assertEquals(string2, student.getUsername());
+    assertEquals(string3, student.getPassword());
   }
 
   @Then("a {string} message is issued")

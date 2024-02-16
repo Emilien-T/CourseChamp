@@ -5,7 +5,7 @@ import ca.mcgill.ecse428.CourseChamp.model.Account;
 
 /**
  * DAO class in the spring framework that acts as a link between the database and java application
- * for CRUD operations of the Account abstract class in the context of the PLMS software system
+ * for CRUD operations of the Account abstract class in the context of the Course Champ system
  */
 public interface AccountRepository extends CrudRepository<Account, String>{
 
@@ -16,6 +16,4 @@ public interface AccountRepository extends CrudRepository<Account, String>{
 	 */
     public Account findAccountByEmail(String email);
 	public Account findAccountByUsername(String username);
-
-    
 }
