@@ -24,6 +24,13 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	// API docs, courtesy of TA louis
+	// See springdoc.org/v2/#getting-started and springdoc.org/v2/#javadoc-support
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3'
+	implementation 'org.springdoc:springdoc-openapi-starter-common:2.0.3'
+	annotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.13.0'
+	implementation 'com.github.therapi:therapi-runtime-javadoc:0.13.0'
+	
 	// cucumber.io dependencies
 	testImplementation 'com.h2database:h2'
 	testImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'

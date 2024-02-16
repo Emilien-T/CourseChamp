@@ -2,8 +2,7 @@ package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
-import ca.mcgill.ecse428.CourseChamp.controller.AccountController;
-import ca.mcgill.ecse428.CourseChamp.dto.AccountRequestDto;
+import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
 import ca.mcgill.ecse428.CourseChamp.model.Account;
 import ca.mcgill.ecse428.CourseChamp.repository.AccountRepository;
 import io.cucumber.java.en.Given;
@@ -31,7 +30,7 @@ public class LoginStepDefinition {
         //TODO: Need to update to new controller classes
 
         // requestResponse = AccountController.LoginUser(string, string2);
-        AccountRequestDto request = new AccountRequestDto();
+        StudentRequestDto request = new StudentRequestDto();
         //Uncommment these 3 lines after AccountRequestDto is implemented
         // request.setEmail(string);
         // request.setName(string2);
