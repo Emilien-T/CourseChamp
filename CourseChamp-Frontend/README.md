@@ -1,6 +1,6 @@
 # coursechamp-frontend
 
-> A Vue.js frontend for the CouseChamp App
+> A Vue.js frontend for Course Champ App
 
 ## Build Setup
 
