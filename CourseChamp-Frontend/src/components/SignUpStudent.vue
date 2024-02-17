@@ -1,8 +1,12 @@
 <template>
-  <div class="signup-form">
-    <h2>Create a student account</h2>
-    <h4> Let's get started!</h4>
+  <div>
+
+    <header><h1>Create a Student Account</h1></header>
+    <div class="content-wrapper">
+    <div class="container">
+      <div class="signup-form">
     <form @submit.prevent="submitForm">
+      <h5> Let's get started!</h5>
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" v-model="email" required>
@@ -19,24 +23,31 @@
         <label>Major:</label>
         <div>
           <label>
-            <input type="radio" v-model="selectedMajor" value="Software"> Software
+            <input type="radio" v-model="selectedMajor" value="Software" required> Software
           </label>
         </div>
         <div>
           <label>
-            <input type="radio" v-model="selectedMajor" value="Computer"> Computer
+            <input type="radio" v-model="selectedMajor" value="Computer" required> Computer
           </label>
         </div>
         <div>
           <label>
-            <input type="radio" v-model="selectedMajor" value="Electrical"> Electrical
+            <input type="radio" v-model="selectedMajor" value="Electrical" required> Electrical
           </label>
         </div>
       </div>
-      <button type="submit" :disabled="formSubmitted" @click="submitForm">Sign Up</button>
-      <p class="msg">{{ msg }}</p>
-      <div> <p>Already have an account? <a style="text-decoration: underline;">Log in</a></p></div>
+      <button type="submit" :disabled="!email || !username || !password || !selectedMajor" @click="submitForm">Sign Up</button>
+      <div class="msg"><p>{{ msg }}</p></div>
+      <div> <p>Already have an account? <a style="text-decoration: underline;">Log in</a> </p></div>
     </form>
+  </div>
+  <div class="image-container">
+      <img src="../assets/people.png" alt="People Image">
+  </div>
+    </div>
+  </div>
+    
   </div>
 </template>
 
@@ -74,7 +85,7 @@ export default {
         major: this.selectedMajor // Selected major
       };
       axiosClient.post('/student/create', formData).then(response =>{
-        this.msg = `Account ${response.data.email}  created successfully!`
+        this.msg = `Account created successfully!`
       }  
       ).catch(error =>{
         if(error.response.status != 500){
@@ -88,11 +99,29 @@ export default {
 
 
 <style scoped>
-html{box-sizing: border-box;}
-.signup-form {
-  max-width: 400px;
-  margin: 0 auto;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
+
+.signup-form {
+  padding-top: 200px;
+  width: 350px;
+  height: 550px;
+  margin-right: 20px; /* Add some spacing between the form and the image */
+  background-color: #cfd9d3;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.image-container {
+  flex-grow: 1; /* Allow the image container to grow to fill the available space */
+}
+
+/* Your existing CSS styles */
 
 .form-group {
   margin-bottom: 20px;
@@ -103,25 +132,64 @@ label {
   font-weight: bold;
 }
 
+button {
+    color: #ffffff; /* Set text color to white */
+    background-color: #2b4826; /* Set background color to green */
+    border: none; /* Remove border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    border-radius: 5px !important; /* Add border radius for rounded corners */
+    width: 200px;
+    height: 50px;
+    font-size: 16px;
+    text-align: center !important;
+  }
+
+button:hover {
+  background-color: #3a5f32; /* Change background color on hover */
+}
+
+header {
+    position: fixed !important;
+    z-index: 1000;
+    width: 100%;
+    top: 0;
+  background-color: #476141; /* Set background color for the header */
+  color: #fff; /* Set text color to white */
+  padding: 20px; /* Add padding */
+  text-align: center; /* Center align text */
+  margin: 0;
+  height: 100px;
+}
+
+.form-group {
+  margin-bottom: 10px; /* Decrease margin to make elements closer together */
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 2px; /* Decrease margin to make labels closer to inputs */
+  margin-top: 2px;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-  width: 100%;
+  width: 250px; /* Adjust width to make the textboxes smaller */
+  height: 30px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  margin-bottom: 10px; /* Decrease margin to make inputs closer together */
 }
 
 button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
+  color: #ffffff;
+  background-color: #2b4826;
   border: none;
-  border-radius: 4px;
+  padding: 10px 20px;
   cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
+  border-radius: 5px !important;
+  width: 100px;
+  margin-top: 10px; /* Decrease margin to make button closer to inputs */
 }
 </style>

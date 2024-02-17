@@ -1,10 +1,13 @@
 <template>
   <div>
     <header><h1>Welcome to CourseChamp!</h1></header>
-    
-    <img src="../assets/people.png" alt="People Image">
+    <div class="container">
+    <div class="button-container">
     <button @click="redirectToStudentSignup">Create Student Account</button>
     <button @click="redirectToAdminSignup">Create Admin Account</button>
+  </div>
+  <img src="../assets/people.png" alt="People Image">
+</div>
   </div>
 </template>
 
@@ -35,6 +38,7 @@ body {
     padding: 10px 20px; /* Add padding */
     cursor: pointer; /* Change cursor to pointer on hover */
     border-radius: 5px !important; /* Add border radius for rounded corners */
+    width: 250px;
   }
   header {
     position: fixed !important;
@@ -49,6 +53,20 @@ body {
 }
 button:hover {
   background-color: #3a5f32; /* Change background color on hover */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.button-container {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  align-items: center; /* Align buttons horizontally */
+  margin: 20px; /* Adjust spacing between buttons and image */
+  gap: 20px;
 }
 </style>
 
