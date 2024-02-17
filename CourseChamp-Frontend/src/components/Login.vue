@@ -1,165 +1,197 @@
 <template>
-  <!-- This is the HTML part of the Vue component. It defines the structure of the login form. -->
-  <div class="login-page">
-    <!-- The 'login-container' holds the form and the logo. -->
-    <div class="login-container">
-      <!-- 'login-header' holds the logo and the main title and subtitle. -->
-      <div class="login-header">
-        <!-- The CourseChamp logo is placed here. Replace 'path-to-your-logo.png' with the actual path to your logo file. -->
-        <!--<img src="path-to-your-logo.png" alt="CourseChamp Logo" class="logo">-->
-        <h2>Log In</h2>
-        <p class="login-subtitle">Let's Pick Up Where You Left Off</p>
+  <div>
+
+    <header>
+      <h1>Welcome Back !</h1>
+    </header>
+    <div class="content-wrapper">
+      <div class="container">
+        <div class="login-form">
+          <form @submit.prevent="submitForm">
+            <h5> Let's Pick Up Where We Left Off</h5>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" v-model="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="password" id="password" v-model="password" required>
+            </div>
+            <button type="submit" :disabled="!email || !password" @click="submitForm">Log In</button>
+            <div class="msg">
+              <p>{{ msg }}</p>
+            </div>
+            <div>
+              <p>Don't have an account?
+                <router-link to="/signup" style="text-decoration: underline;">Sign Up</router-link>
+              </p>
+            </div>
+          </form>
+        </div>
+        <div class="image-container">
+          <img src="../assets/people.png" alt="People Image">
+        </div>
       </div>
-      <!-- The form has a submit event listener that triggers the 'submitLoginForm' method when the form is submitted. -->
-      <form @submit.prevent="submitLoginForm" class="login-form">
-        <!-- The 'form-group' class is used for styling the input fields. -->
-        <div class="form-group">
-          <!-- The 'v-model' directive creates a two-way binding for the email input field. -->
-          <input type="email" id="login-email" v-model="loginEmail" placeholder="Email" required>
-        </div>
-        <div class="form-group">
-          <!-- The 'v-model' directive creates a two-way binding for the password input field. -->
-          <input type="password" id="login-password" v-model="loginPassword" placeholder="Password" required>
-        </div>
-        <!-- The main action button for form submission. -->
-        <button type="submit" class="login-button">Log In</button>
-        <!-- A secondary action button. -->
-        <button type="button" class="secondary-button">Continue with email</button>
-        <!-- A link for users who may have forgotten their password. -->
-        <a href="#" class="forgot-password">Forgot Password?</a>
-      </form>
     </div>
-    <!-- The 'illustration-section' may contain an image or graphic related to the CourseChamp platform. -->
-    <div class="illustration-section">
-      <!-- Placeholder for the illustration. Replace with actual content as needed. -->
-      <p class="tool-number">The #1 tool</p>
-    </div>
+
   </div>
 </template>
 
 <script>
-// This is the JavaScript part of the Vue component. It defines the data and methods for the component.
+import axios from 'axios'
+var config = require('../../config')
 
-// Importing the axios library, which is used to make HTTP requests.
-import axios from 'axios';
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
 
-// Importing the configuration file.
-const config = require('../../config');
-
-// Constructing the frontend URL from the configuration.
-const frontendUrl = config.dev.host + ':' + config.dev.port;
-
-// Creating an axios client with the backend base URL and headers.
-const axiosClient = axios.create({
-  baseURL: config.dev.backendBaseUrl,
+var axiosClient = axios.create({
+  baseURL: backendUrl,
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
-});
-
+})
 export default {
-  // The data function returns the reactive data for the component.
   data() {
     return {
-      // These are the data properties for the email and password input fields.
-      loginEmail: '',
-      loginPassword: '',
+      email: '',
+      password: '',
+      msg: '',
     };
   },
   methods: {
-    // This method is triggered when the form is submitted.
-    submitLoginForm() {
-      // The login data is constructed from the email and password input fields.
-      const loginData = {
-        email: this.loginEmail,
-        password: this.loginPassword,
+
+
+    submitForm() {
+      // Handle form submission (e.g., send data to server)
+      this.msg = ''
+      const formData = {
+        email: this.email,
+        password: this.password,
       };
-      // The login data is logged to the console.
-      console.log(loginData); 
-      // Here you would implement your login logic, for example by sending a POST request to a '/login' endpoint.
+      axiosClient.post('/student/login', formData).then(response => {
+        this.msg = `Logged In successfully!`
+      }
+      ).catch(error => {
+        if (error.response.status != 500) {
+          this.msg = error.response.data
+        }
+      })
     }
   }
 };
 </script>
 
+
 <style scoped>
-.login-page {
+.container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4;
+  flex-wrap: wrap;
+  height: calc(100vh - 100px); /* Subtract the height of the header */
+  padding-top: 100px; /* Add padding equal to the height of the header */
 }
 
-.login-container {
-  width: 35%;
-  padding: 40px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.login-form {
+  width: 350px;
+  height: 550px;
+  margin-right: 20px;
+  background-color: #cfd9d3;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 13px;
 }
 
-.login-header .logo {
-  max-width: 150px;
-  margin-bottom: 20px;
+.image-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.login-header h2 {
-  margin-bottom: 10px;
-}
-
-.login-subtitle {
-  margin-bottom: 30px;
+.image-container img {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .form-group {
   margin-bottom: 20px;
 }
 
-input {
+label {
+  display: block;
+  font-weight: bold;
+}
+
+button {
+  color: #ffffff;
+  /* Set text color to white */
+  background-color: #2b4826;
+  /* Set background color to green */
+  border: none;
+  /* Remove border */
+  cursor: pointer;
+  /* Change cursor to pointer on hover */
+  border-radius: 5px !important;
+  /* Add border radius for rounded corners */
+  width: 200px;
+  height: 50px;
+  font-size: 16px;
+  text-align: center !important;
+}
+
+button:hover {
+  background-color: #3a5f32;
+  /* Change background color on hover */
+}
+
+header {
+  position: fixed !important;
+  z-index: 1000;
   width: 100%;
-  padding: 15px;
+  top: 0;
+  background-color: #476141;
+  /* Set background color for the header */
+  color: #fff;
+  /* Set text color to white */
+  padding: 20px;
+  /* Add padding */
+  text-align: center;
+  /* Center align text */
+  margin: 0;
+  height: 100px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+  /* Decrease margin to make elements closer together */
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 2px;
+  /* Decrease margin to make labels closer to inputs */
+  margin-top: 2px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 250px;
+  /* Adjust width to make the textboxes smaller */
+  height: 30px;
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-bottom: 10px;
+  /* Decrease margin to make inputs closer together */
 }
 
-.login-button,
-.secondary-button {
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 10px;
+button {
+  color: #ffffff;
+  background-color: #2b4826;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 10px 20px;
   cursor: pointer;
-}
-
-.login-button {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.secondary-button {
-  background-color: transparent;
-  color: #4CAF50;
-  border: 1px solid #4CAF50;
-}
-
-.forgot-password {
-  display: block;
-  margin-top: 15px;
-  color: #4CAF50;
-  text-decoration: none;
-}
-
-.illustration-section {
-  width: 65%;
-  /* Include styles for your illustration here */
-}
-
-.tool-number {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
-  font-size: large;
-  color: #333;
-}
-</style>
+  border-radius: 5px !important;
+  width: 100px;
+  margin-top: 10px;
+  /* Decrease margin to make button closer to inputs */
+}</style>
