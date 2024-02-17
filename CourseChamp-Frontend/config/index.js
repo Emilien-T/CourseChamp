@@ -4,8 +4,10 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
+    host: '127.0.0.1',
     port: 8087,
-    backendBaseUrl: 'http://localhost:8080',
+    backendHost: '127.0.0.1',
+    backendPort: 8080,
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
@@ -25,8 +27,10 @@ module.exports = {
   },
   dev: {
     env: require('./prod.env'),
+    host: '127.0.0.1',
     port: 8087,
-    backendBaseUrl: 'http://localhost:8080',
+    backendHost: '127.0.0.1',
+    backendPort: 8080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
