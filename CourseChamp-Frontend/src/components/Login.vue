@@ -57,32 +57,27 @@ export default {
     };
   },
   methods: {
-  submitForm() {
-    // Handle form submission (e.g., send data to server)
-    this.msg = ''
-    const formData = {
-      email: this.email,
-      password: this.password,
-    };
+    submitForm() {
+      // Handle form submission (e.g., send data to server)
+      this.msg = ''
+      const formData = {
+        email: this.email,
+        password: this.password,
+      };
 
-    // Determine the user type based on the email
-    // This is just an example, replace it with your own logic
-    const userType = this.email.includes('@admin.com') ? 'Admin' : 'Student';
+      // Determine the user type based on the email
+      // This is just an example, replace it with your own logic
 
-    axiosClient.post(`/login/${userType}`, formData).then(response => {
-      // Check the type of the user and redirect to the appropriate page
-      if (response.data.userType === 'Admin') {
-        this.$router.push('/admin');
-      } else {
-        this.$router.push('/student');
-      }
-    }).catch(error => {
-      if (error.response.status != 500) {
-        this.msg = error.response.data
-      }
-    })
+      axiosClient.post(`/login/{user}`, formData).then(response => {
+        // Check the type of the user and redirect to the appropriate page
+        this.msg = `Logged In successfully!`
+      }).catch(error => {
+        if (error.response.status != 500) {
+          this.msg = error.response.data
+        }
+      })
+    }
   }
-}
 }
 </script>
 
@@ -93,8 +88,10 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  height: calc(100vh - 100px); /* Subtract the height of the header */
-  padding-top: 100px; /* Add padding equal to the height of the header */
+  height: calc(100vh - 100px);
+  /* Subtract the height of the header */
+  padding-top: 100px;
+  /* Add padding equal to the height of the header */
 }
 
 .login-form {
