@@ -66,6 +66,9 @@ export default {
       };
       axiosClient.post('/admin/create', formData).then(response =>{
         this.msg = `Account created successfully!`
+        this.email = ''
+        this.username = ''
+        this.password = ''
       }  
       ).catch(error =>{
         if(error.response.status != 500){
