@@ -57,26 +57,33 @@ export default {
     };
   },
   methods: {
+  submitForm() {
+    // Handle form submission (e.g., send data to server)
+    this.msg = ''
+    const formData = {
+      email: this.email,
+      password: this.password,
+    };
 
+    // Determine the user type based on the email
+    // This is just an example, replace it with your own logic
+    const userType = this.email.includes('@admin.com') ? 'Admin' : 'Student';
 
-    submitForm() {
-      // Handle form submission (e.g., send data to server)
-      this.msg = ''
-      const formData = {
-        email: this.email,
-        password: this.password,
-      };
-      axiosClient.post('/student/login', formData).then(response => {
-        this.msg = `Logged In successfully!`
+    axiosClient.post(`/login/${userType}`, formData).then(response => {
+      // Check the type of the user and redirect to the appropriate page
+      if (response.data.userType === 'Admin') {
+        this.$router.push('/admin');
+      } else {
+        this.$router.push('/student');
       }
-      ).catch(error => {
-        if (error.response.status != 500) {
-          this.msg = error.response.data
-        }
-      })
-    }
+    }).catch(error => {
+      if (error.response.status != 500) {
+        this.msg = error.response.data
+      }
+    })
   }
-};
+}
+}
 </script>
 
 
