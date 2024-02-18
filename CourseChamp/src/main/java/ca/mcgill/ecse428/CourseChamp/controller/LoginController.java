@@ -7,7 +7,6 @@ import ca.mcgill.ecse428.CourseChamp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
@@ -20,12 +19,20 @@ public class LoginController {
     private StudentService studentService;
 
 
+    /**
+     * Controller Method that allows the verfication of the email and password of a Student or Admin
+     * 
+     * @param user - Takes the value "Admin" to log in as an admin. Else, logs in as a student
+     * @param email - Email of the student/admin
+     * @param password - Password of the student/admin
+     * @return the Admin/Student that you are now logged in as
+     */
     @GetMapping("/login/{user}")
-    public ResponseEntity<?> getUser(@PathVariable String user, @RequestParam String email){
+    public ResponseEntity<?> LoginUser(@PathVariable String user, @PathVariable String email, @RequestParam String password){
         if (user.equals("Admin"))
-            return new ResponseEntity<AdminResponseDto>(new AdminResponseDto(adminService.getAdminByEmail(email)), HttpStatus.OK);
+            return new ResponseEntity<AdminResponseDto>(new AdminResponseDto(adminService.loginIntoAdmin(email, password)), HttpStatus.OK);
         else
-            return new ResponseEntity<StudentResponseDto>(new StudentResponseDto(studentService.getStudentByEmail(email)), HttpStatus.OK);
+            return new ResponseEntity<StudentResponseDto>(new StudentResponseDto(studentService.loginIntoStudent(email, password)), HttpStatus.OK);
 
 
     }
