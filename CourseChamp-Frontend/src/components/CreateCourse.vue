@@ -60,8 +60,8 @@ export default {
 };
 </script>
 <style scoped>
-.create-course-container {
-  padding: 20px;
+body{
+  margin-top: 0px;
   background-color: #f7f8f8; /* Off White */
   height: 100vh; /* Full height of the viewport */
   box-sizing: border-box; /* Includes padding in the element's total width and height */
@@ -80,7 +80,7 @@ header {
 }
 
 .form-container {
-  background-color: #989f95; /* Sage */
+  background-color: #d4ded7; /* Sage but better */
   padding: 20px;
   border-radius: 10px;
   margin-top: 20px;
@@ -94,14 +94,14 @@ header {
 }
 
 .form-group {
-  background-color: #989f95; /* Sage */
+  background-color: #d4ded7; /* Sage but better */
   padding: 10px;
   border-radius: 10px;
 }
 
 input[type="text"],
 textarea {
-  background-color: #989f95; /* Sage */
+  background-color: #d4ded7; /* Sage but better */
   border: none;
   border-bottom: 1px solid #c1c1c2; /* Silver Chalice */
   color: #333a33; /* Dark Charcoal */
@@ -122,7 +122,7 @@ textarea::placeholder {
 }
 
 .submit-button {
-  background-color: #2b4826; /* Bottle Green */
+  background-color: #386849; /* Bottle Green */
   color: #ffffff; /* White */
   padding: 10px 15px;
   border: none;
