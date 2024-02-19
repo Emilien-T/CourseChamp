@@ -20,7 +20,6 @@ public class CourseRequestDto {
     @Schema(example = "428", description = "Course number", required = true)
     private int courseNumber;
 
-    @NotBlank(message = "Course code cannot be blank.")
     @Schema(example = "COMP428", description = "Course code", required = true)
     private String courseCode;
 
