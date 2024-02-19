@@ -15,7 +15,7 @@ public class CourseRequestDto {
     @Schema(example = "COMP", description = "Department of the course", required = true)
     private String department;
 
-    @PositiveOrZero(message = "Course number must be a positive integer.")
+    @PositiveOrZero(message = "Course number must be a positive 3-digit integer.")
     @Size(min = 3, max = 3, message = "Course number must be a 3-digit integer.")
     @Schema(example = "428", description = "Course number", required = true)
     private int courseNumber;
