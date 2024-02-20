@@ -14,5 +14,6 @@ public interface StudentRepository extends CrudRepository<Student, String>{
 	 * @param email
 	 * @return Student found
 	 */
-    public Student findStudentByEmail(String email);    
+    public Student findStudentByEmail(String email);
+	public Student findStudentByUsername(String username);
 }
