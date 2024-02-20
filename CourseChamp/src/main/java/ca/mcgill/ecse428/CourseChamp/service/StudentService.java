@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Account;
+import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
@@ -66,7 +67,11 @@ public class StudentService {
      */
     @Transactional
     public Student loginIntoStudent(String email, String password) {
-        //TODO
-        return null;
+        
+        Student student = getStudentByEmail(email);
+        if (student.getPassword().equals(password))
+            return student;
+        else
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
     }
 }

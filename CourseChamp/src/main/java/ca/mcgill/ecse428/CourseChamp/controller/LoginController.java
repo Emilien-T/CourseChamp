@@ -23,7 +23,7 @@ public class LoginController {
      * Controller Method that allows the verfication of the email and password of a Student or Admin
      * 
      * @param user - Takes the value "Admin" to log in as an admin. Else, logs in as a student
-     * @param email -il of the student/admin
+     * @param email - Email of the student/admin
      * @param password - Password of the student/admin
      * @return the Admin/Student that you are now logged in as
      */
@@ -36,7 +36,6 @@ public class LoginController {
 
 
     }
-
 
 
 

@@ -90,6 +90,10 @@ public class AdminService {
     @Transactional
     public Admin loginIntoAdmin(String email, String password) {
         //TODO
-        return null;
+        Admin admin = getAdminByEmail(email);
+        if (admin.getPassword().equals(password))
+            return admin;
+        else
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
     }
 }

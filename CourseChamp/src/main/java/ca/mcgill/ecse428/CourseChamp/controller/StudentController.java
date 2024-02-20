@@ -55,16 +55,4 @@ public class StudentController {
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.CREATED); //3. You mask the model by returning a Response
     }
 
-    /**
-     * Controller Method that allows the verfication of the email and password of an Student
-     * 
-     * @param email - Email of the student
-     * @param password - Password of the student
-     * @return the Student that you are now logged in
-     */
-    @GetMapping("/login")
-    public ResponseEntity<StudentResponseDto> LoginUser(@RequestParam String email, @RequestParam String password){
-        //TODO
-        return null;
-    }
 }
