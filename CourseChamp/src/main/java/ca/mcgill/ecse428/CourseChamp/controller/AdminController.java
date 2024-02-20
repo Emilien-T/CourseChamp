@@ -61,18 +61,4 @@ public class AdminController {
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
                                                                                        // returning a Response
     }
-
-    /**
-     * Controller Method that allows the verfication of the email and password of an
-     * Admin
-     * 
-     * @param email    - Email of the admin
-     * @param password - Password of the admin
-     * @return the Admin that you are now logged in
-     */
-    @GetMapping("/login/admin")
-    public ResponseEntity<AdminResponseDto> LoginUserAdmin(@RequestParam String email, @RequestParam String password) {
-        // TODO
-        return null;
-    }
 }
