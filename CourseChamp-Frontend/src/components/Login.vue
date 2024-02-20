@@ -57,8 +57,6 @@ export default {
     };
   },
   methods: {
-
-
     submitForm() {
       // Handle form submission (e.g., send data to server)
       this.msg = ''
@@ -66,17 +64,21 @@ export default {
         email: this.email,
         password: this.password,
       };
-      axiosClient.post('/student/login', formData).then(response => {
+
+      // Determine the user type based on the email
+      // This is just an example, replace it with your own logic
+
+      axiosClient.post(`/login/{user}`, formData).then(response => {
+        // Check the type of the user and redirect to the appropriate page
         this.msg = `Logged In successfully!`
-      }
-      ).catch(error => {
+      }).catch(error => {
         if (error.response.status != 500) {
           this.msg = error.response.data
         }
       })
     }
   }
-};
+}
 </script>
 
 
@@ -86,8 +88,10 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  height: calc(100vh - 100px); /* Subtract the height of the header */
-  padding-top: 100px; /* Add padding equal to the height of the header */
+  height: calc(100vh - 100px);
+  /* Subtract the height of the header */
+  padding-top: 100px;
+  /* Add padding equal to the height of the header */
 }
 
 .login-form {
