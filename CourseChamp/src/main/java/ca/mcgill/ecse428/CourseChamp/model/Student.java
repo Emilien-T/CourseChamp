@@ -10,58 +10,57 @@ import jakarta.persistence.Entity;
  * This class is also JPA anotated for ORM
  */
 @Entity
-public class Student extends Account
-{
+public class Student extends Account {
 
-  //------------------------
+  // ------------------------
   // ENUMERATIONS
-  //------------------------
+  // ------------------------
 
-  public enum Major { Software, Computer, Electrical }
+  public enum Major {
+    Software, Computer, Electrical
+  }
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //Student Attributes
+  // Student Attributes
   private Major major;
 
-  //------------------------
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
+  public Student() {
+  }
 
-  public Student(String aEmail, String aUsername, String aPassword, Major aMajor)
-  {
+  public Student(String aEmail, String aUsername, String aPassword, Major aMajor) {
     super(aEmail, aUsername, aPassword);
     major = aMajor;
   }
 
-  //------------------------
+  // ------------------------
   // INTERFACE
-  //------------------------
+  // ------------------------
 
-  public boolean setMajor(Major aMajor)
-  {
+  public boolean setMajor(Major aMajor) {
     boolean wasSet = false;
     major = aMajor;
     wasSet = true;
     return wasSet;
   }
 
-  public Major getMajor()
-  {
+  public Major getMajor() {
     return major;
   }
 
-  public void delete()
-  {
+  public void delete() {
     super.delete();
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "major" + "=" + (getMajor() != null ? !getMajor().equals(this)  ? getMajor().toString().replaceAll("  ","    ") : "this" : "null");
+  public String toString() {
+    return super.toString() + "[" + "]" + System.getProperties().getProperty("line.separator") +
+        "  " + "major" + "="
+        + (getMajor() != null ? !getMajor().equals(this) ? getMajor().toString().replaceAll("  ", "    ") : "this"
+            : "null");
   }
 }

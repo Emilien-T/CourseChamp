@@ -10,28 +10,27 @@ import jakarta.persistence.Entity;
  * This class is also JPA anotated for ORM
  */
 @Entity
-public class Admin extends Account
-{
+public class Admin extends Account {
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //------------------------
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
+  public Admin() {
+  }
 
-  public Admin(String aEmail, String aUsername, String aPassword)
-  {
+  public Admin(String aEmail, String aUsername, String aPassword) {
     super(aEmail, aUsername, aPassword);
   }
 
-  //------------------------
+  // ------------------------
   // INTERFACE
-  //------------------------
+  // ------------------------
 
-  public void delete()
-  {
+  public void delete() {
     super.delete();
   }
 

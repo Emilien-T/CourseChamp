@@ -18,103 +18,98 @@ import jakarta.persistence.ManyToOne;
  * This class is also JPA anotated for ORM
  */
 @Entity
-public class Tag
-{
+public class Tag {
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //Tag Attributes
+  // Tag Attributes
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  //Tag Associations
+  // Tag Associations
   @ManyToOne
   private TagType tagType;
   @ManyToOne
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Review review;
 
-  //------------------------
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
+  public Tag() {
+  }
 
-  public Tag(int aId, TagType aTagType, Review aReview)
-  {
+  public Tag(int aId, TagType aTagType, Review aReview) {
     id = aId;
-    if (!setTagType(aTagType))
-    {
-      throw new RuntimeException("Unable to create Tag due to aTagType. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    if (!setTagType(aTagType)) {
+      throw new RuntimeException(
+          "Unable to create Tag due to aTagType. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    if (!setReview(aReview))
-    {
-      throw new RuntimeException("Unable to create Tag due to aReview. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    if (!setReview(aReview)) {
+      throw new RuntimeException(
+          "Unable to create Tag due to aReview. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
-  //------------------------
+  // ------------------------
   // INTERFACE
-  //------------------------
+  // ------------------------
 
-  public boolean setId(int aId)
-  {
+  public boolean setId(int aId) {
     boolean wasSet = false;
     id = aId;
     wasSet = true;
     return wasSet;
   }
 
-  public int getId()
-  {
+  public int getId() {
     return id;
   }
+
   /* Code from template association_GetOne */
-  public TagType getTagType()
-  {
+  public TagType getTagType() {
     return tagType;
   }
+
   /* Code from template association_GetOne */
-  public Review getReview()
-  {
+  public Review getReview() {
     return review;
   }
+
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setTagType(TagType aNewTagType)
-  {
+  public boolean setTagType(TagType aNewTagType) {
     boolean wasSet = false;
-    if (aNewTagType != null)
-    {
+    if (aNewTagType != null) {
       tagType = aNewTagType;
       wasSet = true;
     }
     return wasSet;
   }
+
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setReview(Review aNewReview)
-  {
+  public boolean setReview(Review aNewReview) {
     boolean wasSet = false;
-    if (aNewReview != null)
-    {
+    if (aNewReview != null) {
       review = aNewReview;
       wasSet = true;
     }
     return wasSet;
   }
 
-  public void delete()
-  {
+  public void delete() {
     tagType = null;
     review = null;
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "tagType = "+(getTagType()!=null?Integer.toHexString(System.identityHashCode(getTagType())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "review = "+(getReview()!=null?Integer.toHexString(System.identityHashCode(getReview())):"null");
+  public String toString() {
+    return super.toString() + "[" +
+        "id" + ":" + getId() + "]" + System.getProperties().getProperty("line.separator") +
+        "  " + "tagType = "
+        + (getTagType() != null ? Integer.toHexString(System.identityHashCode(getTagType())) : "null")
+        + System.getProperties().getProperty("line.separator") +
+        "  " + "review = " + (getReview() != null ? Integer.toHexString(System.identityHashCode(getReview())) : "null");
   }
 }

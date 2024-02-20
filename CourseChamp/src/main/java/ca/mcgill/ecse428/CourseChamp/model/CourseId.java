@@ -1,6 +1,6 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
-import java.io.Serializable; 
+import java.io.Serializable;
 
 public class CourseId implements Serializable {
     private String department;
