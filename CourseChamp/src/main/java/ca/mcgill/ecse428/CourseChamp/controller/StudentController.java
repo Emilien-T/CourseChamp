@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RestController
 public class StudentController {
 
@@ -27,12 +27,14 @@ public class StudentController {
      * @return the Student with Email, Password, Name
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "404", description = "Student not found.", content = {@Content(mediaType = "String")})
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", description = "Student not found.", content = {
+                    @Content(mediaType = "String") })
     })
-    @GetMapping(value = {"/student", "/student/"})
+    @GetMapping(value = { "/student", "/student/" })
     public ResponseEntity<StudentResponseDto> getStudentByEmail(@RequestParam String email) {
-        return new ResponseEntity<StudentResponseDto>(new StudentResponseDto(studentService.getStudentByEmail(email)), HttpStatus.OK);
+        return new ResponseEntity<StudentResponseDto>(new StudentResponseDto(studentService.getStudentByEmail(email)),
+                HttpStatus.OK);
     }
 
     /**
@@ -42,17 +44,20 @@ public class StudentController {
      * @return the dto response of the new Student
      */
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400", description = "Hourly wage must be positive.", content = {@Content(mediaType = "String")}),
-        @ApiResponse(responseCode = "409", description = "Student account with this email already exists.", content = {@Content(mediaType = "String")})
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "Hourly wage must be positive.", content = {
+                    @Content(mediaType = "String") }),
+            @ApiResponse(responseCode = "409", description = "Student account with this email already exists.", content = {
+                    @Content(mediaType = "String") })
     })
     @PostMapping("/student/create")
-    public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto StudentRequest)
-    {
-        Student Student = StudentRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an Student if they pass
-        Student =  studentService.createStudentAccount(Student); // 2. You use the service class to check if it exists and save it
+    public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto StudentRequest) {
+        Student Student = StudentRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an
+                                                    // Student if they pass
+        Student = studentService.createStudentAccount(Student); // 2. You use the service class to check if it exists
+                                                                // and save it
         StudentResponseDto responseBody = new StudentResponseDto(Student);
-        return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.CREATED); //3. You mask the model by returning a Response
+        return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
+                                                                                         // returning a Response
     }
-
 }

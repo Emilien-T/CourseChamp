@@ -18,67 +18,61 @@ import jakarta.persistence.ManyToOne;
  * This class is also JPA anotated for ORM
  */
 @Entity
-public class TagType
-{
+public class TagType {
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //TagType Attributes
+  // TagType Attributes
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String description;
 
-  //------------------------
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
+  public TagType() {
+  }
 
-  public TagType(int aId, String aDescription)
-  {
+  public TagType(int aId, String aDescription) {
     id = aId;
     description = aDescription;
   }
 
-  //------------------------
+  // ------------------------
   // INTERFACE
-  //------------------------
+  // ------------------------
 
-  public boolean setId(int aId)
-  {
+  public boolean setId(int aId) {
     boolean wasSet = false;
     id = aId;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setDescription(String aDescription)
-  {
+  public boolean setDescription(String aDescription) {
     boolean wasSet = false;
     description = aDescription;
     wasSet = true;
     return wasSet;
   }
 
-  public int getId()
-  {
+  public int getId() {
     return id;
   }
 
-  public String getDescription()
-  {
+  public String getDescription() {
     return description;
   }
 
-  public void delete()
-  {}
+  public void delete() {
+  }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
-            "description" + ":" + getDescription()+ "]";
+  public String toString() {
+    return super.toString() + "[" +
+        "id" + ":" + getId() + "," +
+        "description" + ":" + getDescription() + "]";
   }
 }

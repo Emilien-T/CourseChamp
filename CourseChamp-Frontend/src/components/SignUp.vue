@@ -1,112 +1,72 @@
 <template>
-  <div class="signup-form">
-    <h2>Create an account</h2>
-    <h4> Let's get started!</h4>
-    <form @submit.prevent="submitForm">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="email" required>
-      </div>
-      <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" v-model="username" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" required>
-      </div>
-      <div class="form-group">
-        <label>Major:</label>
-        <div>
-          <label>
-            <input type="radio" v-model="selectedMajor" value="Software"> Software
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="radio" v-model="selectedMajor" value="Computer"> Computer
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="radio" v-model="selectedMajor" value="Electrical"> Electrical
-          </label>
-        </div>
-      </div>
-      <button type="submit" @click="submitForm">Sign Up</button>
-      <div> <p>Already have an account? <a style="text-decoration: underline;">Log in</a></p></div>
-    </form>
+  <div>
+    <header><h1>Welcome to CourseChamp!</h1></header>
+    <div class="container">
+    <div class="button-container">
+    <button @click="redirectToStudentSignup">Create Student Account</button>
+    <button @click="redirectToAdminSignup">Create Admin Account</button>
+  </div>
+  <img src="../assets/people.png" alt="People Image">
+</div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-const config = require('../../config');
-const frontendUrl = config.dev.host + ':' + config.dev.port;
-const axiosClient = axios.create({
-  // Note the baseURL, not baseUrl
-  baseURL: config.dev.backendBaseUrl,
-  headers: { 'Access-Control-Allow-Origin': frontendUrl }
-});
 export default {
-  data() {
-    return {
-      email: '',
-      username: '',
-      password: '',
-      selectedMajor: '' // Variable to store selected major
-    };
-  },
   methods: {
-    submitForm() {
-      // Handle form submission (e.g., send data to server)
-      const formData = {
-        email: this.email,
-        username: this.username,
-        password: this.password,
-        major: this.selectedMajor // Selected major
-      };
-      console.log(formData); // Replace with your form submission logic
+    redirectToStudentSignup() {
+      // Redirect to the student signup page
+      this.$router.push('/signup/student');
+    },
+    redirectToAdminSignup() {
+      // Redirect to the admin signup page
+      this.$router.push('/signup/admin');
     }
   }
-};
+}
 </script>
 
-
-<style scoped>
-.signup-form {
-  max-width: 400px;
-  margin: 0 auto;
+<style>
+body { 
+  margin: 0; 
+  padding: 0; 
+} 
+  button {
+    color: #ffffff; /* Set text color to white */
+    background-color: #2b4826; /* Set background color to green */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Add padding */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    border-radius: 5px !important; /* Add border radius for rounded corners */
+    width: 250px;
+  }
+  header {
+    position: fixed !important;
+    z-index: 1000;
+    width: 100%;
+    top: 0;
+  background-color: #476141; /* Set background color for the header */
+  color: #fff; /* Set text color to white */
+  padding: 20px; /* Add padding */
+  text-align: center; /* Center align text */
+  margin: 0;
 }
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 button:hover {
-  background-color: #0056b3;
+  background-color: #3a5f32; /* Change background color on hover */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.button-container {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  align-items: center; /* Align buttons horizontally */
+  margin: 20px; /* Adjust spacing between buttons and image */
+  gap: 20px;
 }
 </style>
+
