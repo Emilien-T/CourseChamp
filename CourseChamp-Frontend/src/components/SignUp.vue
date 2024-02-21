@@ -24,6 +24,7 @@ export default {
       this.$router.push('/signup/admin');
     },
     redirectToLogin(){
+      this.$loggedInUser = "loggedIn"
       this.$router.push('/login')
     }
   }

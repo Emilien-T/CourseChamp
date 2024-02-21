@@ -30,7 +30,8 @@ public class CourseService {
     }
 
     /**
-     * Service method to fetch an existing course with a specific course code from the database
+     * Service method to fetch an existing course with a specific course code from
+     * the database
      * 
      * @param courseCode - course code of the course
      * @throws CourseChampException - If course does not exist
@@ -60,7 +61,8 @@ public class CourseService {
     }
 
     /**
-     * Service method to verify if a course exists based on its department and course number
+     * Service method to verify if a course exists based on its department and
+     * course number
      * 
      * @param department   - The department code of the course
      * @param courseNumber - The course number

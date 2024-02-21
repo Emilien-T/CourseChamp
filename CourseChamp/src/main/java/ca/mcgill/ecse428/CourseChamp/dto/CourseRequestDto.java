@@ -1,11 +1,11 @@
 package ca.mcgill.ecse428.CourseChamp.dto;
 
 import ca.mcgill.ecse428.CourseChamp.model.Course;
-
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CourseRequestDto {
@@ -16,12 +16,10 @@ public class CourseRequestDto {
     private String department;
 
     @PositiveOrZero(message = "Course number must be a positive 3-digit integer.")
-    @Size(min = 3, max = 3, message = "Course number must be a 3-digit integer.")
+    @Min(value = 100, message = "Course number must be a positive 3-digit integer.")
+    @Max(value = 999, message = "Course number must be a positive 3-digit integer.")
     @Schema(example = "428", description = "Course number", required = true)
     private int courseNumber;
-
-    @Schema(example = "COMP428", description = "Course code", required = true)
-    private String courseCode;
 
     @NotBlank(message = "Name cannot be blank.")
     @Schema(example = "Software Engineering", description = "Name of the course", required = true)
@@ -48,14 +46,6 @@ public class CourseRequestDto {
 
     public void setCourseNumber(int courseNumber) {
         this.courseNumber = courseNumber;
-    }
-
-    public String getCourseCode() {
-        return courseCode;
-    }
-
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
     }
 
     public String getName() {

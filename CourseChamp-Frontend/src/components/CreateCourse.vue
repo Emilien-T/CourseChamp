@@ -1,60 +1,86 @@
 <template>
-    <div class="create-course-container">
-      <header>
-        <h1>Create A Course</h1>
-        <router-link to="/courses" class="back-link">Back To Course</router-link>
-      </header>
-      <div class="form-container">
-        <form @submit.prevent="submitCourse">
-          <div class="form-group">
-            <label class="input-label">Course Department:</label>
-            <input type="text" id="course-department" v-model="courseDepartment" required placeholder="Write course department here...">
-          </div>
-          <div class="form-group">
-            <label class="input-label">Course Number:</label>
-            <input type="text" id="course-number" v-model="courseNumber" required placeholder="Write course number here...">
-          </div>
-          <div class="form-group">
-            <label class="input-label">Course Overview:</label>
-            <textarea id="course-overview" v-model="courseOverview" required placeholder="Write course overview here..."></textarea>
-          </div>
-          <div class="submit-container">
-            <button type="submit" class="submit-button">
-              Submit
-              <span class="arrow-icon">
-                <img src="../assets/arrow.png" alt="Arrow">
-              </span>
-            </button>
-          </div>
-        </form>
-      </div>
+  <div class="create-course-container">
+    <header>
+      <h1>Create A Course</h1>
+      <router-link to="/courses" class="back-link">Back To Course</router-link>
+    </header>
+    <div class="form-container">
+      <form @submit.prevent="submitCourse">
+        <div class="form-group">
+          <label class="input-label">Enter the Department:</label>
+          <input type="text" id="department" v-model="department" required placeholder="ECSE">
+        </div>
+        <div class="form-group">
+          <label class="input-label">Course Number:</label>
+          <input type="text" id="course-number" v-model="courseNumber" required placeholder="428">
+        </div>
+        <div class="form-group">
+          <label class="input-label">Name:</label>
+          <input type="text" id="name" v-model="name" required placeholder="Software Engineering Practice">
+        </div>
+        <div class="form-group">
+          <label class="input-label">Description:</label>
+          <textarea id="description" v-model="description" required placeholder="This is a really fun course"></textarea>
+          <div class="msg">{{ msg }}</div>
+        </div>
+        <div class="submit-container">
+          <button type="submit" :disabled="!department || !courseNumber || !name || !description" class="submit-button">
+            Submit
+            <span class="arrow-icon">
+              <img src="../assets/arrow.png" alt="Arrow">
+            </span>
+          </button>
+        </div>
+      </form>
     </div>
-  </template>
+  </div>
+</template>
   
   
   
 <script>
+import axios from 'axios'
+var config = require('../../config')
+
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+
+var axiosClient = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
 export default {
   data() {
     return {
-      courseDepartment: '',
+      department: '',
       courseNumber: '',
-      courseOverview: ''
+      name: '',
+      description: '',
+      msg: ''
     };
   },
   methods: {
     submitCourse() {
       // Handle course submission (e.g., send data to server)
       const courseData = {
-        department: this.courseDepartment,
-        number: this.courseNumber,
-        overview: this.courseOverview
+        department: this.department,
+        courseNumber: Number(this.courseNumber),
+        name: this.name,
+        description: this.description
       };
       console.log(courseData); // Replace with your submission logic
-      // Reset form fields after submission
-      this.courseDepartment = '';
-      this.courseNumber = '';
-      this.courseOverview = '';
+      axiosClient.post('/course/create', courseData).then(response =>{
+        this.msg = `Course created Successfully!`
+        this.department = ''
+        this.courseNumber = ''
+        this.name = ''
+        this.description = ''
+      }  
+      ).catch(error =>{
+        if(error.response.status != 500){
+          this.msg = error.response.data
+        }
+      })
     }
   }
 };

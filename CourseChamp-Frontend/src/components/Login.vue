@@ -64,7 +64,6 @@ export default {
         email: this.email,
         password: this.password,
       };
-
       // Determine the user type based on the email
       // This is just an example, replace it with your own logic
       console.log(formData);
