@@ -67,14 +67,17 @@ export default {
 
       // Determine the user type based on the email
       // This is just an example, replace it with your own logic
-
-      axiosClient.post(`/login/{user}`, formData).then(response => {
+      console.log(formData);
+      axiosClient.post(`/login/student/`, formData).then(response => {
         // Check the type of the user and redirect to the appropriate page
         this.msg = `Logged In successfully!`
-      }).catch(error => {
-        if (error.response.status != 500) {
-          this.msg = error.response.data
-        }
+      }).catch(error1 =>{
+        axiosClient.post(`/login/Admin/`, formData).then(response =>{
+          this.msg = `Logged In successfully!`
+          this.$router.push('/createcourse');
+        }).catch(error2 =>{
+          this.msg = error1.response.data + " " + error2.response.data
+        })
       })
     }
   }

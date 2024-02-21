@@ -23,6 +23,7 @@ public class AdminService {
 
     /**
      * Service method to fetch all existing admins in the database
+     * 
      * @return all the admins from persistence layer
      * @throws CourseChampException - if no owners exist in the system
      */
@@ -32,10 +33,13 @@ public class AdminService {
         Iterator<Admin> iterator = admins.iterator();
         if (!iterator.hasNext())
             throw new CourseChampException(HttpStatus.NOT_FOUND, "There are no admins in the system");
-        return adminRepository.findAll(); }
+        return adminRepository.findAll();
+    }
 
     /**
-     * Service method to fetch an existing admin with a specific email from the database
+     * Service method to fetch an existing admin with a specific email from the
+     * database
+     * 
      * @param email admin's email linked to their account
      * @return the admin corresponding to the provided email
      * @throws CourseChampException - If the admin does not exist
@@ -51,13 +55,13 @@ public class AdminService {
 
     /**
      * Service method that updates the admin's information in the database
+     * 
      * @param owner updated instance of the admin
      * @return the updated instance
      * @throws CourseChampException - If admin does not exist
      */
     @Transactional
-    public Admin updateAdminAccount(Admin admin)
-    {
+    public Admin updateAdminAccount(Admin admin) {
         Admin a = getAdminByEmail(admin.getEmail());
         a.setPassword(admin.getPassword());
         a.setUsername(admin.getUsername());
@@ -67,31 +71,33 @@ public class AdminService {
 
     /**
      * Service method to store a created admin in the database
+     * 
      * @param admin instance to be persisted
      * @return the persisted instance if successful
      * @throws CourseChampException - If an admin already exists
      */
     @Transactional
-	public Admin createAdminAccount(Admin admin) {
+    public Admin createAdminAccount(Admin admin) {
         // Register the admin account into database
-        if ((adminRepository.findAdminByEmail(admin.getEmail()) == null) && (studentRepository.findStudentByEmail(admin.getEmail()) == null))
-		    return adminRepository.save(admin);
+        if ((adminRepository.findAdminByEmail(admin.getEmail()) == null)
+                && (studentRepository.findStudentByEmail(admin.getEmail()) == null))
+            return adminRepository.save(admin);
         else
             throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this email already exists");
     }
 
-    
     /**
      * Service method to verify that email and password match
-     * @param email - email of the admin
+     * 
+     * @param email    - email of the admin
      * @param password - password of the admin
      * @throws CourseChampException - The login fails
      */
     @Transactional
     public Admin loginIntoAdmin(String email, String password) {
-        //TODO
+        // TODO
         Admin admin = getAdminByEmail(email);
-        if (admin.getPassword().equals(password))
+        if (admin != null && admin.getPassword().equals(password))
             return admin;
         else
             throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
