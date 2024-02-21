@@ -8,19 +8,19 @@
       <form @submit.prevent="submitCourse">
         <div class="form-group">
           <label class="input-label">Enter the Department:</label>
-          <input type="text" id="department" v-model="department" required placeholder="ECSE">
+          <input type="text" id="department" v-model="department" required placeholder="Ex: ECSE">
         </div>
         <div class="form-group">
-          <label class="input-label">Course Number:</label>
-          <input type="text" id="course-number" v-model="courseNumber" required placeholder="428">
+          <label class="input-label">Enter the Course Number:</label>
+          <input type="text" id="course-number" v-model="courseNumber" required placeholder="Ex: 428">
         </div>
         <div class="form-group">
-          <label class="input-label">Name:</label>
-          <input type="text" id="name" v-model="name" required placeholder="Software Engineering Practice">
+          <label class="input-label">Enter the Course Name:</label>
+          <input type="text" id="name" v-model="name" required placeholder="Ex: Software Engineering Practice">
         </div>
         <div class="form-group">
-          <label class="input-label">Description:</label>
-          <textarea id="description" v-model="description" required placeholder="This is a really fun course"></textarea>
+          <label class="input-label">Enter the Course Description:</label>
+          <textarea id="description" v-model="description" required placeholder="Ex: This is a really fun course"></textarea>
           <div class="msg">{{ msg }}</div>
         </div>
         <div class="submit-container">
