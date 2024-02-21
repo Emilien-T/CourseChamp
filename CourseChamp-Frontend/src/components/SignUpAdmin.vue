@@ -21,7 +21,7 @@
       </div>
       <button type="submit" :disabled="!email || !username || !password" @click="submitForm">Sign Up</button>
       <div class="msg"><p>{{ msg }}</p></div>
-      <div> <p>Already have an account? <a style="text-decoration: underline;">Log in</a> </p></div>
+      <div> <p>Already have an account? <a style="text-decoration: underline;" @click="redirectToLogin">Log in</a> </p></div>
     </form>
   </div>
   <div class="image-container">
@@ -54,7 +54,9 @@ export default {
     };
   },
   methods: {
-    
+    redirectToLogin(){
+      this.$router.push('/login')
+    },
   
     submitForm() {
       // Handle form submission (e.g., send data to server)

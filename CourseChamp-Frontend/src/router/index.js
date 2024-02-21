@@ -13,8 +13,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'SignUp',
+      component: SignUp
     },
     {
       path: '/signup',

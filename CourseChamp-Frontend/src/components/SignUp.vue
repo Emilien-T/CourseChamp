@@ -5,6 +5,7 @@
     <div class="button-container">
     <button @click="redirectToStudentSignup">Create Student Account</button>
     <button @click="redirectToAdminSignup">Create Admin Account</button>
+    <button @click="redirectToLogin">Log In</button>
   </div>
   <img src="../assets/people.png" alt="People Image">
 </div>
@@ -21,6 +22,9 @@ export default {
     redirectToAdminSignup() {
       // Redirect to the admin signup page
       this.$router.push('/signup/admin');
+    },
+    redirectToLogin(){
+      this.$router.push('/login')
     }
   }
 }
