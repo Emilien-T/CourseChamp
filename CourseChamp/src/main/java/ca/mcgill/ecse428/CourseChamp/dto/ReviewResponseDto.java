@@ -9,8 +9,6 @@ public class ReviewResponseDto {
     private int id;
     private int rating;
     private String text;
-    // Additional fields could include details about the student or the course offering if needed
-    // For example, you might include the course code or student name as a String, but avoid complex object mappings to keep the DTO simple
 
     public ReviewResponseDto() {
     }
