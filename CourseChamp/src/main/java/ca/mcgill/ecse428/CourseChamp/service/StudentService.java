@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
-import ca.mcgill.ecse428.CourseChamp.model.Account;
-import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
@@ -58,10 +56,16 @@ public class StudentService {
     @Transactional
     public Student createStudentAccount(Student student) {
         if ((adminRepository.findAdminByEmail(student.getEmail()) == null)
-                && (studentRepository.findStudentByEmail(student.getEmail()) == null))
+                && (studentRepository.findStudentByEmail(student.getEmail()) == null)
+                && (adminRepository.findAdminByUsername(student.getUsername()) == null)
+                && (studentRepository.findStudentByUsername(student.getUsername()) == null))
             return studentRepository.save(student);
-        else
+        else if ((adminRepository.findAdminByEmail(student.getEmail()) != null)
+                || (studentRepository.findStudentByEmail(student.getEmail()) != null))
             throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this email already exists");
+        else
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
+
     }
 
     /**
