@@ -184,7 +184,7 @@ public class AdminServiceTests {
         CourseChampException e = assertThrows(CourseChampException.class,
                 () -> adminService.loginIntoAdmin(email, password));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "Admin not found.");
+        assertEquals(e.getMessage(), "Account not found");
     }
 
     // User login with a wrong password
@@ -234,7 +234,7 @@ public class AdminServiceTests {
         when(adminRepository.findAdminByEmail(email)).thenReturn(null);
 
         CourseChampException e = assertThrows(CourseChampException.class, () -> adminService.getAdminByEmail(email));
-        assertEquals(e.getMessage(), "Admin not found.");
+        assertEquals(e.getMessage(), "Account not found");
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
     }
 

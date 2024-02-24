@@ -42,7 +42,7 @@ public class StudentService {
     public Student getStudentByEmail(String email) {
         Student student = studentRepository.findStudentByEmail(email);
         if (student == null) {
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "Student not found.");
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Account not found");
         }
         return student;
     }
@@ -55,8 +55,8 @@ public class StudentService {
      */
     @Transactional
     public Student createStudentAccount(Student student) {
-        if ((adminRepository.findAdminByEmail(student.getEmail()) == null)
-                && (studentRepository.findStudentByEmail(student.getEmail()) == null)
+        if ((studentRepository.findStudentByEmail(student.getEmail()) == null)
+                && (adminRepository.findAdminByEmail(student.getEmail()) == null)
                 && (adminRepository.findAdminByUsername(student.getUsername()) == null)
                 && (studentRepository.findStudentByUsername(student.getUsername()) == null))
             return studentRepository.save(student);
@@ -88,5 +88,10 @@ public class StudentService {
             return student;
         else
             throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+    }
+
+    @Transactional
+    public void deleteStudentAccount(String email){
+        studentRepository.delete(getStudentByEmail(email));
     }
 }

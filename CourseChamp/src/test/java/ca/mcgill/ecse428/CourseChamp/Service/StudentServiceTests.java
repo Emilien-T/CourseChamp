@@ -215,7 +215,7 @@ public class StudentServiceTests {
         CourseChampException e = assertThrows(CourseChampException.class,
                 () -> studentService.loginIntoStudent(email, password));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "Student not found.");
+        assertEquals(e.getMessage(), "Account not found");
     }
 
     // User login with a wrong password
@@ -267,7 +267,7 @@ public class StudentServiceTests {
 
         CourseChampException e = assertThrows(CourseChampException.class,
                 () -> studentService.getStudentByEmail(email));
-        assertEquals(e.getMessage(), "Student not found.");
+        assertEquals(e.getMessage(), "Account not found");
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
     }
 

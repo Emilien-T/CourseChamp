@@ -47,7 +47,7 @@ public class AdminService {
     public Admin getAdminByEmail(String email) {
         Admin admin = adminRepository.findAdminByEmail(email);
         if (admin == null) {
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "Admin not found.");
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Account not found");
         }
         return admin;
     }
@@ -111,5 +111,10 @@ public class AdminService {
         
         throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
         
+    }
+
+    @Transactional
+    public void deleteAdminAccount(String email){
+        adminRepository.delete(getAdminByEmail(email));
     }
 }
