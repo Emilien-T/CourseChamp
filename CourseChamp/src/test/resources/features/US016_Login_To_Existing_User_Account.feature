@@ -3,8 +3,14 @@ As a user of CourseChamp,
 I would like to log in to my account with my credentials,
 So that I can delete, edit, view and manage my posts.
 
+  Background: 
+    Given the following accounts exist in the system:
+      | email                       | username      | password    |
+      | john.jonny@gmail.com        | John          | J0hn!Super  |
+      | percy.golber@mail.mcgill.ca | TigerLover123 | JohnLover!5 |
+      | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% |
+
   Scenario Outline: User successfully login using email (Normal Flow)
-    Given an account in the system has the email "<email>", username "<username>" and password "<password>"
     When a user attempts to log in with email "<email>" and password "<password>"
     Then the user shall successfully login into the system with the account with the username "<username>"
 
@@ -15,7 +21,6 @@ So that I can delete, edit, view and manage my posts.
       | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% |
 
   Scenario Outline: User successfully login using username (Alternative Flow)
-    Given an account in the system has the email "<email>", username "<username>" and password "<password>"
     When a user attempts to log in with email "<username>" and password "<password>"
     Then the user shall successfully login into the system with the account with the username "<username>"
 
@@ -26,7 +31,6 @@ So that I can delete, edit, view and manage my posts.
       | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% |
 
   Scenario Outline: User login with a non-existent email (Error Flow)
-    Given an account in the system has the email "<email>", username "<username>" and password "<password>"
     When a user attempts to log in with email "<wrongEmail>" and password "<password>"
     Then a "No account with this email exists" message is issued
 
@@ -37,7 +41,6 @@ So that I can delete, edit, view and manage my posts.
       | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% | lucydavid@hotmail.com |
 
   Scenario Outline: User login with a wrong password (Error Flow)
-    Given an account in the system has the email "<email>", username "<username>" and password "<password>"
     When a user attempts to log in with email "<email>" and password "<wrongPassword>"
     Then a "Given password is wrong" message is issued
 
