@@ -187,20 +187,19 @@ public class StudentServiceTests {
     // User successfully login using username
     @Test
     public void testLoginWithUsername() {
-        // we're not doing logins with usernames
-        // final String email = "john.doe@mcgill.ca";
-        // final String username = "John Doe";
-        // final String password = "JohnDoe2002";
-        // final Major major = Major.Software;
-        // final Student john = new Student(email, username, password, major);
+        final String email = "john.doe@mcgill.ca";
+        final String username = "John Doe";
+        final String password = "JohnDoe2002";
+        final Major major = Major.Software;
+        final Student john = new Student(email, username, password, major);
 
-        // when(studentRepository.findStudentByEmail(email)).thenReturn(null);
-        // when(studentRepository.findStudentByUsername(username)).thenReturn(john);
+        when(studentRepository.findStudentByEmail(email)).thenReturn(null);
+        when(studentRepository.findStudentByUsername(username)).thenReturn(john);
 
-        // Student output = studentService.loginIntoStudent(username, password);
+        Student output = studentService.loginIntoStudent(username, password);
 
-        // assertNotNull(output);
-        // assertEquals(john, output);
+        assertNotNull(output);
+        assertEquals(john, output);
     }
 
     // User login with a non-existent email
@@ -243,7 +242,7 @@ public class StudentServiceTests {
 
     // Get Student with email
     @Test
-    public void testGetEmployeeByValidEmail() {
+    public void testGetStudentByValidEmail() {
         final String email = "john.doe@mcgill.ca";
         final String username = "John Doe";
         final String password = "JohnDoe2002";

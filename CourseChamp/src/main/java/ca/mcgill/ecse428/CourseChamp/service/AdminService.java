@@ -99,11 +99,17 @@ public class AdminService {
      */
     @Transactional
     public Admin loginIntoAdmin(String email, String password) {
-        // TODO
-        Admin admin = getAdminByEmail(email);
+        // Attempt to find the admin by username
+        Admin admin = adminRepository.findAdminByUsername(email);
         if (admin != null && admin.getPassword().equals(password))
             return admin;
-        else
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+        
+        // next find admin by email
+        admin = getAdminByEmail(email);
+        if (admin != null && admin.getPassword().equals(password))
+            return admin;
+        
+        throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+        
     }
 }

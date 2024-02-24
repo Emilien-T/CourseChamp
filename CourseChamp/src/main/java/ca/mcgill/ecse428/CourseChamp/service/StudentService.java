@@ -77,8 +77,13 @@ public class StudentService {
      */
     @Transactional
     public Student loginIntoStudent(String email, String password) {
-
-        Student student = getStudentByEmail(email);
+        // Attempt to find the student by username
+        Student student = studentRepository.findStudentByUsername(email);
+        if (student != null && student.getPassword().equals(password))
+            return student;
+        
+        // next find student by email
+        student = getStudentByEmail(email);
         if (student != null && student.getPassword().equals(password))
             return student;
         else

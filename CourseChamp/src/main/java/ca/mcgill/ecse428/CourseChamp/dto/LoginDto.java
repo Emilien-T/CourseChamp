@@ -1,12 +1,11 @@
 package ca.mcgill.ecse428.CourseChamp.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class LoginDto {
+  // the email passed can also be a username, so we will not check for the email requirement
   @NotBlank(message = "Email cannot be blank.")
-  @Email(message = "Email must follow this format xxx@email.address")
   @Schema(example = "student@email.com", description = "Email linked to the account of the student", requiredMode = Schema.RequiredMode.REQUIRED)
   private String email;
 

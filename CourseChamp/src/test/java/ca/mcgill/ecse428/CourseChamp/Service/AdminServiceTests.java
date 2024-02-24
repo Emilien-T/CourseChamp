@@ -159,19 +159,18 @@ public class AdminServiceTests {
     // User successfully login using username
     @Test
     public void testLoginWithUsername() {
-        // we're only doing logins with email
-        // final String email = "john.doe@mcgill.ca";
-        // final String username = "John Doe";
-        // final String password = "JohnDoe2002";
-        // final Admin john = new Admin(email, username, password);
+        final String email = "john.doe@mcgill.ca";
+        final String username = "John Doe";
+        final String password = "JohnDoe2002";
+        final Admin john = new Admin(email, username, password);
 
-        // when(adminRepository.findAdminByEmail(username)).thenReturn(null);
-        // when(adminRepository.findAdminByUsername(username)).thenReturn(john);
+        when(adminRepository.findAdminByEmail(username)).thenReturn(null);
+        when(adminRepository.findAdminByUsername(username)).thenReturn(john);
 
-        // Admin output = adminService.loginIntoAdmin(username, password);
+        Admin output = adminService.loginIntoAdmin(username, password);
 
-        // assertNotNull(output);
-        // assertEquals(john, output);
+        assertNotNull(output);
+        assertEquals(john, output);
     }
 
     // User login with a non-existent email
@@ -212,7 +211,7 @@ public class AdminServiceTests {
 
     // Get Admin with email
     @Test
-    public void testGetEmployeeByValidEmail() {
+    public void testGetAdminByValidEmail() {
         final String email = "john.doe@mcgill.ca";
         final String username = "John Doe";
         final String password = "JohnDoe2002";
