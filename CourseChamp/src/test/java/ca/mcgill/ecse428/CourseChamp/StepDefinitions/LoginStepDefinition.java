@@ -55,9 +55,6 @@ public class LoginStepDefinition {
     public void the_following_accounts_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
         List<Map<String, String>> rows = dataTable.asMaps();
         for (var row : rows) {
-                
-            studentController.deleteStudent(row.get("email"));
-            
             Student student = new Student(row.get("email"),row.get("username"), row.get("password"), Major.Software);
             StudentRequestDto studentRequestDto = new StudentRequestDto();
             studentRequestDto.setEmail(row.get("email"));
