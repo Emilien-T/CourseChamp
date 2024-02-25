@@ -27,10 +27,15 @@ public class ReviewService {
      */
     @Transactional
     public List<Review> findReviewsByCourseCode(String courseCode) {
+        if (courseCode == null || courseCode.isEmpty()) {
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Course code cannot be null or empty");
+        }
+    
         List<Review> reviews = reviewRepository.findReviewsByCourseCode(courseCode);
         if (reviews.isEmpty()) {
             throw new CourseChampException(HttpStatus.NOT_FOUND, "No reviews found for this course.");
         }
+    
         return reviews;
     }
     

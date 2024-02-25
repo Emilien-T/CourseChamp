@@ -1,14 +1,17 @@
 package ca.mcgill.ecse428.CourseChamp.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import ca.mcgill.ecse428.CourseChamp.service.ReviewService;
+import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,7 +46,8 @@ public class ReviewServiceTests {
 
         assertNotNull(reviews, "The returned review list should not be null.");
         assertFalse(reviews.isEmpty(), "The review list should not be empty.");
-        assertEquals(mockReviews.size(), reviews.size(), "The size of returned review list should match the mock list.");
+        assertEquals(mockReviews.size(), reviews.size(),
+                "The size of returned review list should match the mock list.");
         verify(reviewRepository).findReviewsByCourseCode(courseCode);
     }
 
@@ -53,12 +57,35 @@ public class ReviewServiceTests {
         when(reviewRepository.findReviewsByCourseCode(courseCode)).thenReturn(new ArrayList<>());
 
         Exception exception = assertThrows(
-            CourseChampException.class,
-            () -> reviewService.findReviewsByCourseCode(courseCode)
-        );
+                CourseChampException.class,
+                () -> reviewService.findReviewsByCourseCode(courseCode));
 
-        assertEquals(HttpStatus.CREATED, ((CourseChampException) exception).getStatus(), "HttpStatus should be NOT_FOUND.");
-        assertEquals("No reviews found for this course.", exception.getMessage(), "Exception message should match the expected text.");
+        assertEquals(HttpStatus.NOT_FOUND, ((CourseChampException) exception).getStatus(),
+                "HttpStatus should be NOT_FOUND.");
+        assertEquals("No reviews found for this course.", exception.getMessage(),
+                "Exception message should match the expected text.");
         verify(reviewRepository).findReviewsByCourseCode(courseCode);
+    }
+
+    @Test
+    public void testFindReviewsByCourseCodeNullCourseCode() {
+        String courseCode = null;
+
+        assertThrows(CourseChampException.class, () -> {
+            reviewService.findReviewsByCourseCode(courseCode);
+        }, "Expected findReviewsByCourseCode to throw IllegalArgumentException, but it didn't");
+
+        verify(reviewRepository, never()).findReviewsByCourseCode(anyString());
+    }
+
+    @Test
+    public void testFindReviewsByCourseCodeEmptyCourseCode() {
+        String courseCode = "";
+
+        assertThrows(CourseChampException.class, () -> {
+            reviewService.findReviewsByCourseCode(courseCode);
+        }, "Expected findReviewsByCourseCode to throw IllegalArgumentException, but it didn't");
+
+        verify(reviewRepository, never()).findReviewsByCourseCode(anyString());
     }
 }
