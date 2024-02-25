@@ -20,8 +20,10 @@ import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
+import ca.mcgill.ecse428.CourseChamp.repository.AccountRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -36,6 +38,8 @@ public class LoginStepDefinition {
     StudentController studentController;
     @Autowired
     AdminController adminController;
+    @Autowired
+    AccountRepository accountRepository;
 
     @Autowired
     LoginController loginController;
@@ -44,16 +48,18 @@ public class LoginStepDefinition {
     private ResponseEntity<AdminResponseDto> adminResponse;
     private CourseChampException exception;
     
-    @BeforeEach()
-    public void setup(){
-        studentRepository.deleteAll();
-        adminRepository.deleteAll();
-    }
+    // @BeforeEach()
+    // public void setup(){
+    //     studentRepository.deleteAll();
+    //     adminRepository.deleteAll();
+    //     accountRepository.deleteAll();
+    // }
 
-    @AfterEach()
+    @After()
     public void takedown(){
         studentRepository.deleteAll();
         adminRepository.deleteAll();
+        accountRepository.deleteAll();
     }
     //=-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
     @Given("the following admins exist in the system:")
