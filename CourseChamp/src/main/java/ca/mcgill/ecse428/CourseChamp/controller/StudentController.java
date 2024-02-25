@@ -60,4 +60,9 @@ public class StudentController {
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
                                                                                          // returning a Response
     }
+
+    @DeleteMapping("/student/delete/{email}")
+    public void deleteStudent(@PathVariable String email) {
+        studentService.deleteStudentAccount(email);
+    }
 }

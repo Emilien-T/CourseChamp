@@ -19,6 +19,7 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     /**
+
      * Service method to fetch reviews in the database for a specific course code
      * 
      * @param courseCode - The code of the course for which reviews are fetched
@@ -68,3 +69,4 @@ public class ReviewService {
     }
 
 }
+
