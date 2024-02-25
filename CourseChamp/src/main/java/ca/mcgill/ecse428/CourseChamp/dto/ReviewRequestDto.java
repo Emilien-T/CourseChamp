@@ -1,15 +1,19 @@
 package ca.mcgill.ecse428.CourseChamp.dto;
 
+
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 
-public class ReviewRequest {
+public class ReviewRequestDto {
    
     @NotBlank(message = "Rating cannot be blank.")
     @Pattern(regexp = "^[0-5]{1}$", message = "Rating must be a number form 1 to 5")
     @Schema(example = "1", description = "Rating of the course", required = true)
-    private String rating;
+    private int rating;
+    private int id;
 
     @NotBlank(message = "Text cannot be blank.")
     @Schema(example = "This class is the best", description = "Review on the course", required = true)
@@ -20,8 +24,8 @@ public class ReviewRequest {
         return id;
     }
 
-    public void setId(String id) {
-        this.Id = id; 
+    public void setId(int id) {
+        this.id = id; 
     }
 
     public int getRating() {
@@ -29,7 +33,7 @@ public class ReviewRequest {
     }
 
     public void setRating(int rating) {
-        this.Rating = rating;
+        this.rating = rating;
     }
 
     public String getText() {
@@ -42,7 +46,7 @@ public class ReviewRequest {
 
 
     public Review toModel() {
-        return new Review(id, rating, text);
+        return new Review(id, rating, text, null, null);
     }
 }
 
