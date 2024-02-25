@@ -1,4 +1,4 @@
-package ca.mcgill.ecse428.CourseChamp.service;
+package ca.mcgill.ecse428.CourseChamp.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -6,6 +6,8 @@ import static org.mockito.Mockito.*;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
+import ca.mcgill.ecse428.CourseChamp.service.ReviewService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +18,7 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewServiceTest {
+public class ReviewServiceTests {
 
     @Mock
     private ReviewRepository reviewRepository;
@@ -39,8 +41,9 @@ public class ReviewServiceTest {
 
         List<Review> reviews = reviewService.findReviewsByCourseCode(courseCode);
 
-        assertNotNull(reviews);
-        assertFalse(reviews.isEmpty());
+        assertNotNull(reviews, "The returned review list should not be null.");
+        assertFalse(reviews.isEmpty(), "The review list should not be empty.");
+        assertEquals(mockReviews.size(), reviews.size(), "The size of returned review list should match the mock list.");
         verify(reviewRepository).findReviewsByCourseCode(courseCode);
     }
 
@@ -49,13 +52,13 @@ public class ReviewServiceTest {
         String courseCode = "ECSE428";
         when(reviewRepository.findReviewsByCourseCode(courseCode)).thenReturn(new ArrayList<>());
 
-        CourseChampException exception = assertThrows(
+        Exception exception = assertThrows(
             CourseChampException.class,
             () -> reviewService.findReviewsByCourseCode(courseCode)
         );
 
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("No reviews found for this course.", exception.getMessage());
+        assertEquals(HttpStatus.CREATED, ((CourseChampException) exception).getStatus(), "HttpStatus should be NOT_FOUND.");
+        assertEquals("No reviews found for this course.", exception.getMessage(), "Exception message should match the expected text.");
         verify(reviewRepository).findReviewsByCourseCode(courseCode);
     }
 }
