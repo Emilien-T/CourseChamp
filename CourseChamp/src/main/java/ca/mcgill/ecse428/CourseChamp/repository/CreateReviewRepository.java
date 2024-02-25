@@ -1,10 +1,13 @@
 package ca.mcgill.ecse428.CourseChamp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import java.util.List;
 
-public interface ReviewRepository extends JpaRepository<Review, Integer> {
+public interface CreateReviewRepository extends JpaRepository<Review, Integer> {
     
    /**
     * Retrieves a list of reviews from the database based on the course code.
