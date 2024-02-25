@@ -59,10 +59,10 @@ So that I can delete, edit, view and manage my posts.
     Then the message "<errorMessage>" is issued by the system
 
     Examples: 
-      | email                       | username      | password    | wrongEmail            | errorMessage      |
-      | john.jonny@gmail.com        | John          | J0hn!Super  | kpjm.kpmmu@gmail.com  | Account not found |
-      | percy.golber@mail.mcgill.ca | TigerLover123 | JohnLover!5 | blabla@mail.mcgill.ca | Account not found |
-      | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% | lucydavid@hotmail.com | Account not found |
+      | email                       | username      | password    | wrongEmail            | errorMessage            |
+      | john.jonny@gmail.com        | John          | J0hn!Super  | kpjm.kpmmu@gmail.com  | Admin account not found |
+      | percy.golber@mail.mcgill.ca | TigerLover123 | JohnLover!5 | blabla@mail.mcgill.ca | Admin account not found |
+      | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% | lucydavid@hotmail.com | Admin account not found |
 
   Scenario Outline: Admin login with a wrong password (Error Flow)
     When an admin unsuccessfully attempts to log in with email "<email>" and password "<wrongPassword>"
@@ -79,10 +79,10 @@ So that I can delete, edit, view and manage my posts.
     Then the message "<errorMessage>" is issued by the system
 
     Examples: 
-      | email                       | username      | password    | wrongEmail            | errorMessage      |
-      | john.jonny@gmail.com        | John          | J0hn!Super  | kpjm.kpmmu@gmail.com  | Account not found |
-      | percy.golber@mail.mcgill.ca | TigerLover123 | JohnLover!5 | blabla@mail.mcgill.ca | Account not found |
-      | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% | lucydavid@hotmail.com | Account not found |
+      | email                       | username      | password    | wrongEmail            | errorMessage              |
+      | john.jonny@gmail.com        | John          | J0hn!Super  | kpjm.kpmmu@gmail.com  | Student account not found |
+      | percy.golber@mail.mcgill.ca | TigerLover123 | JohnLover!5 | blabla@mail.mcgill.ca | Student account not found |
+      | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% | lucydavid@hotmail.com | Student account not found |
 
   Scenario Outline: Student login with a wrong password (Error Flow)
     When a student unsuccessfully attempts to log in with email "<email>" and password "<wrongPassword>"

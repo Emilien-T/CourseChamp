@@ -47,7 +47,7 @@ public class AdminService {
     public Admin getAdminByEmail(String email) {
         Admin admin = adminRepository.findAdminByEmail(email);
         if (admin == null) {
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "Account not found");
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Admin account not found");
         }
         return admin;
     }

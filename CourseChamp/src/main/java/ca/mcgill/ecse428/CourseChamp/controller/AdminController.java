@@ -63,7 +63,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/admin/delete/{email}")
-    public void deleteStudent(@PathVariable String email) {
+    public void deleteAdmin(@PathVariable String email) {
         adminService.deleteAdminAccount(email);
     }
 }

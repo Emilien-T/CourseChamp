@@ -42,7 +42,7 @@ public class StudentService {
     public Student getStudentByEmail(String email) {
         Student student = studentRepository.findStudentByEmail(email);
         if (student == null) {
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "Account not found");
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Student account not found");
         }
         return student;
     }

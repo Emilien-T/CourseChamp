@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
-import ca.mcgill.ecse428.CourseChamp.model.CourseId;
-import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
 import ca.mcgill.ecse428.CourseChamp.service.CourseService;
 

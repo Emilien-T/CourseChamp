@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import ca.mcgill.ecse428.CourseChamp.service.AdminService;
@@ -64,6 +65,26 @@ public class AdminServiceTests {
         assertEquals(e.getMessage(), "Another account with this email already exists");
     }
 
+    @Test
+    public void testCreateDuplicateEmailAdminStudent() {
+        final String email = "john.doe@mcgill.ca";
+        final String username = "John Doe";
+        final String password = "JohnDoe2002";
+        final Student.Major major = Student.Major.Software;
+        final Student john = new Student(email, username, password, major);
+
+        when(studentRepository.findStudentByUsername(username)).thenReturn(john);
+        when(studentRepository.findStudentByEmail(email)).thenReturn(john);
+
+        final String password1 = "JaneDoe2002";
+        final String username1 = "Jane Doe";
+        final Admin jane = new Admin(email, username1, password1);
+
+        CourseChampException e = assertThrows(CourseChampException.class, () -> adminService.createAdminAccount(jane));
+        assertEquals(e.getStatus(), HttpStatus.CONFLICT);
+        assertEquals(e.getMessage(), "Another account with this email already exists");
+    }
+
     // User registers with an existent username
     @Test
     public void testCreateDuplicateUsernameAdmin() {
@@ -74,6 +95,26 @@ public class AdminServiceTests {
 
         when(adminRepository.findAdminByUsername(username)).thenReturn(john);
         when(adminRepository.findAdminByEmail(email)).thenReturn(john);
+
+        final String email1 = "jane.doe@gmail.ca";
+        final String password1 = "JaneDoe2002";
+        final Admin jane = new Admin(email1, username, password1);
+
+        CourseChampException e = assertThrows(CourseChampException.class, () -> adminService.createAdminAccount(jane));
+        assertEquals(e.getStatus(), HttpStatus.CONFLICT);
+        assertEquals(e.getMessage(), "Another account with this username already exists");
+    }
+
+    @Test
+    public void testCreateDuplicateUsernameAdminStudent() {
+        final String email = "john.doe@mcgill.ca";
+        final String username = "John Doe";
+        final String password = "JohnDoe2002";
+        final Student.Major major = Student.Major.Software;
+        final Student john = new Student(email, username, password, major);
+
+        when(studentRepository.findStudentByUsername(username)).thenReturn(john);
+        when(studentRepository.findStudentByEmail(email)).thenReturn(john);
 
         final String email1 = "jane.doe@gmail.ca";
         final String password1 = "JaneDoe2002";
@@ -175,16 +216,29 @@ public class AdminServiceTests {
 
     // User login with a non-existent email
     @Test
-    public void testLoginWithNonExistantEmail() {
+    public void testLoginWithNonExistentEmail() {
         final String email = "john.doe@mcgill.ca";
         final String password = "JohnDoe2002";
 
-        when(adminRepository.findAdminByUsername(email)).thenReturn(null);
+        when(adminRepository.findAdminByEmail(email)).thenReturn(null);
 
         CourseChampException e = assertThrows(CourseChampException.class,
                 () -> adminService.loginIntoAdmin(email, password));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "Account not found");
+        assertEquals(e.getMessage(), "Admin account not found");
+    }
+
+    @Test
+    public void testLoginWithNonExistentUsername() {
+        final String username = "blahhhhh";
+        final String password = "JohnDoe2002";
+
+        when(adminRepository.findAdminByEmail(username)).thenReturn(null);
+
+        CourseChampException e = assertThrows(CourseChampException.class,
+                () -> adminService.loginIntoAdmin(username, password));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Admin account not found");
     }
 
     // User login with a wrong password
@@ -234,7 +288,7 @@ public class AdminServiceTests {
         when(adminRepository.findAdminByEmail(email)).thenReturn(null);
 
         CourseChampException e = assertThrows(CourseChampException.class, () -> adminService.getAdminByEmail(email));
-        assertEquals(e.getMessage(), "Account not found");
+        assertEquals(e.getMessage(), "Admin account not found");
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
     }
 

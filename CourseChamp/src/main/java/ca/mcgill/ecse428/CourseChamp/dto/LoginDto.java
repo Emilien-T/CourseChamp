@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class LoginDto {
   // the email passed can also be a username, so we will not check for the email requirement
-  @NotBlank(message = "Email cannot be blank.")
-  @Schema(example = "student@email.com", description = "Email linked to the account of the student", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotBlank(message = "Email or username cannot be blank.")
   private String email;
 
   @NotBlank(message = "Password cannot be blank.")

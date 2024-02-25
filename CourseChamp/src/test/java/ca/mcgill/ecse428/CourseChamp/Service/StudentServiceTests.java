@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
+import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.model.Student.Major;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
@@ -69,6 +70,26 @@ public class StudentServiceTests {
         assertEquals(e.getMessage(), "Another account with this email already exists");
     }
 
+    @Test
+    public void testCreateDuplicateEmailStudentAdmin() {
+        final String email = "john.doe@mcgill.ca";
+        final String username = "John Doe";
+        final String password = "JohnDoe2002";
+        final Admin john = new Admin(email, username, password);
+
+        when(adminRepository.findAdminByEmail(email)).thenReturn(john);
+
+        final String password1 = "JaneDoe2002";
+        final String username1 = "Jane Doe";
+        final Major major1 = Major.Computer;
+        final Student jane = new Student(email, username1, password1, major1);
+
+        CourseChampException e = assertThrows(CourseChampException.class,
+                () -> studentService.createStudentAccount(jane));
+        assertEquals(e.getStatus(), HttpStatus.CONFLICT);
+        assertEquals(e.getMessage(), "Another account with this email already exists");
+    }
+
     // User registers with an existent username
     @Test
     public void testCreateDuplicateUsernameStudent() {
@@ -82,6 +103,26 @@ public class StudentServiceTests {
         when(studentRepository.findStudentByEmail(email)).thenReturn(john);
 
         final String email1 = "jane.doe@gmail.ca";
+        final String password1 = "JaneDoe2002";
+        final Major major1 = Major.Computer;
+        final Student jane = new Student(email1, username, password1, major1);
+
+        CourseChampException e = assertThrows(CourseChampException.class,
+                () -> studentService.createStudentAccount(jane));
+        assertEquals(e.getStatus(), HttpStatus.CONFLICT);
+        assertEquals(e.getMessage(), "Another account with this username already exists");
+    }
+
+    @Test
+    public void testCreateDuplicateUsernameStudentAdmin() {
+        final String email = "john.doe@mcgill.ca";
+        final String username = "John Doe";
+        final String password = "JohnDoe2002";
+        final Admin john = new Admin(email, username, password);
+
+        when(adminRepository.findAdminByUsername(username)).thenReturn(john);
+
+        final String email1 = "jane.doe@mcgill.ca";
         final String password1 = "JaneDoe2002";
         final Major major1 = Major.Computer;
         final Student jane = new Student(email1, username, password1, major1);
@@ -204,7 +245,7 @@ public class StudentServiceTests {
 
     // User login with a non-existent email
     @Test
-    public void testLoginWithNonExistantEmail() {
+    public void testLoginWithNonExistentEmail() {
         final String email = "john.doe@mcgill.ca";
         final String username = "John Doe";
         final String password = "JohnDoe2002";
@@ -215,7 +256,22 @@ public class StudentServiceTests {
         CourseChampException e = assertThrows(CourseChampException.class,
                 () -> studentService.loginIntoStudent(email, password));
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
-        assertEquals(e.getMessage(), "Account not found");
+        assertEquals(e.getMessage(), "Student account not found");
+    }
+
+    @Test
+    public void testLoginWithNonExistentUsername() {
+        final String email = "john.doe@mcgill.ca";
+        final String username = "John Doe";
+        final String password = "JohnDoe2002";
+
+        when(studentRepository.findStudentByEmail(email)).thenReturn(null);
+        when(studentRepository.findStudentByUsername(username)).thenReturn(null);
+
+        CourseChampException e = assertThrows(CourseChampException.class,
+                () -> studentService.loginIntoStudent(username, password));
+        assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
+        assertEquals(e.getMessage(), "Student account not found");
     }
 
     // User login with a wrong password
@@ -267,7 +323,7 @@ public class StudentServiceTests {
 
         CourseChampException e = assertThrows(CourseChampException.class,
                 () -> studentService.getStudentByEmail(email));
-        assertEquals(e.getMessage(), "Account not found");
+        assertEquals(e.getMessage(), "Student account not found");
         assertEquals(e.getStatus(), HttpStatus.NOT_FOUND);
     }
 
