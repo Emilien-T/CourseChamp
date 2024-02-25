@@ -68,5 +68,21 @@ public class ReviewServiceTests {
         assertEquals(rating, createdReview.getRating());
     }
 
+
+    @Test
+    public void testCreateReviewNull() {
+        assertThrows(CourseChampException.class, () -> {
+            reviewService.createReview(null);
+        });
+    }
+
+    @Test
+    public void testCreateReviewNullCourseOffering() {
+        assertThrows(CourseChampException.class, () -> {
+            Review review = new Review();
+            reviewService.createReview(review);
+        });
+    }
+
     
 }

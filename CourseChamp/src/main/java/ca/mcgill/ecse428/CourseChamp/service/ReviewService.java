@@ -44,7 +44,7 @@ public class ReviewService {
      * @throws CourseChampException - If review does not exist
      */
     @Transactional
-    public Review getReviewById(String reviewId) {
+    public Review getReviewById(int reviewId) {
         Review review = reviewRepository.findReviewByReviewId(reviewId);
         if (review == null) {
             throw new CourseChampException(HttpStatus.NOT_FOUND, "Review not found.");
