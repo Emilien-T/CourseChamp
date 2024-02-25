@@ -20,9 +20,9 @@ import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
-import ca.mcgill.ecse428.CourseChamp.repository.AccountRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -39,6 +39,8 @@ public class LoginStepDefinition {
     StudentController studentController;
     @Autowired
     AdminController adminController;
+    @Autowired
+    AccountRepository accountRepository;
 
     @Autowired
     LoginController loginController;
