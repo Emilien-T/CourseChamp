@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
-import ca.mcgill.ecse428.CourseChamp.model.Account;
-import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
@@ -44,7 +42,7 @@ public class StudentService {
     public Student getStudentByEmail(String email) {
         Student student = studentRepository.findStudentByEmail(email);
         if (student == null) {
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "Student not found.");
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Student account not found");
         }
         return student;
     }
@@ -57,11 +55,17 @@ public class StudentService {
      */
     @Transactional
     public Student createStudentAccount(Student student) {
-        if ((adminRepository.findAdminByEmail(student.getEmail()) == null)
-                && (studentRepository.findStudentByEmail(student.getEmail()) == null))
+        if ((studentRepository.findStudentByEmail(student.getEmail()) == null)
+                && (adminRepository.findAdminByEmail(student.getEmail()) == null)
+                && (adminRepository.findAdminByUsername(student.getUsername()) == null)
+                && (studentRepository.findStudentByUsername(student.getUsername()) == null))
             return studentRepository.save(student);
-        else
+        else if ((adminRepository.findAdminByEmail(student.getEmail()) != null)
+                || (studentRepository.findStudentByEmail(student.getEmail()) != null))
             throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this email already exists");
+        else
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
+
     }
 
     /**
@@ -73,11 +77,21 @@ public class StudentService {
      */
     @Transactional
     public Student loginIntoStudent(String email, String password) {
-
-        Student student = getStudentByEmail(email);
+        // Attempt to find the student by username
+        Student student = studentRepository.findStudentByUsername(email);
+        if (student != null && student.getPassword().equals(password))
+            return student;
+        
+        // next find student by email
+        student = getStudentByEmail(email);
         if (student != null && student.getPassword().equals(password))
             return student;
         else
             throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+    }
+
+    @Transactional
+    public void deleteStudentAccount(String email){
+        studentRepository.delete(getStudentByEmail(email));
     }
 }
