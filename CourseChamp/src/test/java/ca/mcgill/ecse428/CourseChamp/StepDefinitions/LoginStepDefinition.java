@@ -20,6 +20,7 @@ import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
+import ca.mcgill.ecse428.CourseChamp.repository.AccountRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import io.cucumber.java.en.Given;
@@ -33,6 +34,8 @@ public class LoginStepDefinition {
     @Autowired
     AdminRepository adminRepository;
     @Autowired
+    AccountRepository accountRepository;
+    @Autowired
     StudentController studentController;
     @Autowired
     AdminController adminController;
@@ -44,23 +47,13 @@ public class LoginStepDefinition {
     private ResponseEntity<AdminResponseDto> adminResponse;
     private CourseChampException exception;
     
-    @BeforeEach()
-    public void setup(){
-        studentRepository.deleteAll();
-        adminRepository.deleteAll();
-    }
-
-    @AfterEach()
-    public void takedown(){
-        studentRepository.deleteAll();
-        adminRepository.deleteAll();
-    }
     //=-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
     @Given("the following admins exist in the system:")
     public void the_following_admins_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
         List<Map<String, String>> rows = dataTable.asMaps();
         for (var row : rows) {
             Admin admin = new Admin(row.get("email"),row.get("username"), row.get("password"));
+            adminRepository.delete(admin);
             adminRepository.save(admin);
         }
     }
@@ -79,18 +72,33 @@ public class LoginStepDefinition {
                 major = Student.Major.Electrical;
             }
             Student student = new Student(row.get("email"),row.get("username"), row.get("password"), major);
+            studentRepository.delete(student);
             studentRepository.save(student);
         }
     }
 
     //=-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
-    @When("a user attempts to log in with email {string} and password {string}")
-    public void LoginUserStepDefinition(String string, String string2) {
-        //TODO: Need to update to new controller classes
+    @When("an admin attempts to log in with email {string} and password {string}")
+    public void an_admin_attempts_to_log_in_with_email_and_password(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        request = new LoginDto();
+        request.setEmail(string);
+        request.setPassword(string2);
 
-
-        // response =  client.postForEntity("/employee/create", request, AccountRequestDto.class);
+        adminResponse = (ResponseEntity<AdminResponseDto>)loginController.LoginUser("Admin", request);
     }
+
+
+    @When("a student attempts to log in with email {string} and password {string}")
+    public void a_student_attempts_to_log_in_with_email_and_password(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        request = new LoginDto();
+        request.setEmail(string);
+        request.setPassword(string2);
+
+        studentResponse = (ResponseEntity<StudentResponseDto>)loginController.LoginUser("student", request);
+    }
+
 
     @When("an admin unsuccessfully attempts to log in with email {string} and password {string}")
     public void an_admin_unsuccessfully_attempts_to_log_in_with_email_and_password(String string, String string2) {
@@ -100,7 +108,7 @@ public class LoginStepDefinition {
         request.setEmail(string);
         request.setPassword(string2);
 
-        adminResponse = (ResponseEntity<AdminResponseDto>)loginController.LoginUser("student", request);
+        exception = assertThrows(CourseChampException.class, () -> loginController.LoginUser("Admin", request));
     }
 
     @When("a student unsuccessfully attempts to log in with email {string} and password {string}")
@@ -111,7 +119,7 @@ public class LoginStepDefinition {
         request.setEmail(string);
         request.setPassword(string2);
 
-        studentResponse = (ResponseEntity<StudentResponseDto>)loginController.LoginUser("student", request);
+        exception = assertThrows(CourseChampException.class, () -> loginController.LoginUser("student", request));
     }
 
     @When("a student attempts to log in with username {string} and password {string}")
@@ -134,8 +142,6 @@ public class LoginStepDefinition {
         adminResponse = (ResponseEntity<AdminResponseDto>)loginController.LoginUser("Admin", request);
     }
 
-
-
     @When("a user unsuccessfully attempts to log in with email {string} and password {string}")
     public void a_user_unsuccessfully_attempts_to_log_in_with_email_and_password(String string, String string2) {
         // Write code here that turns the phrase above into concrete actions
@@ -153,6 +159,14 @@ public class LoginStepDefinition {
         assertEquals(string, adminResponse.getBody().getEmail());
         assertEquals(request.getPassword(), adminResponse.getBody().getPassword());
     }
+
+    @Then("the student shall successfully login into the system with the account with the email {string}")
+    public void the_student_shall_successfully_login_into_the_system_with_the_account_with_the_email(String string) {
+        // Write code here that turns the phrase above into concrete actions
+        assertEquals(string, studentResponse.getBody().getEmail());
+        assertEquals(request.getPassword(), studentResponse.getBody().getPassword());
+    }
+
 
     @Then("the message {string} is issued by the system")
     public void the_message_is_issued_by_the_system(String string) {
