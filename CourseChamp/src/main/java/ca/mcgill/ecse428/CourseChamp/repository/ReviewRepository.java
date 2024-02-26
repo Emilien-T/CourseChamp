@@ -1,15 +1,12 @@
 package ca.mcgill.ecse428.CourseChamp.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface ReviewRepository extends JpaRepository<Review, Integer> {
-    Review findReviewByReviewId(int reviewId);
-    List<Review> findReviewsByCourseCode(String courseCode);
+public interface ReviewRepository extends CrudRepository<Review, Integer> {
+    public Review findReviewById(int id);
 }
 
    /*

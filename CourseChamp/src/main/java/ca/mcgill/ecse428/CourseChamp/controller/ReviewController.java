@@ -38,7 +38,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "Review found"),
             @ApiResponse(responseCode = "404", description = "Review not found", content = @Content)
     })
-    @GetMapping(value = { "/review/{reviewId", "/review/{reviewId}/" })
+    @GetMapping(value = { "/review/{reviewId}", "/review/{reviewId}/" })
     public ResponseEntity<ReviewResponseDto> getReviewById(@PathVariable int reviewId) {
         return new ResponseEntity<>(new ReviewResponseDto(reviewService.getReviewById(reviewId)),
                 HttpStatus.OK);
@@ -98,22 +98,22 @@ public class ReviewController {
      * @param courseCode - The code of the course to fetch reviews for.
      * @return A list of reviews for the specified course.
      */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved reviews"),
-            @ApiResponse(responseCode = "404", description = "Course not found", content = @Content)
-    })
-    @GetMapping("/{courseCode}")
-    public ResponseEntity<List<ReviewResponseDto>> viewReviews(@PathVariable String courseCode) {
-        try {
-            List<Review> reviews = reviewService.findReviewsByCourseCode(courseCode);
-            List<ReviewResponseDto> responseDtos = reviews.stream()
-            .map(review -> new ReviewResponseDto(review.getId(), review.getRating(), review.getText()))
-            .collect(Collectors.toList());
-            return new ResponseEntity<>(responseDtos, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
+    // @ApiResponses(value = {
+    //         @ApiResponse(responseCode = "200", description = "Successfully retrieved reviews"),
+    //         @ApiResponse(responseCode = "404", description = "Course not found", content = @Content)
+    // })
+    // @GetMapping("/{courseCode}")
+    // public ResponseEntity<List<ReviewResponseDto>> viewReviews(@PathVariable String courseCode) {
+    //     try {
+    //         List<Review> reviews = reviewService.findReviewsByCourseCode(courseCode);
+    //         List<ReviewResponseDto> responseDtos = reviews.stream()
+    //         .map(review -> new ReviewResponseDto(review.getId(), review.getRating(), review.getText()))
+    //         .collect(Collectors.toList());
+    //         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+    //     } catch (Exception e) {
+    //         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    //     }
+    // }
 
 
 
