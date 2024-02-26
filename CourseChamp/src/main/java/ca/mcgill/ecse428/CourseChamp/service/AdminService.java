@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
-import ca.mcgill.ecse428.CourseChamp.model.Account;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
@@ -48,7 +47,7 @@ public class AdminService {
     public Admin getAdminByEmail(String email) {
         Admin admin = adminRepository.findAdminByEmail(email);
         if (admin == null) {
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "Admin not found.");
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Admin account not found");
         }
         return admin;
     }
@@ -80,10 +79,15 @@ public class AdminService {
     public Admin createAdminAccount(Admin admin) {
         // Register the admin account into database
         if ((adminRepository.findAdminByEmail(admin.getEmail()) == null)
-                && (studentRepository.findStudentByEmail(admin.getEmail()) == null))
+                && (studentRepository.findStudentByEmail(admin.getEmail()) == null)
+                && (adminRepository.findAdminByUsername(admin.getUsername()) == null)
+                && (studentRepository.findStudentByUsername(admin.getUsername()) == null))
             return adminRepository.save(admin);
-        else
+        else if ((adminRepository.findAdminByEmail(admin.getEmail()) != null)
+                || (studentRepository.findStudentByEmail(admin.getEmail()) != null))
             throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this email already exists");
+        else
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
     }
 
     /**
@@ -95,11 +99,22 @@ public class AdminService {
      */
     @Transactional
     public Admin loginIntoAdmin(String email, String password) {
-        // TODO
-        Admin admin = getAdminByEmail(email);
+        // Attempt to find the admin by username
+        Admin admin = adminRepository.findAdminByUsername(email);
         if (admin != null && admin.getPassword().equals(password))
             return admin;
-        else
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+        
+        // next find admin by email
+        admin = getAdminByEmail(email);
+        if (admin != null && admin.getPassword().equals(password))
+            return admin;
+        
+        throw new CourseChampException(HttpStatus.NOT_FOUND, "Please enter the correct password");
+        
+    }
+
+    @Transactional
+    public void deleteAdminAccount(String email){
+        adminRepository.delete(getAdminByEmail(email));
     }
 }

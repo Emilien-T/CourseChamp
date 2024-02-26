@@ -61,4 +61,9 @@ public class AdminController {
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
                                                                                        // returning a Response
     }
+
+    @DeleteMapping("/admin/delete/{email}")
+    public void deleteAdmin(@PathVariable String email) {
+        adminService.deleteAdminAccount(email);
+    }
 }

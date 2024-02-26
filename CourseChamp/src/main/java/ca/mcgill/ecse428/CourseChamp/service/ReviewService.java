@@ -19,7 +19,8 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     /**
-     * Service method to fetch reviews for a specific course code
+
+     * Service method to fetch reviews in the database for a specific course code
      * 
      * @param courseCode - The code of the course for which reviews are fetched
      * @return List of ReviewResponseDto containing review data
@@ -39,4 +40,51 @@ public class ReviewService {
         return reviews;
     }
     
+
+     /**
+     * Service method to fetch an existing review with a specific ID from
+     * the database
+     * 
+     * @param reviewId - review id of the review
+     * @throws CourseChampException - If review does not exist
+     */
+    @Transactional
+    public Review getReviewById(int reviewId) {
+        Review review = reviewRepository.findReviewByReviewId(reviewId);
+        if (review == null) {
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Review not found.");
+        }
+        return review;
+    }
+
+
+     /**
+     * Service method to store a created review in the database
+     * 
+     * @param review - instance of the review to be persisted
+     * @throws CourseChampException - If a review with the same Id already exists
+     */
+    @Transactional
+    public Review createReview(Review review) {
+        if (reviewRepository.findReviewByReviewId(review.getId()) == null) {
+            return reviewRepository.save(review);
+        } else {
+            throw new CourseChampException(HttpStatus.CONFLICT, "A review with this Id already exists");
+        }
+    }
+
+
+    public Review verifyReview(int id, int rating, String text) {
+        // Find the review by id
+        Review review = reviewRepository.findReviewByReviewId(id);
+    
+        // If the review doesn't exist or the rating and text don't match, throw an exception
+        if (review == null || review.getRating() != rating || !review.getText().equals(text)) {
+            throw new CourseChampException(null, "Review not found or rating and text don't match");
+        }
+    
+        // If everything checks out, return the review
+        return review;
+    }
+
 }
