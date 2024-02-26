@@ -3,6 +3,11 @@ package ca.mcgill.ecse428.CourseChamp.Service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,17 +21,21 @@ import org.springframework.http.HttpStatus;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
 import ca.mcgill.ecse428.CourseChamp.model.CourseId;
+import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import ca.mcgill.ecse428.CourseChamp.service.ReviewService;
+
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+
 
 @SpringBootTest
 public class ReviewServiceTests {
 
 
+  
     @Mock
     private ReviewRepository reviewRepository;
 
@@ -47,7 +56,8 @@ public class ReviewServiceTests {
     @Test
     public void testCreateReview() {
         int reviewId = 1;
-        CourseOffering courseOffering = new CourseOffering();        
+        CourseOffering courseOffering = new CourseOffering();
+
         String reviewText = "This is a review";
         int rating = 5;
 
@@ -68,7 +78,7 @@ public class ReviewServiceTests {
         assertEquals(rating, createdReview.getRating());
     }
 
-
+  
     @Test
     public void testCreateReviewNull() {
         assertThrows(CourseChampException.class, () -> {
@@ -106,10 +116,12 @@ public class ReviewServiceTests {
     }
 
 
+
     @Test
     public void testGetReview() {
         int reviewId = 1;
         CourseOffering courseOffering = new CourseOffering();        
+
         String reviewText = "This is a review";
         int rating = 5;
 
@@ -119,8 +131,8 @@ public class ReviewServiceTests {
         review.setText(reviewText);
         review.setRating(rating);
 
-        when(reviewRepository.findById(reviewId)).
-            thenReturn(java.util.Optional.of(review));
+
+        when(reviewRepository.findById(reviewId)).thenReturn(java.util.Optional.of(review));
 
         Review foundReview = reviewService.getReviewById(reviewId);
 
@@ -136,8 +148,9 @@ public class ReviewServiceTests {
     public void testGetReviewNotFound() {
         int reviewId = 1;
 
-        when(reviewRepository.findById(reviewId)).
-            thenReturn(java.util.Optional.empty());
+
+        when(reviewRepository.findById(reviewId)).thenReturn(java.util.Optional.empty());
+
 
         assertThrows(CourseChampException.class, () -> {
             reviewService.getReviewById(reviewId);
@@ -149,6 +162,7 @@ public class ReviewServiceTests {
     public void testFindReviewsByCourseCode() {
         int reviewId = 1;
         CourseOffering courseOffering = new CourseOffering();        
+
         String reviewText = "This is a review";
         int rating = 5;
 
@@ -158,8 +172,9 @@ public class ReviewServiceTests {
         review.setText(reviewText);
         review.setRating(rating);
 
-        when(reviewRepository.findReviewsByCourseCode("ECSE428")).
-            thenReturn(java.util.List.of(review));
+
+        when(reviewRepository.findReviewsByCourseCode("ECSE428")).thenReturn(java.util.List.of(review));
+
 
         Review foundReview = reviewService.findReviewsByCourseCode("ECSE428").get(0);
 
@@ -174,13 +189,30 @@ public class ReviewServiceTests {
 
     @Test
     public void testFindReviewsByCourseCodeNotFound() {
-        when(reviewRepository.findReviewsByCourseCode("ECSE428")).
-            thenReturn(java.util.List.of());
+        when(reviewRepository.findReviewsByCourseCode("ECSE428")).thenReturn(java.util.List.of());
 
-        assertThrows(CourseChampException.class, () -> {
+        Exception exception = assertThrows(CourseChampException.class, () -> {
             reviewService.findReviewsByCourseCode("ECSE428");
         });
+
+        String expectedMessage = "No reviews found for course code ECSE428";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+        verify(reviewRepository, times(1)).findReviewsByCourseCode("ECSE428");
     }
 
-    
+    @Test
+    public void testFindReviewsByCourseCodeNull() {
+        Exception exception = assertThrows(CourseChampException.class, () -> {
+            reviewService.findReviewsByCourseCode(null);
+        });
+
+        String expectedMessage = "Course code cannot be null";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
 }

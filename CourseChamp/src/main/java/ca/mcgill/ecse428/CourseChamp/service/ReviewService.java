@@ -61,12 +61,25 @@ public class ReviewService {
      */
     @Transactional
     public Review createReview(Review review) {
-        if (reviewRepository.findReviewByReviewId(review.getReviewById()) == null) {
+        if (reviewRepository.findReviewByReviewId(review.getId()) == null) {
             return reviewRepository.save(review);
         } else {
             throw new CourseChampException(HttpStatus.CONFLICT, "A review with this Id already exists");
         }
     }
 
-}
 
+    public Review verifyReview(int id, int rating, String text) {
+        // Find the review by id
+        Review review = reviewRepository.findReviewByReviewId(id);
+    
+        // If the review doesn't exist or the rating and text don't match, throw an exception
+        if (review == null || review.getRating() != rating || !review.getText().equals(text)) {
+            throw new CourseChampException(null, "Review not found or rating and text don't match");
+        }
+    
+        // If everything checks out, return the review
+        return review;
+    }
+
+}
