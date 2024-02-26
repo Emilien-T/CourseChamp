@@ -5,7 +5,7 @@
 | **Name**                    | **Major**                 | **GitHub**                                           | 
 |-----------------------------|---------------------------|------------------------------------------------------|
 | Aissa, Walid                | Computer Engineering      | [Walid_Aissa](https://github.com/WalidAissa)         | 
-| Al Sabbagh, Karim           | Mechanical Engineering    |                                                      |
+| Al Sabbagh, Karim           | Mechanical Engineering    | [karimosabbagh](https://github.com/karimosabbagh)                                                     |
 | Boyd, Evan                  | Software Engineering      | [evanboyd31](https://github.com/evanboyd31)          |
 | Bretones, Marc              | Computer Engineering      |[BretonesMarc](https://github.com/bretonesmarc)       | 
 | Bridi, Karl                 | Software Engineering      | [Kalamar136](https://github.com/Kalamar136)          |
