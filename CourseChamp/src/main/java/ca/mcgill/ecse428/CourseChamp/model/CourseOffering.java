@@ -45,19 +45,9 @@ public class CourseOffering {
   public CourseOffering() {
   }
 
-  public CourseOffering(int aId, String aSemester, Course aCourse, Professor... allProfessors) {
-    id = aId;
+  public CourseOffering(String aSemester, Course aCourse) {
     semester = aSemester;
-    professors = new ArrayList<Professor>();
-    boolean didAddProfessors = setProfessors(allProfessors);
-    if (!didAddProfessors) {
-      throw new RuntimeException(
-          "Unable to create CourseOffering, must have at least 1 professors. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    if (!setCourse(aCourse)) {
-      throw new RuntimeException(
-          "Unable to create CourseOffering due to aCourse. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+    setCourse(aCourse);
   }
 
   // ------------------------

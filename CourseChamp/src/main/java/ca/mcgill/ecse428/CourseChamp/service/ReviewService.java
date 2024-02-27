@@ -83,11 +83,7 @@ public class ReviewService {
         if(review.getStudent() == null){
             throw new CourseChampException(HttpStatus.CONFLICT, "Please enter a student"); 
         }
-        if (reviewRepository.findReviewById(review.getId()) == null) {
             return reviewRepository.save(review);
-        } else {
-            throw new CourseChampException(HttpStatus.CONFLICT, "A review with this Id already exists");
-        }
     }
 
 
