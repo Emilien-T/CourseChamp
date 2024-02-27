@@ -4,17 +4,15 @@ Feature: View and React to Reviews
     so that I can quickly and confidently react to posts.
 
   Background: 
-    Given the user is on the course details page for a specific course "<course>"
-    And there are reviews for the course with the following details:
+    Given the following reviews exist for course <Department> <Number>:
       | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
       | ECSE       |    321 |      4 | Great course, very informative!       |       5 |         2 |
       | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         0 |
       | ECSE       |    321 |      3 | Some topics could be explained better |       2 |         3 |
 
   Scenario: User views reviews for a course (Normal Flow)
-    When the user navigates to the reviews section
-    Then the user should see a list of reviews for the course
-    And each review should display:
+    When the user attempts to view reviews for the course <Department> <Number>
+    Then the user should display the following reviews for the course
       | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
       | ECSE       |    321 |      4 | Great course, very informative!       |       5 |         2 |
       | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         0 |

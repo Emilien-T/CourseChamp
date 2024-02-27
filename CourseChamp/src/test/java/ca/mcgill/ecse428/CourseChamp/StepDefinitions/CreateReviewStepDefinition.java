@@ -14,8 +14,7 @@ public class CreateReviewStepDefinition {
     public void LoggedInSystemWithUsernameInSystem(String string) {
         assertEquals(string, DummyRepo.GetFromSystem("username"));
     }
-    // =-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
-
+   
     // =-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
     @When("a user attempts to leave a review with the rating {string}, with the content {string}, for a course number {string} in the department {string}")
     public void LeaveReviewStepDefinition(String string, String string2, String string3, String string4) {
