@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
@@ -12,6 +13,7 @@ import ca.mcgill.ecse428.CourseChamp.repository.AccountRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
+import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
@@ -29,16 +31,24 @@ public class CommonStepDefinitions {
   @Autowired
   StudentRepository studentRepository;
 
+
   @Autowired
   CourseOfferingRepository courseOfferingRepository;
 
+
+  @Autowired
+  ReviewRepository reviewRepository;
+
   @After
   public void tearDown(){
+    reviewRepository.deleteAll();
     adminRepository.deleteAll();
     studentRepository.deleteAll();
     accountRepository.deleteAll();
     studentRepository.deleteAll();
     courseOfferingRepository.deleteAll();
+    courseRepository.deleteAll();
+    
   }
 
   //Background StepDefs
@@ -86,4 +96,16 @@ public class CommonStepDefinitions {
       studentRepository.save(student);
     }
   }
+
+    // =-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
+    @Given("the following course offerings exist in the system:")
+    public void the_following_course_offerings_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String, String>> rows = dataTable.asMaps();
+        for (var row : rows) {
+            Course course = courseRepository.findCourseByCourseCode(row.get("courseCode"));
+            CourseOffering courseOffering = new CourseOffering(row.get("semester"), course);
+            courseOfferingRepository.delete(courseOffering);
+            courseOfferingRepository.save(courseOffering);
+        }
+    }
 }

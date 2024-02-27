@@ -9,7 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
+import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
+import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
+import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
+import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import ca.mcgill.ecse428.CourseChamp.service.CourseService;
 import ca.mcgill.ecse428.CourseChamp.service.ReviewService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,11 +24,13 @@ import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/reviews") // Base path for reviews
-
-
 public class ReviewController {
 
+    @Autowired
+    private CourseOfferingRepository courseOfferingRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
     @Autowired
     private CourseService courseService;
     @Autowired
@@ -60,9 +67,38 @@ public class ReviewController {
     })
     @PostMapping("/review/create")
     public ResponseEntity<ReviewResponseDto> createReview(@Valid @RequestBody ReviewRequestDto reviewRequest) {
-        Review review = reviewService.createReview(reviewRequest.toModel());
-        ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
-        return new ResponseEntity<>(reviewResponseDto, HttpStatus.CREATED);
+        Review review = new Review();
+        review.setText(reviewRequest.getText());
+        review.setRating(reviewRequest.getRating());
+        Iterable<CourseOffering> courseOfferings = courseOfferingRepository.findAll();
+        for (CourseOffering c : courseOfferings){
+            if(c.getCourse().getCourseCode().equals(reviewRequest.getCourseCode()) && c.getSemester().equals(reviewRequest.getSemester())){
+                review.setCourseOffering(c);
+                break;
+            }
+        }
+
+        if(review.getCourseOffering() == null){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Semester not found");
+        }
+
+        Iterable<Student> students = studentRepository.findAll();
+        for(Student s : students){
+            if(s.getEmail().equals(reviewRequest.getStudentEmail())){
+                review.setStudent(s);
+                break;
+            }
+        }
+
+        if(review.getStudent() == null){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student not found");
+        }
+        review = reviewService.createReview(review);
+
+        if(review.getRating() == 0){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "BLAH");
+        }
+        return new ResponseEntity<ReviewResponseDto>(new ReviewResponseDto(review), HttpStatus.CREATED);
     }
 
     /**

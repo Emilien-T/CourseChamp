@@ -31,12 +31,20 @@ So that I can describe my experience with a course.
       | student3@mail.com |      3 | It is a pretty hard class | MATH262    | F2022          |
 
   Scenario Outline: User creates a review with an empty course or description (Error Flow)
-    When the user "<email>" attempts to leave a review with the rating "<rating>", with the content "<content>", for the course offering "<courseOffering>" for the course "<courseCode>"
-    Then a "<errorMessage>" message is issued
+    When the user "<email>" unsuccessfully attempts to leave a review with the rating "<rating>", with the content "<content>", for the course offering "<courseOffering>" for the course "<courseCode>"
+    Then a "<errorMessage>" error message is issued
 
     Examples: 
-      | username          | rating | content                 | courseCode | courseOffering | errorMessage                 |
-      | student1@mail.com |      4 | Big project             |            | W2022          | Course Code cannot be blank. |
-      | student2@mail.com |        | 10-person group project | ECSE428    | W2020          | Rating cannot be blank.      |
-      | student3@mail.com |      3 |                         | MATH262    | F2022          | Text cannot be blank.        |
-      | student1@mail.com |      5 | Big rob                 | ECSE428    |                | Semester cannot be blank.    |
+      | username          | rating | content     | courseCode | courseOffering | errorMessage                 |
+      | student1@mail.com |      4 | Big project |            | W2022          | Course Code cannot be blank. |
+      | student3@mail.com |      3 |             | MATH262    | F2022          | Text cannot be blank.        |
+      | student1@mail.com |      5 | Big rob     | ECSE428    |                | Semester cannot be blank.    |
+
+  Scenario Outline: User creates a review with an invalid rating (Error Flow)
+    When the user "<email>" unsuccessfully attempts to leave a review with the rating "<rating>", with the content "<content>", for the course offering "<courseOffering>" for the course "<courseCode>"
+    Then a "<errorMessage>" error message is issued
+
+    Examples: 
+      | username          | rating | content     | courseCode | courseOffering | errorMessage                |
+      | student1@mail.com |     -1 | Big project | ECSE222    | W2022          | Rating must be between 1-5. |
+      | student1@mail.com |      6 | Big class   | MATH262    | F2022          | Rating must be between 1-5. |

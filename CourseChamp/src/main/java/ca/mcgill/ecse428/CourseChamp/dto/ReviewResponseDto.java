@@ -1,7 +1,6 @@
 package ca.mcgill.ecse428.CourseChamp.dto;
 
 import ca.mcgill.ecse428.CourseChamp.model.Review;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 
 public class ReviewResponseDto {
