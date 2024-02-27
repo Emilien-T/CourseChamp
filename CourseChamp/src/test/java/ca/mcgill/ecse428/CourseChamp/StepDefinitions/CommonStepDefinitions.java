@@ -96,4 +96,16 @@ public class CommonStepDefinitions {
       studentRepository.save(student);
     }
   }
+
+    // =-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
+    @Given("the following course offerings exist in the system:")
+    public void the_following_course_offerings_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String, String>> rows = dataTable.asMaps();
+        for (var row : rows) {
+            Course course = courseRepository.findCourseByCourseCode(row.get("courseCode"));
+            CourseOffering courseOffering = new CourseOffering(row.get("semester"), course);
+            courseOfferingRepository.delete(courseOffering);
+            courseOfferingRepository.save(courseOffering);
+        }
+    }
 }
