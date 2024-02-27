@@ -46,8 +46,6 @@ public class AdminController {
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "Hourly wage must be positive.", content = {
-                    @Content(mediaType = "String") }),
             @ApiResponse(responseCode = "409", description = "Admin account with this email already exists.", content = {
                     @Content(mediaType = "String") })
     })
