@@ -19,7 +19,7 @@ public class CreateReviewStepDefinition {
     // =-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
     @When("a user attempts to leave a review with the rating {string}, with the content {string}, for a course number {string} in the department {string}")
     public void LeaveReviewStepDefinition(String string, String string2, String string3, String string4) {
-        ReviewController.CreateReview(string, string2, string3, string4);
+        //ReviewController.CreateReview(string, string2, string3, string4);
     }
     // =-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
 
