@@ -73,7 +73,6 @@ public class ReviewService {
         }
     }
 
-
     public Review verifyReview(int id, int rating, String text) {
         // Find the review by id
         Review review = reviewRepository.findReviewByReviewId(id);
