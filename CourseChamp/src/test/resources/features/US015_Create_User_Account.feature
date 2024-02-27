@@ -5,10 +5,10 @@ So that I can rate and review my previous courses.
 
   Background: 
     Given the following students exist in the system:
-      | email             | username | password    | major      |
-      | student1@mail.com | student1 | J0hn!Super  | Software   |
-      | student2@mail.com | student2 | JohnLover!5 | Computer   |
-      | student3@mail.com | student3 | Jk*g@iJHK$% | Electrical |
+      | email          | username | password    | major      |
+      | user1@mail.com | user1    | J0hn!Super  | Software   |
+      | user2@mail.com | user2    | JohnLover!5 | Computer   |
+      | user3@mail.com | user3    | Jk*g@iJHK$% | Electrical |
 
   Scenario Outline: New user with unique info (Normal Flow)
     When a new user successfully attempts to register with email "<email>", username "<username>" and password "<password>"
@@ -25,10 +25,10 @@ So that I can rate and review my previous courses.
     Then a "<message>" message is issued
 
     Examples: 
-      | email             | username      | password    | message                                        |
-      | student1@mail.com | John          | J0hn!Super  | Another account with this email already exists |
-      | student2@mail.com | TigerLover123 | JohnLover!5 | Another account with this email already exists |
-      | student3@mail.com | Lucy!         | Jk*g@iJHK$% | Another account with this email already exists |
+      | email          | username      | password    | message                                        |
+      | user1@mail.com | John          | J0hn!Super  | Another account with this email already exists |
+      | user2@mail.com | TigerLover123 | JohnLover!5 | Another account with this email already exists |
+      | user3@mail.com | Lucy!         | Jk*g@iJHK$% | Another account with this email already exists |
 
   Scenario Outline: User registers with an existent username (Error Flow)
     When a new user unsuccessfully attempts to register with email "<email>", username "<username>" and password "<password>"
@@ -36,9 +36,9 @@ So that I can rate and review my previous courses.
 
     Examples: 
       | email                          | username | password    | message                                           |
-      | john.jonny123@gmail.com        | student1 | J0hn!Super  | Another account with this username already exists |
-      | percy.golber123@mail.mcgill.ca | student2 | JohnLover!5 | Another account with this username already exists |
-      | lucy.david123@hotmail.com      | student3 | Jk*g@iJHK$% | Another account with this username already exists |
+      | john.jonny123@gmail.com        | user1    | J0hn!Super  | Another account with this username already exists |
+      | percy.golber123@mail.mcgill.ca | user2    | JohnLover!5 | Another account with this username already exists |
+      | lucy.david123@hotmail.com      | user3    | Jk*g@iJHK$% | Another account with this username already exists |
 
   Scenario Outline: User registers with an empty email, username or password (Error Flow)
     When a new user unsuccessfully attempts to register with email "<email>", username "<username>" and password "<password>"
@@ -48,4 +48,44 @@ So that I can rate and review my previous courses.
       | email                | username | password   | message                   |
       |                      | John     | J0hn!Super | Email cannot be blank     |
       | john.jonny@gmail.com |          | J0hn!Super | Username cannot be blank. |
+      | john.jonny@gmail.com | John     |            | Password cannot be blank  |
+
+  Scenario Outline: New admin with unique info (Normal Flow)
+    When a new admin successfully attempts to register with email "<email>", username "<username>" and password "<password>"
+    Then an admin shall exist with email "<email>", username "<username>" and password "<password>"
+
+    Examples: 
+      | email                   | username      | password    |
+      | alice.admin@gmail.com   | Alice_Admin   | Alice!123   |
+      | bob.admin@gmail.com     | Bob_Admin     | Bob!456     |
+      | charlie.admin@gmail.com | Charlie_Admin | Charlie!789 |
+
+  Scenario Outline: Admin registers with an existent email (Error Flow)
+    When a new admin unsuccessfully attempts to register with email "<email>", username "<username>" and password "<password>"
+    Then a "<message>" message is issued
+
+    Examples: 
+      | email          | username       | password    | message                                       |
+      | user1@mail.com | John1          | J0hn!Super  | Another account with this email already exists |
+      | user2@mail.com | Tiger_Lover123 | JohnLover!5 | Another account with this email already exists |
+      | user3@mail.com | Lucy!!         | Jk*g@iJHK$% | Another account with this email already exists |
+
+  Scenario Outline: Admin registers with an existent username (Error Flow)
+    When a new admin unsuccessfully attempts to register with email "<email>", username "<username>" and password "<password>"
+    Then a "<message>" message is issued
+
+    Examples: 
+      | email                          | username | password    | message                                         |
+      | john.jonny123@gmail.com        | user1    | J0hn!Super  | Another account with this username already exists |
+      | percy.golber123@mail.mcgill.ca | user2    | JohnLover!5 | Another account with this username already exists |
+      | lucy.david123@hotmail.com      | user3    | Jk*g@iJHK$% | Another account with this username already exists |
+
+  Scenario Outline: Admin registers with an empty email, username or password (Error Flow)
+    When a new admin unsuccessfully attempts to register with email "<email>", username "<username>" and password "<password>"
+    Then a "<message>" message is issued
+
+    Examples: 
+      | email                | username | password   | message                   |
+      |                      | John     | J0hn!Super | Email cannot be blank     |
+      | john.jonny@gmail.com |          | J0hn!Super | Username cannot be blank |
       | john.jonny@gmail.com | John     |            | Password cannot be blank  |
