@@ -49,6 +49,3 @@ public class ReviewRequestDto {
         return new Review(id, rating, text, null, null);
     }
 }
-
-
-

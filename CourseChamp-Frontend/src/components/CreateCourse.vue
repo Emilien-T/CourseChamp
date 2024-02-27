@@ -21,8 +21,8 @@
         <div class="form-group">
           <label class="input-label">Enter the Course Description:</label>
           <textarea id="description" v-model="description" required placeholder="Ex: This is a really fun course"></textarea>
-          <div class="msg">{{ msg }}</div>
         </div>
+        <div class="msg">{{ msg }}</div>
         <div class="submit-container">
           <button type="submit" :disabled="!department || !courseNumber || !name || !description" class="submit-button">
             Submit
