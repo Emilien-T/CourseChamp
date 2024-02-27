@@ -36,7 +36,7 @@ public class ReviewService {
         Iterable<Review> reviews = reviewRepository.findAll();
         ArrayList<Review> reviewsByCourseCode = new ArrayList<>();  
         for(Review r : reviews){
-            if(r.getCourseOffering().getCourse().getCourseCode().equals(courseCode)){
+            if(r.getCourseOffering() != null && r.getCourseOffering().getCourse() != null && r.getCourseOffering().getCourse().getCourseCode().equals(courseCode)){
                 reviewsByCourseCode.add(r);
             }
         }
@@ -74,6 +74,15 @@ public class ReviewService {
      */
     @Transactional
     public Review createReview(Review review) {
+        if(review == null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Please enter a review"); 
+        }
+        if(review.getCourseOffering() == null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Please enter a course offering"); 
+        }
+        if(review.getStudent() == null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Please enter a student"); 
+        }
         if (reviewRepository.findReviewById(review.getId()) == null) {
             return reviewRepository.save(review);
         } else {
