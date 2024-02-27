@@ -22,6 +22,7 @@
   <script>
   export default {
     name: 'CourseRating',
+    /* TODO: implement view review contoller methods */
     data() {
       return {
         rating: 4.8,
