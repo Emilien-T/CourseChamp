@@ -3,14 +3,15 @@ package ca.mcgill.ecse428.CourseChamp.dto;
 
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 
 
 public class ReviewRequestDto {
-   
-    @NotBlank(message = "Rating cannot be blank.")
-    @Pattern(regexp = "^[0-5]{1}$", message = "Rating must be a number form 1 to 5")
+
+    @Min(value = 1, message = "Rating must be between 1-5.")
+    @Max(value = 5, message = "Rating must be between 1-5.")
     @Schema(example = "1", description = "Rating of the course", required = true)
     private int rating;
 

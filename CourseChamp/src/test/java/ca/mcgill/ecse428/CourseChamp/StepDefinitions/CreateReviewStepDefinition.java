@@ -43,7 +43,7 @@ public class CreateReviewStepDefinition {
 
     private ReviewRequestDto request;
     private ResponseEntity<ReviewResponseDto> response;
-    private CourseChampException exception;
+    private ResponseEntity<String> error;
     // =-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
     @Given("the following courses exist in the system:")
     public void the_following_courses_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
@@ -80,11 +80,31 @@ public class CreateReviewStepDefinition {
         request.setCourseCode(string5);
         response = client.postForEntity("/review/create", request, ReviewResponseDto.class);
     }
+
+    @When("the user {string} unsuccessfully attempts to leave a review with the rating {string}, with the content {string}, for the course offering {string} for the course {string}")
+    public void the_user_unsuccessfully_attempts_to_leave_a_review_with_the_rating_with_the_content_for_the_course_offering_for_the_course(String string, String string2, String string3, String string4, String string5) {
+        // Write code here that turns the phrase above into concrete actions
+        request = new ReviewRequestDto();
+        request.setStudentEmail(string);
+        request.setRating(Integer.valueOf(string2));
+        request.setText(string3);
+        request.setSemester(string4);
+
+        request.setCourseCode(string5);
+        error = client.postForEntity("/review/create", request, String.class);
+    }
     @Then("the system shall contain a review with a unique ID, username {string}, rating {string} , content {string} and course {string}")
     public void the_system_shall_contain_a_review_with_a_unique_id_username_rating_content_and_course(String string, String string2, String string3, String string4) {
         // Write code here that turns the phrase above into concrete actions
         //assertEquals(request.getRating(), response.getBody().getRating());
         assertEquals(request.getText(), response.getBody().getText());
+    }
+
+    @Then("a {string} error message is issued")
+    public void a_message_is_issued(String string) {
+        // Write code here that turns the phrase above into concrete actions
+        //assertEquals(request.getRating(), response.getBody().getRating());
+        assertEquals(string.trim(), error.getBody().trim());
     }
 
 

@@ -93,7 +93,12 @@ public class ReviewController {
         if(review.getStudent() == null){
             throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student not found");
         }
-        return new ResponseEntity<ReviewResponseDto>(new ReviewResponseDto(reviewService.createReview(review)), HttpStatus.CREATED);
+        review = reviewService.createReview(review);
+
+        if(review.getRating() == 0){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "BLAH");
+        }
+        return new ResponseEntity<ReviewResponseDto>(new ReviewResponseDto(review), HttpStatus.CREATED);
     }
 
     /**
