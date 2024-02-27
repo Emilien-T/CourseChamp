@@ -26,6 +26,8 @@ public class ReviewController {
 
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private ReviewService reviewService;
 
     /**
      * Retrieves a review by its review id
@@ -89,8 +91,6 @@ public class ReviewController {
     //public static void ViewReview(String number, String department) {}
     
     
-     @Autowired
-    private ReviewService reviewService;
 
     /**
      * View reviews for a specific course.
@@ -114,10 +114,6 @@ public class ReviewController {
     //         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     //     }
     // }
-
-
-
-    public static void CreateReview(String rating, String content, String number, String department) {}
 
 
 }
