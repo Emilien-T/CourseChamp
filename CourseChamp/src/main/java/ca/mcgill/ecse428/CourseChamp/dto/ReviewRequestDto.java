@@ -20,8 +20,8 @@ public class ReviewRequestDto {
 
     // associations
     private String studentEmail;
-
-    private int courseOfferingId;
+    private String courseCode;
+    private String semester;
 
 
     public int getRating() {
@@ -38,6 +38,30 @@ public class ReviewRequestDto {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void setCourseCode(String courseCode){
+        this.courseCode = courseCode;
+    }
+
+    public String getCourseCode(){
+        return this.courseCode;
+    }
+
+    public void setStudentEmail(String studentEmail){
+        this.studentEmail = studentEmail;
+    }
+
+    public String getStudentEmail(){
+        return this.studentEmail;
+    }
+
+    public void setSemester(String semester){
+        this.semester = semester;
+    }
+
+    public String getSemester(){
+        return this.semester;
     }
 
 
