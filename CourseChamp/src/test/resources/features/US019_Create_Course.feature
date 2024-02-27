@@ -25,42 +25,42 @@ Background:
       | ECSE       |           321 | Introduction to Software Engineering | Not done yet |
 
   Scenario Outline: Admin attempts to add a duplicate course (Error Flow)
-    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
+    When the admin unsuccessfully adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
     Then the system should display an error message "<error>"
-    And the course with Department abbreviation "<department>" course number "<courseNumber>" should not exist in the course pool
+    And the course with Department abbreviation "<department>" course number "<courseNumber>" should not exist in the course pool twice
 
     Examples:
-      | Department | Course Number | name       | description         | error                 |
-      | ECSE       |           200 | Circuits I | circuits and stuff  | Course already exists |
+      | department | courseNumber  | name       | description         | error                 |
+      | ECSE       |           200 | Circuits I | circuits and stuff  | A course with this code already exists |
 
   Scenario Outline: Admin adds a new course with various incomplete details (Error Flow)
-    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
+    When the admin unsuccessfully adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
     Then the system should display an error message "<error>"
     And the course with Department abbreviation "<department>" course number "<courseNumber>" should not exist in the course pool
 
     Examples:
       | department | courseNumber  | name                            | description        | error |
-      |            |           223 | Software Engineering Principles | circuits and stuff | Incomplete details for the course creation|
-      | ECSE       |               | Design Principles and methods   | why not?           | Incomplete details for the course creation|
-      | ECSE       |           321 |                                 | Yessir             | Incomplete details for the course creation|
-      | ECSE       |           222 | Digital Circuits                |                    | Incomplete details for the course creation|
+      |            |           223 | Software Engineering Principles | circuits and stuff | Department cannot be blank.\nDepartment must be a four-letter alphabetic string.\n|
+      | ECSE       |               | Design Principles and methods   | why not?           | Course number cannot be null.|
+      | ECSE       |           321 |                                 | Yessir             | Name cannot be blank.\n|
+      | ECSE       |           222 | Digital Circuits                |                    | Description cannot be blank.\n|
 
   Scenario Outline: Admin adds a new course with an invalid course number (Error Flow)
-    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
+    When the admin unsuccessfully adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
     Then the system should display an error message "<error>"
     And the course with Department abbreviation "<department>" course number "<courseNumber>" should not exist in the course pool
 
     Examples:
       | department | courseNumber | name                            | description     | error|
-      | ECSE       | ABC          | Software Engineering Principles | Not decided yet | Course number should be a 3-digit number|
-      | ECSE       |        1234  | Mechanical Design               | Not decided yet | Course number should be a 3-digit number|
+      | ECSE       | ABC          | Software Engineering Principles | Not decided yet | Course number cannot be null.|
+      | ECSE       |        1234  | Mechanical Design               | Not decided yet | Course number must be a positive 3-digit integer.\n|
 
   Scenario Outline: Admin adds a new course with an invalid department (Error Flow)
-    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
+    When the admin unsuccessfully adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
     Then the system should display an error message "<error>"
     And the course with Department abbreviation "<department>" course number "<courseNumber>" should not exist in the course pool
 
     Examples:
       | department | courseNumber  | name                            | description | error |
-      | EC         |           223 | Software Engineering Principles | Not decided yet |Department should be a 4 character alphabetical string|
-      | ECE1       |           321 | Introduction to Circuits        | Not decided yet |Department should be a 4 character alphabetical string|
+      | EC         |           223 | Software Engineering Principles | Not decided yet |Department must be a four-letter alphabetic string.\n|
+      | ECE1       |           321 | Introduction to Circuits        | Not decided yet |Department must be a four-letter alphabetic string.\n|
