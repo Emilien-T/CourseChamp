@@ -4,64 +4,93 @@ Feature: View and React to Reviews
     so that I can quickly and confidently react to posts.
 
   Background: 
-    Given the following reviews exist for course <Department> <Number>:
-      | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
-      | ECSE       |    321 |      4 | Great course, very informative!       |       5 |         2 |
-      | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         0 |
-      | ECSE       |    321 |      3 | Some topics could be explained better |       2 |         3 |
+    Given the following students exist in the system:
+      | email             | username | password    | major      |
+      | student1@mail.com | student1 | J0hn!Super  | Software   |
+      | student2@mail.com | student2 | JohnLover!5 | Computer   |
+      | student3@mail.com | student3 | Jk*g@iJHK$% | Electrical |
+    And the following courses exist in the system:
+      | department | courseNumber | name                          | description  |
+      | ECSE       |          428 | Software Engineering Practice | Fun course   |
+      | ECSE       |          222 | Digital Logic                 | Scary course |
+      | MATH       |          262 | Intermediate Calculus         | Charles Roth |
+    And the following course offerings exist in the system:
+      | courseCode | semester |
+      | ECSE222    | W2022    |
+      | ECSE222    | F2022    |
+      | ECSE428    | W2020    |
+      | ECSE428    | F2020    |
+      | MATH262    | F2022    |
+      | MATH262    | W2023    |
+    Given the following reviews exist in the system:
+      | courseCode | semester | reviewId | student           | rating | comment                               | upvotes | downvotes |
+      | ECSE222    | W2022    |        1 | student1@mail.com |      4 | Great course very informative!        |       0 |         0 |
+      | ECSE222    | F2022    |        2 | student2@mail.com |      3 | Very hard exams :(                    |       0 |         0 |
+      | ECSE428    | W2020    |        3 | student3@mail.com |      5 | Excellent content and helpful quizzes |       0 |         0 |
+      | ECSE428    | F2020    |        4 | student2@mail.com |      5 | I had so much fun in this course      |       0 |         0 |
+      | MATH262    | F2022    |        5 | student1@mail.com |      3 | Some topics could be explained better |       0 |         0 |
+      | MATH262    | W2023    |        6 | student2@mail.com |      5 | CHARLES ROTH                          |       0 |         0 |
 
-  Scenario: User views reviews for a course (Normal Flow)
-    When the user attempts to view reviews for the course <Department> <Number>
-    Then the user should display the following reviews for the course
-      | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
-      | ECSE       |    321 |      4 | Great course, very informative!       |       5 |         2 |
-      | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         0 |
-      | ECSE       |    321 |      3 | Some topics could be explained better |       2 |         3 |
+  Scenario Outline: User views reviews for a course (Normal Flow)
+    When the user attempts to view reviews for the course "<courseCode>"
+    Then the user should display the following reviews "<reviews>" with the ratings "<ratings>", upvotes "<upvotes>", and downvotes "<downvotes>"
 
-  Scenario: User adds an upvote to a review
-    When the user selects the option to upvote a review with the following details:
-      | Department | Number | Rating | Comment                         | Upvotes | Downvotes |
-      | ECSE       |    321 |      4 | Great course, very informative! |       5 |         2 |
-    Then the system should increment the upvote count for the selected review
-    And the review should display:
-      | Department | Number | Rating | Comment                         | Upvotes | Downvotes |
-      | ECSE       |    321 |      4 | Great course, very informative! |       6 |         2 |
+    Examples: 
+      | courseCode | reviews                                                                | ratings | upvotes | downvotes |
+      | ECSE222    | Great course very informative!,Very hard exams :(                      |     4,3 |     0,0 |       0,0 |
+      | ECSE428    | Excellent content and helpful quizzes,I had so much fun in this course |     5,5 |     0,0 |       0,0 |
+      | MATH262    | Some topics could be explained better,CHARLES ROTH                     |     3,5 |     0,0 |       0,0 |
 
-  Scenario: User removes an upvote from a review
-    Given the user has already upvoted a review
-    When the user selects the option to upvote a review with the following details:
-      | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
-      | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         0 |
-    And then the user selects the option to upvote the same review again
-    Then the system should decrement the upvote count for the selected review
-    And the review should display:
-      | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
-      | ECSE       |    321 |      5 | Excellent content and helpful quizzes |       9 |         0 |
-    Then the system should decrement the upvote count for the selected review
+  Scenario Outline: User adds an upvote to a review
+    Given the user "<email>" has not upvoted the review with id "<reviewId>"
+    When the user "<email>" selects the option to upvote a review with the id "<reviewId>"
+    Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
-  Scenario: User adds a downvote to a review
-    When the user selects the option to downvote a review with the following details:
-      | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
-      | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         0 |
-    Then the system should increment the downvote count for the selected review
-      | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
-      | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         0 |
+    Examples: 
+      | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       1 |         0 |
+      | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       1 |         0 |
+      | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       1 |         0 |
 
-  Scenario: User removes an downvote from a review
-    Given the user has already downvoted a review
-    When the user selects the option to remove downvote a review with the following details:
-      | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
-      | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         1 |
-    And then the user selects the option to upvote the same review again
-    Then the system should decrement the downvote count for the selected review
-    And the review should display:
-      | Department | Number | Rating | Comment                               | Upvotes | Downvotes |
-      | ECSE       |    321 |      5 | Excellent content and helpful quizzes |      10 |         0 |
-    Then the system should decrement the downvote count for the selected review
+  Scenario Outline: User removes an upvote from a review
+    Given the user "<email>" has upvoted the review with id "<reviewId>"
+    When the user "<email>" selects the option to remove the upvote from the review with the id "<reviewId>"
+    Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
-  Scenario: User views reviews for a different course with no reviews (Error Flow)
-    Given the user is on the course details page for a specific course
-    And there are no existing reviews for the course
-    When the user navigates to the reviews section
-    Then the user should see a message indicating that there are no reviews for this course
-    And the user should not see any review entries
+    Examples: 
+      | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         0 |
+      | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         0 |
+      | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       0 |         0 |
+
+  Scenario Outline: User adds a downvote to a review
+    Given the user "<email>" has not downvoted the review with id "<reviewId>"
+    When the user "<email>" selects the option to downvote a review with the id "<reviewId>"
+    Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
+
+    Examples: 
+      | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         1 |
+      | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         1 |
+      | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       0 |         1 |
+
+  Scenario Outline: User removes an downvote from a review
+    Given the user "<email>" has downvoted the review with id "<reviewId>"
+    When the user "<email>" selects the option to remove the downvote from the review with the id "<reviewId>"
+    Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
+
+    Examples: 
+      | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         0 |
+      | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         0 |
+      | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       0 |         0 |
+
+  Scenario Outline: User views reviews for a different course with no reviews (Error Flow)
+    When the user "<email>" unsuccessfully attempts to view reviews for the course "<courseCode>"
+    Then the system displays the error message "<errorMessage>" to the user
+
+    Examples: 
+      | email             | courseCode | errorMessage                      |
+      | student1@mail.com | ECSE223    | No reviews found for this course. |
+      | student2@mail.com | ECSE429    | No reviews found for this course. |
+      | student3@mail.com | MATH263    | No reviews found for this course. |
