@@ -58,24 +58,7 @@ public class LoginStepDefinition {
         }
     }
     //=-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
-    //=-=-=-=-=-=-=-=-=-=-=-=- GIVEN -=-=-=-=-=-=-=-=-=-=-=-=//
-    @Given("the following students exist in the system:")
-    public void the_following_students_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-        List<Map<String, String>> rows = dataTable.asMaps();
-        for (var row : rows) {
-            Student.Major major = Student.Major.Software;
-            String majorString = row.get("major");
-            if(majorString.equals("Computer")){
-                major = Student.Major.Computer;
-            }
-            if(majorString.equals("Electrical")){
-                major = Student.Major.Electrical;
-            }
-            Student student = new Student(row.get("email"),row.get("username"), row.get("password"), major);
-            studentRepository.delete(student);
-            studentRepository.save(student);
-        }
-    }
+    
 
     //=-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
     @When("an admin attempts to log in with email {string} and password {string}")

@@ -4,7 +4,7 @@ Feature: Create a course
   So that I can keep the course pool available for users up-to-date.
 
 Background:
-  Given the admin exists in the system:
+  Given the following admins exist in the system:
     | email                       | username  | password    |
     | courseChampAdmin@email.com  | TheBest   | Password1!  |
   Given the following students exist in the system:
@@ -15,14 +15,14 @@ Background:
     | ECSE        | 200           | Circuits I  | circuits and stuff|
 
   Scenario Outline: Admin successfully adds a new course  (Normal Flow)
-    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" and course name "<name>":
+    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
     Then the system should confirm the successful addition
     And a course with Department abbreviation "<department>" and course number "<courseNumber>" should exist in the course pool
     
     Examples:
-      | department | courseNumber  | name                                 |
-      | ECSE       |           223 | Software Engineering Principles      |
-      | ECSE       |           321 | Introduction to Software Engineering |
+      | department | courseNumber  | name                                 | description |
+      | ECSE       |           223 | Software Engineering Principles      | Not done yet |
+      | ECSE       |           321 | Introduction to Software Engineering | Not done yet |
 
   Scenario Outline: Admin attempts to add a duplicate course (Error Flow)
     When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
@@ -34,7 +34,7 @@ Background:
       | ECSE       |           200 | Circuits I | circuits and stuff  | Course already exists |
 
   Scenario Outline: Admin adds a new course with various incomplete details (Error Flow)
-    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>", course name "<name>", and course description "<description>":
+    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
     Then the system should display an error message "<error>"
     And the course with Department abbreviation "<department>" course number "<courseNumber>" should not exist in the course pool
 
@@ -46,7 +46,7 @@ Background:
       | ECSE       |           222 | Digital Circuits                |                    | Incomplete details for the course creation|
 
   Scenario Outline: Admin adds a new course with an invalid course number (Error Flow)
-    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>", course name "<name>" and description "<description>"
+    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
     Then the system should display an error message "<error>"
     And the course with Department abbreviation "<department>" course number "<courseNumber>" should not exist in the course pool
 
@@ -56,7 +56,7 @@ Background:
       | ECSE       |        1234  | Mechanical Design               | Not decided yet | Course number should be a 3-digit number|
 
   Scenario Outline: Admin adds a new course with an invalid department (Error Flow)
-    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and description "<description>"
+    When the admin adds a course with Department abbreviation "<department>" course number "<courseNumber>" course name "<name>", and course description "<description>"
     Then the system should display an error message "<error>"
     And the course with Department abbreviation "<department>" course number "<courseNumber>" should not exist in the course pool
 
