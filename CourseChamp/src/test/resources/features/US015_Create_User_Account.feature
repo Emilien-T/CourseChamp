@@ -11,7 +11,7 @@ So that I can rate and review my previous courses.
       | student3@mail.com | student3 | Jk*g@iJHK$% | Electrical |
 
   Scenario Outline: New user with unique info (Normal Flow)
-    When a new user attempts to register with email "<email>", username "<username>" and password "<password>"
+    When a new user successfully attempts to register with email "<email>", username "<username>" and password "<password>"
     Then a user shall exist with email "<email>", username "<username>" and password "<password>"
 
     Examples: 
@@ -21,32 +21,31 @@ So that I can rate and review my previous courses.
       | lucy.david@hotmail.com      | Lucy!         | Jk*g@iJHK$% |
 
   Scenario Outline: User registers with an existent email (Error Flow)
-    Given an account in the system has the email "<email>"
-    When a new user attempts to register with email "<email>", username "<username>" and password "<password>"
+    When a new user unsuccessfully attempts to register with email "<email>", username "<username>" and password "<password>"
     Then a "<message>" message is issued
 
     Examples: 
-      | email             | username      | password    | message            |
-      | student1@mail.com | John          | J0hn!Super  | Email already used |
-      | student2@mail.com | TigerLover123 | JohnLover!5 | Email already used |
-      | student3@mail.com | Lucy!         | Jk*g@iJHK$% | Email already used |
+      | email             | username      | password    | message                                        |
+      | student1@mail.com | John          | J0hn!Super  | Another account with this email already exists |
+      | student2@mail.com | TigerLover123 | JohnLover!5 | Another account with this email already exists |
+      | student3@mail.com | Lucy!         | Jk*g@iJHK$% | Another account with this email already exists |
 
   Scenario Outline: User registers with an existent username (Error Flow)
-    When a new user attempts to register with email "<email>", username "<username>" and password "<password>"
+    When a new user unsuccessfully attempts to register with email "<email>", username "<username>" and password "<password>"
     Then a "<message>" message is issued
 
     Examples: 
-      | email                       | username | password    | message               |
-      | john.jonny123@gmail.com        | student1 | J0hn!Super  | Username already used |
-      | percy.golber123@mail.mcgill.ca | studemt2 | JohnLover!5 | Username already used |
-      | lucy.david123@hotmail.com      | studemy3 | Jk*g@iJHK$% | Username already used |
+      | email                          | username | password    | message                                           |
+      | john.jonny123@gmail.com        | student1 | J0hn!Super  | Another account with this username already exists |
+      | percy.golber123@mail.mcgill.ca | student2 | JohnLover!5 | Another account with this username already exists |
+      | lucy.david123@hotmail.com      | student3 | Jk*g@iJHK$% | Another account with this username already exists |
 
   Scenario Outline: User registers with an empty email, username or password (Error Flow)
-    When a new user attempts to register with email "<email>", username "<username>" and password "<password>"
+    When a new user unsuccessfully attempts to register with email "<email>", username "<username>" and password "<password>"
     Then a "<message>" message is issued
 
     Examples: 
       | email                | username | password   | message                   |
-      |                      | John     | J0hn!Super | All fields must be filled |
-      | john.jonny@gmail.com |          | J0hn!Super | All fields must be filled |
-      | john.jonny@gmail.com | John     |            | All fields must be filled |
+      |                      | John     | J0hn!Super | Email cannot be blank     |
+      | john.jonny@gmail.com |          | J0hn!Super | Username cannot be blank. |
+      | john.jonny@gmail.com | John     |            | Password cannot be blank  |

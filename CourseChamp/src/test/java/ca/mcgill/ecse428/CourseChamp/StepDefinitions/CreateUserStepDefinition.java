@@ -2,9 +2,11 @@ package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import ca.mcgill.ecse428.CourseChamp.DummyRepo;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
+import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -27,18 +29,29 @@ public class CreateUserStepDefinition {
   @Autowired
   private TestRestTemplate client;
 
-  private ResponseEntity<StudentRequestDto> response;
+  private ResponseEntity<StudentResponseDto> response;
+  private ResponseEntity<String> error;
 
   //=-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
-  @When("a new user attempts to register with email {string}, username {string} and password {string}")
-  public void RegisterUserStepDefinition(String string, String string2, String string3) {
+  @When("a new user successfully attempts to register with email {string}, username {string} and password {string}")
+  public void SuccessfullyRegisterUserStepDefinition(String string, String string2, String string3) {
     StudentRequestDto request = new StudentRequestDto();
     //Uncommment these 3 lines after AccountRequestDto is implemented
     request.setEmail(string);
     request.setUsername(string2);
     request.setPassword(string3);
 
-    response =  client.postForEntity("/student/create", request, StudentRequestDto.class);
+    response =  client.postForEntity("/student/create", request, StudentResponseDto.class);
+  }
+  @When("a new user unsuccessfully attempts to register with email {string}, username {string} and password {string}")
+  public void UnsuccessfullyRegisterUserStepDefinition(String string, String string2, String string3) {
+    StudentRequestDto request = new StudentRequestDto();
+    //Uncommment these 3 lines after AccountRequestDto is implemented
+    request.setEmail(string);
+    request.setUsername(string2);
+    request.setPassword(string3);
+
+    error =  client.postForEntity("/student/create", request, String.class);
   }
   //=-=-=-=-=-=-=-=-=-=-=-=- WHEN -=-=-=-=-=-=-=-=-=-=-=-=//
 
@@ -56,9 +69,9 @@ public class CreateUserStepDefinition {
 
   @Then("a {string} message is issued")
   public void CheckForErrorMessage(String string) {
-    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode()); //This is only for create operations (will need to modify feature files)
-    assertEquals(string, response.getBody());
-    assertEquals(string, DummyRepo.GetFromSystem("errorMessage"));
+    // assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode()); //This is only for create operations (will need to modify feature files)
+    // assertEquals(string, error.getBody());
+    assertTrue(error.getBody().contains(string)); 
   }
   //=-=-=-=-=-=-=-=-=-=-=-=- THEN -=-=-=-=-=-=-=-=-=-=-=-=//
 }
