@@ -20,6 +20,7 @@ public class ReviewRequestDto {
     private String text;
 
     // associations
+    @NotBlank(message = "")
     private String studentEmail;
     @NotBlank(message = "Course Code cannot be blank.")
     private String courseCode;
