@@ -6,6 +6,7 @@ import SignUpStudent from '@/components/SignUpStudent'
 import SignUpAdmin from '@/components/SignUpAdmin'
 import Login from '@/components/Login'
 import CreateCourse from '@/components/CreateCourse'
+import ViewReview from '@/components/ViewReview'
 import CreateReview from '@/components/CreateReview'
 
 Vue.use(Router)
@@ -43,9 +44,14 @@ export default new Router({
       component: CreateCourse
     },
     {
+      path: '/viewreview',
+      name: 'ViewReview',
+      component: ViewReview
+    },
+    {
       path: '/createreview',
       name: 'CreateReview',
       component: CreateReview
-    },
+    }
   ]
 })
