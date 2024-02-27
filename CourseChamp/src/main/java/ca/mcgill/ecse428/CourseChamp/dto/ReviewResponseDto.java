@@ -8,14 +8,18 @@ public class ReviewResponseDto {
     private int id;
     private int rating;
     private String text;
+    private int upvotes;
+    private int downvotes;
 
     public ReviewResponseDto() {
     }
 
-    public ReviewResponseDto(int id, int rating, String text) {
+    public ReviewResponseDto(int id, int rating, String text, int upvotes, int downvotes) {
         this.id = id;
         this.rating = rating;
         this.text = text;
+        this.upvotes = upvotes;
+        this.downvotes = downvotes;
     }
 
     // Constructor to directly map from the Review model
@@ -48,6 +52,22 @@ public class ReviewResponseDto {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public void setUpvotes(int upvotes){
+        this.upvotes = upvotes;
+    }
+
+    public void setDownvotes(int downvotes){
+        this.downvotes = downvotes;
+    }
+
+    public int getUpvotes(){
+        return this.upvotes;
+    }
+
+    public int getDownvotes(){
+        return this.downvotes;
     }
 
     // toString, hashCode, equals methods as needed

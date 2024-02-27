@@ -13,8 +13,10 @@ import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
+import ca.mcgill.ecse428.CourseChamp.model.Vote;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
+import ca.mcgill.ecse428.CourseChamp.repository.VoteRepository;
 import ca.mcgill.ecse428.CourseChamp.service.CourseService;
 import ca.mcgill.ecse428.CourseChamp.service.ReviewService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,6 +30,9 @@ public class ReviewController {
 
     @Autowired
     private CourseOfferingRepository courseOfferingRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
 
     @Autowired
     private StudentRepository studentRepository;
@@ -49,8 +54,23 @@ public class ReviewController {
     })
     @GetMapping(value = { "/review/{reviewId}", "/review/{reviewId}/" })
     public ResponseEntity<ReviewResponseDto> getReviewById(@PathVariable int reviewId) {
-        return new ResponseEntity<>(new ReviewResponseDto(reviewService.getReviewById(reviewId)),
-                HttpStatus.OK);
+        Iterable<Vote> votes = voteRepository.findAll();
+        Review review = reviewService.getReviewById(reviewId);
+        int upvotes = 0;
+        int downvotes = 0;
+        for (Vote v : votes){
+            if (v.getReview().getId() == reviewId){
+                if(v.getType()){
+                    upvotes++;
+                }else{
+                    downvotes++;
+                }
+            }
+        }
+        ReviewResponseDto response = new ReviewResponseDto(review);
+        response.setUpvotes(upvotes);
+        response.setDownvotes(downvotes);
+        return new ResponseEntity<ReviewResponseDto>(response, HttpStatus.OK);
     }
 
     /**
@@ -95,9 +115,6 @@ public class ReviewController {
         }
         review = reviewService.createReview(review);
 
-        if(review.getRating() == 0){
-            throw new CourseChampException(HttpStatus.BAD_REQUEST, "BLAH");
-        }
         return new ResponseEntity<ReviewResponseDto>(new ReviewResponseDto(review), HttpStatus.CREATED);
     }
 
@@ -119,6 +136,8 @@ public class ReviewController {
             @RequestParam int rating, @RequestParam String text) {
         Review review = reviewService.verifyReview(id, rating, text);
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
+        reviewResponseDto.setUpvotes(0);
+        reviewResponseDto.setDownvotes(0);
         return new ResponseEntity<>(reviewResponseDto, HttpStatus.OK);
     }
 

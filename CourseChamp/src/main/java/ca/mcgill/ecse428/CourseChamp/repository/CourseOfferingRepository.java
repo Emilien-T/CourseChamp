@@ -1,5 +1,7 @@
 package ca.mcgill.ecse428.CourseChamp.repository;
 import org.springframework.data.repository.CrudRepository;
+
+import ca.mcgill.ecse428.CourseChamp.model.Course;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 
 public interface CourseOfferingRepository extends CrudRepository<CourseOffering, String> {
@@ -11,4 +13,5 @@ public interface CourseOfferingRepository extends CrudRepository<CourseOffering,
      * @return The Course entity corresponding to the provided course code, or null if not found.
      */
     CourseOffering findCourseOfferingById(int id);
+
 }
