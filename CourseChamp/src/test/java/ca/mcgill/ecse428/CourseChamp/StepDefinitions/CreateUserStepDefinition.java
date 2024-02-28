@@ -48,7 +48,7 @@ public class CreateUserStepDefinition {
     request.setUsername(string2);
     request.setPassword(string3);
 
-    response =  client.postForEntity("/student/create", request, StudentResponseDto.class);
+    response = client.postForEntity("/student/create", request, StudentResponseDto.class);
   }
   @When("a new admin successfully attempts to register with email {string}, username {string} and password {string}")
   public void SuccessfullyRegisterAdminStepDefinition(String string, String string2, String string3) {
