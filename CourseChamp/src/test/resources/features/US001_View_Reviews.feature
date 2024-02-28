@@ -48,7 +48,7 @@ Feature: View and React to Reviews
 
     Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
-      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       1 |         0 |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative!        |       1 |         0 |
       | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       1 |         0 |
       | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       1 |         0 |
 
@@ -59,7 +59,7 @@ Feature: View and React to Reviews
 
     Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
-      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         0 |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative!        |       0 |         0 |
       | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         0 |
       | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       0 |         0 |
 
@@ -70,7 +70,7 @@ Feature: View and React to Reviews
 
     Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
-      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         1 |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative!        |       0 |         1 |
       | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         1 |
       | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       0 |         1 |
 
@@ -81,7 +81,7 @@ Feature: View and React to Reviews
 
     Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
-      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         0 |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative!        |       0 |         0 |
       | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         0 |
       | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       0 |         0 |
 

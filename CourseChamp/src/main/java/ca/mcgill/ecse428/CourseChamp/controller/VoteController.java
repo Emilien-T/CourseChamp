@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
-import ca.mcgill.ecse428.CourseChamp.dto.VoteRequestDto;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
@@ -34,14 +33,14 @@ public class VoteController {
   @Autowired
   VoteRepository voteRepository;
 
-  @PostMapping("/upvote/{email}")
-  public ResponseEntity<ReviewResponseDto> upvoteReview(@PathVariable String email, @Valid @RequestBody VoteRequestDto request){
-    return createVote(email, request);
+  @PostMapping("/upvote/")
+  public ResponseEntity<ReviewResponseDto> upvoteReview(@RequestParam String email, @RequestParam int id){
+    return createVote(email, id, true);
   }
 
-  @PostMapping("/downvote/{email}")
-  public ResponseEntity<ReviewResponseDto> downvoteReview(@PathVariable String email, @Valid @RequestBody VoteRequestDto request){
-    return createVote(email, request);
+  @PostMapping("/downvote/")
+  public ResponseEntity<ReviewResponseDto> downvoteReview(@RequestParam String email, @RequestParam int id){
+    return createVote(email, id, false);
   }
 
   @DeleteMapping("/deletevote")
@@ -49,10 +48,11 @@ public class VoteController {
     voteService.deleteVote(studentEmail, reviewId);
   }
 
-  public ResponseEntity<ReviewResponseDto> createVote(String email, VoteRequestDto request){
-    Vote vote = request.toModel();
+  public ResponseEntity<ReviewResponseDto> createVote(String email, int id, boolean type){
+    Vote vote = new Vote();
+    vote.setType(type);
     vote.setStudent(studentRepository.findStudentByEmail(email));
-    vote.setReview(reviewRepository.findReviewById(request.getReviewId()));
+    vote.setReview(reviewRepository.findReviewById(id));
     
 
     if(vote.getStudent() == null){
@@ -68,7 +68,7 @@ public class VoteController {
     int upvotes = 0;
     int downvotes = 0;
     for(Vote v : votes){
-      if(v.getReview().getId() == request.getReviewId()){
+      if(v.getReview().getId() == id){
        if(v.getType()){
         upvotes++;
        }else{
