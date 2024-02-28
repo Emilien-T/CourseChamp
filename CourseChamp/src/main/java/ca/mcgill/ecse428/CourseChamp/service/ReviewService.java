@@ -86,7 +86,6 @@ public class ReviewService {
             return reviewRepository.save(review);
     }
 
-
     public Review verifyReview(int id, int rating, String text) {
         // Find the review by id
         Review review = reviewRepository.findReviewById(id);
