@@ -109,7 +109,22 @@ public class ViewReviewStepDefinition {
     @Then("the user should display the following reviews {string} with the ratings {string}, upvotes {string}, and downvotes {string}")
     public void the_user_should_display_the_following_reviews_with_the_ratings_upvotes_and_downvotes(String string, String string2, String string3, String string4) {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        String[] reviewContents = string.split(",");
+        String[] ratings = string2.split(",");
+        String[] upvotes = string3.split(",");
+        String[] downvotes = string4.split(",");
+
+        List<Map<String, Object>> responseBody = responseList.getBody();
+        for(Map<String, Object> map : responseBody){
+            for(int i = 0; i < reviewContents.length; i++){
+                if(reviewContents[i].equals(map.get("text"))){
+                    assertEquals(Integer.parseInt(ratings[i]), map.get("rating"));
+                    assertEquals(Integer.parseInt(upvotes[i]), map.get("upvotes"));
+                    assertEquals(Integer.parseInt(downvotes[i]), map.get("downvotes"));
+                    break;
+                }
+            }
+        }
     }
 
     @When("the user {string} unsuccessfully attempts to view reviews for the course {string}")
@@ -121,6 +136,6 @@ public class ViewReviewStepDefinition {
     @Then("the system displays the error message {string} to the user")
     public void the_system_displays_the_error_message_to_the_user(String string) {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertEquals(string.trim(), error.getBody().trim());
     }
 }
