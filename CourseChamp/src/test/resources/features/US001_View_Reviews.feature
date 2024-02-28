@@ -3,7 +3,7 @@ Feature: View and React to Reviews
     I would like to view and react to reviews
     so that I can quickly and confidently react to posts.
 
-  Background:
+  Background: 
     Given the following students exist in the system:
       | email             | username | password    | major      |
       | student1@mail.com | student1 | J0hn!Super  | Software   |
@@ -33,20 +33,20 @@ Feature: View and React to Reviews
 
   Scenario Outline: User views reviews for a course (Normal Flow)
     When the user attempts to view reviews for the course "<courseCode>"
-    Then the user should display the following reviews "<reviews>" with the ratings "<ratings>", upvotes "<upvotes>", and downvotes "<downvotes>"
+    Then the user should display the following reviews "<reviews>" with the semesters "<semesters>", ratings "<ratings>", upvotes "<upvotes>", and downvotes "<downvotes>"
 
     Examples: 
-      | courseCode | reviews                                                                | ratings | upvotes | downvotes |
-      | ECSE222    | Great course very informative!,Very hard exams :(                      |     4,3 |     0,0 |       0,0 |
-      | ECSE428    | Excellent content and helpful quizzes,I had so much fun in this course |     5,5 |     0,0 |       0,0 |
-      | MATH262    | Some topics could be explained better,CHARLES ROTH                     |     3,5 |     0,0 |       0,0 |
+      | courseCode | semesters   | reviews                                                                | ratings | upvotes | downvotes |
+      | ECSE222    | W2022,F2022 | Great course very informative!,Very hard exams :(                      |     4,3 |     0,0 |       0,0 |
+      | ECSE428    | W2020,F2020 | Excellent content and helpful quizzes,I had so much fun in this course |     5,5 |     0,0 |       0,0 |
+      | MATH262    | F2022,W2023 | Some topics could be explained better,CHARLES ROTH                     |     3,5 |     0,0 |       0,0 |
 
   Scenario Outline: User adds an upvote to a review
     Given the user "<email>" has not upvoted the review with id "<reviewId>"
     When the user "<email>" selects the option to upvote a review with the id "<reviewId>"
     Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
-    Examples:
+    Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
       | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       1 |         0 |
       | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       1 |         0 |
@@ -57,7 +57,7 @@ Feature: View and React to Reviews
     When the user "<email>" selects the option to remove the upvote from the review with the id "<reviewId>"
     Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
-    Examples:
+    Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
       | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         0 |
       | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         0 |
@@ -68,7 +68,7 @@ Feature: View and React to Reviews
     When the user "<email>" selects the option to downvote a review with the id "<reviewId>"
     Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
-    Examples:
+    Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
       | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         1 |
       | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         1 |
@@ -79,7 +79,7 @@ Feature: View and React to Reviews
     When the user "<email>" selects the option to remove the downvote from the review with the id "<reviewId>"
     Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
-    Examples:
+    Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
       | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative         |       0 |         0 |
       | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         0 |
@@ -89,7 +89,7 @@ Feature: View and React to Reviews
     When the user "<email>" unsuccessfully attempts to view reviews for the course "<courseCode>"
     Then the system displays the error message "<errorMessage>" to the user
 
-    Examples:
+    Examples: 
       | email             | courseCode | errorMessage                      |
       | student1@mail.com | ECSE223    | No reviews found for this course. |
       | student2@mail.com | ECSE429    | No reviews found for this course. |
