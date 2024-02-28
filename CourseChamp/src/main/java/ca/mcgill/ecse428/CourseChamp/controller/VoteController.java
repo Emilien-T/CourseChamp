@@ -56,7 +56,7 @@ public class VoteController {
     
 
     if(vote.getStudent() == null){
-      throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student email: " + email);
+      throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student not found");
     }
 
     if(vote.getReview() == null){
