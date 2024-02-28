@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
+import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
 import ca.mcgill.ecse428.CourseChamp.service.CourseService;
 
@@ -21,6 +22,8 @@ public class CourseServiceTests {
 
     @Mock
     private CourseRepository courseRepository;
+    @Mock
+    private CourseOfferingRepository courseOfferingRepository;
 
     @InjectMocks
     private CourseService courseService;
