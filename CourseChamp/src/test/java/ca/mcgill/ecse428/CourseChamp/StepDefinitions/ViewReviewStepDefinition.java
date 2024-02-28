@@ -126,7 +126,7 @@ public class ViewReviewStepDefinition {
                     assertEquals(Integer.parseInt(ratings[i]), map.get("rating"));
                     assertEquals(Integer.parseInt(upvotes[i]), map.get("upvotes"));
                     assertEquals(semesters[i], map.get("semester"));
-                    assertNotEquals("", map.get("courseCode"));
+                    assertNotEquals(null, map.get("courseCode"));
                     assertEquals(Integer.parseInt(downvotes[i]), map.get("downvotes"));
                     break;
                 }
