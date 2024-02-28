@@ -2,19 +2,19 @@
     <div class="course-rating">
       <div class="rating-header">
         <h1>{{ rating }}/5</h1>
-        <p>Overall Quality Based on {{ numberOfRatings }} ratings</p>
+        <p>This student took the class in {{ semester }}.</p>
       </div>
       <div class="course-code">
-        <h2>ECSE 428</h2>
+        <h2>{{ courseCode }}</h2>
       </div>
       <div class="review">
-        <p>{{ reviewText }}</p>
+        <p>Review :</p>
+        <p>{{ text }}</p>
         <div class="stars">
           <span v-for="star in computedRating" :key="star" class="star">
             ★
           </span>
         </div>
-        <p>Rating :</p>
       </div>
     </div>
   </template>
@@ -22,17 +22,28 @@
   <script>
   export default {
     name: 'CourseRating',
-    /* TODO: implement view review contoller methods */
-    data() {
-      return {
-        rating: 4.8,
-        numberOfRatings: 13,
-        reviewText: 'Great Course I loved it so much especially the part where we worked on our projects',
-      };
+    props: {
+      rating: {
+        type: Number,
+        default: 0
+      },
+      semester: {
+        type: String,
+        default: "" 
+      },
+      courseCode: {
+        type: String,
+        default: ""
+      },
+      text: {
+        type: String,
+        default: "" 
+      },
     },
     computed: {
       computedRating() {
         // Assuming the rating is out of 5
+        console.log(this.rating);
         return Array(Math.round(this.rating)).fill('★');
       },
     },

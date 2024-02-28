@@ -95,7 +95,7 @@ public class ReviewController {
         review.setRating(reviewRequest.getRating());
         Iterable<CourseOffering> courseOfferings = courseOfferingRepository.findAll();
         for (CourseOffering c : courseOfferings){
-            if(c.getCourse().getCourseCode().equals(reviewRequest.getCourseCode()) && c.getSemester().equals(reviewRequest.getSemester())){
+            if(c.getCourse().getCourseCode().equals(reviewRequest.getCourseCode()) ){ //&& c.getSemester().equals(reviewRequest.getSemester())
                 review.setCourseOffering(c);
                 break;
             }

@@ -6,7 +6,7 @@ import SignUpStudent from '@/components/SignUpStudent'
 import SignUpAdmin from '@/components/SignUpAdmin'
 import Login from '@/components/Login'
 import CreateCourse from '@/components/CreateCourse'
-import ViewReview from '@/components/ViewReview'
+import CoursePage from '@/components/CoursePage'
 import CreateReview from '@/components/CreateReview'
 import AdminHome from '@/components/AdminHome'
 import StudentHome from '@/components/StudentHome'
@@ -48,7 +48,7 @@ export default new Router({
     {
       path: '/viewreview',
       name: 'ViewReview',
-      component: ViewReview
+      component: CoursePage
     },
     {
       path: '/createreview',
