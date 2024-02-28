@@ -98,11 +98,11 @@ public class ViewReviewStepDefinition {
     
     @Then("the review should display as {string}, {string}, {string}, {string}, {string}")
     public void the_review_should_display_as(String string, String string2, String string3, String string4, String string5) {
-        assertEquals(response.getBody().getClass(), string);
-        assertEquals(response.getBody().getClass(), Integer.parseInt(string2));
-        assertEquals(response.getBody().getClass(), Integer.parseInt(string3));
-        assertEquals(response.getBody().getUpvotes(), string4);
-        assertEquals(response.getBody().getDownvotes(), string5);
+        assertEquals(string, response.getBody().getCourseCode());
+        assertEquals(Integer.parseInt(string2), response.getBody().getRating());
+        assertEquals(Integer.parseInt(string3), response.getBody().getText());
+        assertEquals(string4, response.getBody().getUpvotes());
+        assertEquals(string5, response.getBody().getDownvotes());
     }
     
     @When("the user attempts to view reviews for the course {string}")
