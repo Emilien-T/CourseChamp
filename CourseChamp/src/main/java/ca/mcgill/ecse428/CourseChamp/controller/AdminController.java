@@ -51,10 +51,9 @@ public class AdminController {
     })
     @PostMapping("/admin/create")
     public ResponseEntity<AdminResponseDto> createAdmin(@Valid @RequestBody AdminRequestDto AdminRequest) {
-        Admin Admin = AdminRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an Admin
-                                              // if they pass
-        Admin = adminService.createAdminAccount(Admin); // 2. You use the service class to check if it exists and save
-                                                        // it
+        // 1. You pass in a request, validates the constraints, creates an Admin if they pass
+        Admin Admin = adminService.createAdminAccount(AdminRequest.toModel()); // 2. You use the service class to check if it exists and save
+                                                                                  // it
         AdminResponseDto responseBody = new AdminResponseDto(Admin);
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
                                                                                        // returning a Response

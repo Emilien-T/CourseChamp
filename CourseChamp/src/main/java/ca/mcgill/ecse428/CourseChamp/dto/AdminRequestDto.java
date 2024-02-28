@@ -17,7 +17,7 @@ public class AdminRequestDto {
     @Schema(example = "Password1!", description = "Password linked to the account of the admin", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 
-    @Pattern(regexp = "^[a-zA-Z\s]+$", message = "Name can only have letters")
+    @Pattern(regexp = "^[a-zA-Z\\d\\s!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+$", message = "Name can only have letters, numbers, and special characters")
     @NotBlank(message = "Username cannot be blank.")
     @Schema(example = "admin", description = "Username of the admin", requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
