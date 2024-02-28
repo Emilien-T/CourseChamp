@@ -58,22 +58,19 @@ public class ViewReviewStepDefinition {
     @Given("the user {string} has not upvoted the review with id {string}")
     public void the_user_has_not_upvoted_the_review_with_id(String string, String string2) {
         Student student = studentRepository.findById(string).get();
-        
         assertNotNull(student);
-        Review review = reviewRepository.findById(fakeToRealIdMap.get(string2)).get();
+        Review review = reviewRepository.findById(fakeToRealIdMap.get(Integer.parseInt(string2))).get();
         assertNotNull(review);
-        try {
-            Vote vote = voteRepository.findVoteByReviewAndStudentNamedParams(review,student);
-            assertNull(vote);
-        } catch (org.springframework.dao.InvalidDataAccessApiUsageException e) {
-        } 
         
+        Vote vote = voteRepository.findVoteByReviewAndStudentNamedParams(review,student);
+        assertNull(vote);     
     }
+
     @When("the user {string} selects the option to upvote a review with the id {string}")
     public void the_user_selects_the_option_to_upvote_a_review_with_the_id(String string, String string2) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        
     }
+    
     @Then("the review should display as {string}, {string}, {string}, {string}, {string}")
     public void the_review_should_display_as(String string, String string2, String string3, String string4, String string5) {
         // Write code here that turns the phrase above into concrete actions
@@ -85,6 +82,7 @@ public class ViewReviewStepDefinition {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
+
     @Then("the user should display the following reviews {string} with the ratings {string}, upvotes {string}, and downvotes {string}")
     public void the_user_should_display_the_following_reviews_with_the_ratings_upvotes_and_downvotes(String string, String string2, String string3, String string4) {
         // Write code here that turns the phrase above into concrete actions
@@ -96,6 +94,7 @@ public class ViewReviewStepDefinition {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
+
     @Then("the system displays the error message {string} to the user")
     public void the_system_displays_the_error_message_to_the_user(String string) {
         // Write code here that turns the phrase above into concrete actions

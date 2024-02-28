@@ -13,6 +13,6 @@ public interface VoteRepository extends CrudRepository<Vote, Integer>  {
   public Vote findVoteById(int id);
   @Query("SELECT v FROM Vote v WHERE v.review = :review and v.student = :student")
   Vote findVoteByReviewAndStudentNamedParams(
-    @Param("review") Review review, 
-    @Param("student") Student student);  
+    @Param("review") Review review,
+    @Param("student") Student student);
 }
