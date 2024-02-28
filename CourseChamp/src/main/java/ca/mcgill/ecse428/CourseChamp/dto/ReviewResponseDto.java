@@ -33,6 +33,8 @@ public class ReviewResponseDto {
         this.semester = review.getCourseOffering().getSemester();
         this.rating = review.getRating();
         this.text = review.getText();
+        this.upvotes = review.getUpvotes();
+        this.downvotes = review.getDownvotes();
     }
 
     // Getters and Setters

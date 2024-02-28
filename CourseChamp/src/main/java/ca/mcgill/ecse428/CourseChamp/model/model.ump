@@ -25,6 +25,8 @@ class Review
   1 <- * Tag;
   int rating;
   text;
+  int upvotes;
+  int downvotes;
 }
 
 class Tag

@@ -35,51 +35,19 @@ public class VoteController {
 
   @PostMapping("/upvote/")
   public ResponseEntity<ReviewResponseDto> upvoteReview(@RequestParam String email, @RequestParam int id){
-    return createVote(email, id, true);
+    ReviewResponseDto response = new ReviewResponseDto(voteService.createVote(email, id, true));
+    return new ResponseEntity<ReviewResponseDto>(response, HttpStatus.CREATED);
   }
 
   @PostMapping("/downvote/")
   public ResponseEntity<ReviewResponseDto> downvoteReview(@RequestParam String email, @RequestParam int id){
-    return createVote(email, id, false);
-  }
-
-  @DeleteMapping("/deletevote")
-  public void deleteReview(@RequestParam String studentEmail, @RequestParam int reviewId){
-    voteService.deleteVote(studentEmail, reviewId);
-  }
-
-  public ResponseEntity<ReviewResponseDto> createVote(String email, int id, boolean type){
-    Vote vote = new Vote();
-    vote.setType(type);
-    vote.setStudent(studentRepository.findStudentByEmail(email));
-    vote.setReview(reviewRepository.findReviewById(id));
-    
-
-    if(vote.getStudent() == null){
-      throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student email: " + email);
-    }
-
-    if(vote.getReview() == null){
-      throw new CourseChampException(HttpStatus.BAD_REQUEST, "Review not found");
-    }
-
-    Review review = voteService.createVote(vote);
-    Iterable<Vote> votes = voteRepository.findAll();
-    int upvotes = 0;
-    int downvotes = 0;
-    for(Vote v : votes){
-      if(v.getReview().getId() == id){
-       if(v.getType()){
-        upvotes++;
-       }else{
-        downvotes++;
-       }
-      }
-    }
-
-    ReviewResponseDto response = new ReviewResponseDto(review);
-    response.setUpvotes(upvotes);
-    response.setDownvotes(downvotes);
+    ReviewResponseDto response = new ReviewResponseDto(voteService.createVote(email, id, false));
     return new ResponseEntity<ReviewResponseDto>(response, HttpStatus.CREATED);
   }
+  @DeleteMapping("/deletevote")
+  public void deleteReview(@RequestParam String studentEmail, @RequestParam int id){
+    voteService.deleteVote(studentEmail, id);
+  }
+
+  
 }

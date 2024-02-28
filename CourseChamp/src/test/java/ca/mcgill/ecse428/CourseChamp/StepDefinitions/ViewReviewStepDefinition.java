@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNull;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
@@ -45,6 +47,7 @@ public class ViewReviewStepDefinition {
     private ResponseEntity<ReviewResponseDto> response;
     private ResponseEntity<String> stringResponse;
     private ResponseEntity<String> error;
+    private ResponseEntity<String> deleteResponse;
     private ResponseEntity<List> responseList;
     
     @Given("the following reviews exist in the system:")
@@ -68,6 +71,26 @@ public class ViewReviewStepDefinition {
         fakeToRealIdMap.put(Integer.parseInt(row.get("reviewId")), review.getId());
       }
     }
+
+    @Given("the following votes exist in the system:")
+  public void the_following_votes_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for(var row : rows){
+      Student student = studentRepository.findStudentByEmail(row.get("email"));
+      Review review = reviewRepository.findReviewById(fakeToRealIdMap.get(Integer.parseInt(row.get("reviewId"))));
+      Vote vote = new Vote();
+      vote.setType((row.get("type")).equals("upvote"));
+      if (row.get("type").equals("upvote")){
+        review.setUpvotes(review.getUpvotes()+1);
+      }else{
+        review.setDownvotes(review.getDownvotes()+1);
+      }
+      vote.setStudent(student);
+      vote.setReview(review);
+      voteRepository.save(vote);
+      reviewRepository.save(review);    
+    }
+  }
 
     @Given("the user {string} has not upvoted the review with id {string}")
     public void the_user_has_not_upvoted_the_review_with_id(String string, String string2) {
@@ -93,6 +116,29 @@ public class ViewReviewStepDefinition {
         assertEquals(string3, response.getBody().getText());
         assertEquals(Integer.parseInt(string4), response.getBody().getUpvotes());
         assertEquals(Integer.parseInt(string5), response.getBody().getDownvotes());
+    }
+
+    @Then("the review {string} after removal should display as {string}, {string}, {string}, {string}, {string}")
+    public void the_review_after_removal_should_display_as(String string, String string2, String string3, String string4, String string5, String string6) {
+        Review review = reviewRepository.findReviewById(fakeToRealIdMap.get(Integer.parseInt(string)));
+        assertEquals(review.getCourseOffering().getCourse().getCourseCode(), string2);
+        assertEquals(review.getRating(), Integer.parseInt(string3));
+        assertEquals(review.getText(), string4);
+        // Iterable<Vote> votes = voteRepository.findAll();
+        // int upvotes = 0;
+        // int downvotes = 0;
+        // for(Vote v : votes){
+        //     if(v.getReview().getId() == Integer.parseInt(string)){
+        //         if(v.getType()){
+        //             upvotes++;
+        //         }else{
+        //             downvotes++;
+        //         }
+        //     }
+        // }
+        
+        assertEquals(review.getUpvotes(), Integer.parseInt(string5));
+        assertEquals(review.getDownvotes(), Integer.parseInt(string6));
     }
     
     @When("the user attempts to view reviews for the course {string}")
@@ -143,6 +189,36 @@ public class ViewReviewStepDefinition {
     @When("the user {string} selects the option to remove the upvote from the review with the id {string}")
     public void the_user_selects_the_option_to_remove_the_upvote_from_the_review_with_the_id(String string, String string2) {
         // Write code here that turns the phrase above into concrete actions
-        response = client.postForEntity("/upvote/?email=" + string + "&id=" + fakeToRealIdMap.get(Integer.parseInt(string2)), null, ReviewResponseDto.class);
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        deleteResponse = client.exchange("/deletevote/?email=" + string + "&id=", HttpMethod.DELETE, requestEntity, String.class);
     }
+
+
+    @Given("the user {string} has not downvoted the review with id {string}")
+    public void the_user_has_not_downvoted_the_review_with_id(String string, String string2) {
+        Student student = studentRepository.findById(string).get();
+        assertNotNull(student);
+        Review review = reviewRepository.findById(fakeToRealIdMap.get(Integer.parseInt(string2))).get();
+        assertNotNull(review);
+        
+        Vote vote = voteRepository.findVoteByReviewAndStudentNamedParams(review,student);
+        assertNull(vote);    
+    }
+    @When("the user {string} selects the option to downvote a review with the id {string}")
+    public void the_user_selects_the_option_to_downvote_a_review_with_the_id(String string, String string2) {
+        response = client.postForEntity("/downvote/?email=" + string + "&id=" + fakeToRealIdMap.get(Integer.parseInt(string2)), null, ReviewResponseDto.class);
+    }
+
+    @Given("the user {string} has downvoted the review with id {string}")
+    public void the_user_has_downvoted_the_review_with_id(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        response = client.postForEntity("/downvote/?email=" + string + "&id=" + fakeToRealIdMap.get(Integer.parseInt(string2)), null, ReviewResponseDto.class);
+    }
+    @When("the user {string} selects the option to remove the downvote from the review with the id {string}")
+    public void the_user_selects_the_option_to_remove_the_downvote_from_the_review_with_the_id(String string, String string2) {
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        deleteResponse = client.exchange("/deletevote/?email=" + string + "&id=", HttpMethod.DELETE, requestEntity, String.class);
+    }
+
+
 }

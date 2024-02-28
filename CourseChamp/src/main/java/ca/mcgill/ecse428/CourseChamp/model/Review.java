@@ -26,6 +26,8 @@ public class Review {
   private int id;
   private int rating;
   private String text;
+  private int upvotes;
+  private int downvotes;
 
   // Review Associations
   @ManyToOne
@@ -90,6 +92,13 @@ public class Review {
     return text;
   }
 
+  public int getUpvotes() { 
+    return upvotes;
+  } 
+  public int getDownvotes() { 
+    return downvotes;
+  } 
+
   /* Code from template association_GetOne */
   public Student getStudent() {
     return student;
@@ -119,6 +128,15 @@ public class Review {
     }
     return wasSet;
   }
+
+  public void setUpvotes(int aUpvotes) {
+    upvotes = aUpvotes;
+  }
+
+  public void setDownvotes(int aDownvotes) {
+    downvotes = aDownvotes;
+  }
+
 
   public void delete() {
     student = null;

@@ -15,4 +15,6 @@ public interface VoteRepository extends CrudRepository<Vote, Integer>  {
   Vote findVoteByReviewAndStudentNamedParams(
     @Param("review") Review review,
     @Param("student") Student student);
+
+  public Vote findByReviewAndStudent(Review review, Student student);
 }
