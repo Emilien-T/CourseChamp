@@ -24,6 +24,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @CrossOrigin(origins = "*")
 @RestController
 public class ReviewController {
@@ -157,18 +160,10 @@ public class ReviewController {
     //         @ApiResponse(responseCode = "200", description = "Successfully retrieved reviews"),
     //         @ApiResponse(responseCode = "404", description = "Course not found", content = @Content)
     // })
-    // @GetMapping("/{courseCode}")
-    // public ResponseEntity<List<ReviewResponseDto>> viewReviews(@PathVariable String courseCode) {
-    //     try {
-    //         List<Review> reviews = reviewService.findReviewsByCourseCode(courseCode);
-    //         List<ReviewResponseDto> responseDtos = reviews.stream()
-    //         .map(review -> new ReviewResponseDto(review.getId(), review.getRating(), review.getText()))
-    //         .collect(Collectors.toList());
-    //         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
-    //     } catch (Exception e) {
-    //         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    //     }
-    // }
+    @GetMapping("/getreviews/{courseCode}")
+    public Iterable<ReviewResponseDto> viewReviews(@PathVariable String courseCode) {
+        return StreamSupport.stream(reviewService.findReviewsByCourseCode(courseCode).spliterator(), false).map(ReviewResponseDto::new).collect(Collectors.toList());
+    }
 
 
 }

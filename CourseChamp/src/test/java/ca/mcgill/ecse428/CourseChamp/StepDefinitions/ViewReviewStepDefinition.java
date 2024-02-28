@@ -9,6 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 
+import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
+import ca.mcgill.ecse428.CourseChamp.dto.VoteRequestDto;
+import ca.mcgill.ecse428.CourseChamp.dto.VoteResponseDto;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
+
 import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
 import ca.mcgill.ecse428.CourseChamp.dto.VoteRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.VoteResponseDto;
@@ -36,13 +42,15 @@ public class ViewReviewStepDefinition {
     CourseRepository courseRepository;
     @Autowired
     CourseOfferingRepository courseOfferingRepository;
-    
-    @Autowired
-    private TestRestTemplate client;
-    
-    private ResponseEntity<VoteResponseDto> response;
 
     private Map<Integer, Integer> fakeToRealIdMap = new HashMap<>();
+
+    @Autowired
+    private TestRestTemplate client;
+    private VoteRequestDto voteRequest;
+    private ResponseEntity<VoteResponseDto> response;
+    private ResponseEntity<String> error;
+    private ResponseEntity<List> responseList;
     
     @Given("the following reviews exist in the system:")
     public void the_following_reviews_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
@@ -94,8 +102,7 @@ public class ViewReviewStepDefinition {
     
     @When("the user attempts to view reviews for the course {string}")
     public void the_user_attempts_to_view_reviews_for_the_course(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        responseList = client.getForEntity("/getreviews/" + string, List.class);
     }
 
     @Then("the user should display the following reviews {string} with the ratings {string}, upvotes {string}, and downvotes {string}")
@@ -107,7 +114,7 @@ public class ViewReviewStepDefinition {
     @When("the user {string} unsuccessfully attempts to view reviews for the course {string}")
     public void the_user_unsuccessfully_attempts_to_view_reviews_for_the_course(String string, String string2) {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        error = client.getForEntity("/getreviews/" + string, String.class);
     }
 
     @Then("the system displays the error message {string} to the user")
