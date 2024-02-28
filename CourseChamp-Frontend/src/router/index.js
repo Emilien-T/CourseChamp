@@ -9,6 +9,7 @@ import CreateCourse from '@/components/CreateCourse'
 import ViewReview from '@/components/ViewReview'
 import CreateReview from '@/components/CreateReview'
 import AdminHome from '@/components/AdminHome'
+import StudentHome from '@/components/StudentHome'
 
 Vue.use(Router)
 
@@ -58,6 +59,11 @@ export default new Router({
       path: '/adminhome',
       name: 'AdminHome',
       component: AdminHome
+    },
+    {
+      path: '/studenthome',
+      name: 'StudentHome',
+      component: StudentHome
     },
 
   ]

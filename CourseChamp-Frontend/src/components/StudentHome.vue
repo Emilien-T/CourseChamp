@@ -1,10 +1,10 @@
 <template>
     <div>
-      <header><h1>Admin Home</h1></header>
+      <header><h1>Student Home</h1></header>
       <div class="container">
       <div class="button-container">
-      <button @click="redirectToCreateCourse">Create Course</button>
-      <button @click="redirectToAdminSignup">Create Admin Account</button>
+      <button @click="redirectToCreateReview">Create Review</button>
+      <button @click="redirectToAdminSignup">View Reviews</button>
       <button @click="redirectToHomePage">Return to Home Page</button>
     </div>
     <img src="../assets/people.png" alt="People Image">
@@ -19,13 +19,13 @@
         // Redirect to the student signup page
         this.$router.push('/signup');
       },
-      redirectToCreateCourse() {
+      redirectToCreateReview() {
         // Redirect to the student signup page
-        this.$router.push('/createcourse');
+        this.$router.push('/createreview');
       },
       redirectToAdminSignup() {
         // Redirect to the admin signup page
-        this.$router.push('/signup/admin');
+        this.$router.push('/viewreview');
       }
     }
   }

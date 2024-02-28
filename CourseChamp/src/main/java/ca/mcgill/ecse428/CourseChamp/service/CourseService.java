@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
+import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
+import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
 import java.util.ArrayList;
 
@@ -14,6 +16,8 @@ public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private CourseOfferingRepository courseOfferingRepository;
 
     /**
      * Service method to fetch all existing courses in the database
@@ -54,7 +58,9 @@ public class CourseService {
     @Transactional
     public Course createCourse(Course course) {
         if (courseRepository.findCourseByCourseCode(course.getCourseCode()) == null) {
-            return courseRepository.save(course);
+            Course course1 = courseRepository.save(course);
+            courseOfferingRepository.save(new CourseOffering("W2024", course1));
+            return course1;
         } else {
             throw new CourseChampException(HttpStatus.CONFLICT, "A course with this code already exists");
         }

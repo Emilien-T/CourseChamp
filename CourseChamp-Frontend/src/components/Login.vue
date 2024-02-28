@@ -39,6 +39,7 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 var config = require('../../config')
 
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
@@ -70,9 +71,13 @@ export default {
       axiosClient.post(`/login/student/`, formData).then(response => {
         // Check the type of the user and redirect to the appropriate page
         this.msg = `Logged In successfully!`
+        Vue.prototype.logginInEmail = this.email
+      console.log(this.logginInEmail)
+        this.$router.push('/studenthome');
       }).catch(error1 =>{
         axiosClient.post(`/login/Admin/`, formData).then(response =>{
           this.msg = `Logged In successfully!`
+        Vue.prototype.logginInEmail = this.email
           this.$router.push('/adminhome');
         }).catch(error2 =>{
           this.msg = error1.response.data + " " + error2.response.data

@@ -7,12 +7,20 @@
       <div class="form-container">
         <form @submit.prevent="submitReview">
           <div class="form-group">
+            <label class="input-label">Enter the course code of the course you are rating:</label>
+            <input type="text" id="courseCode" v-model="courseCode" required placeholder="Ex: ECSE200">
+          </div>
+          <div class="form-group">
             <label class="input-label">Enter your rating:</label>
             <input type="text" id="rating" v-model="rating" required placeholder="Ex: 5">
           </div>
           <div class="form-group">
             <label class="input-label">Enter your review:</label>
             <textarea id="text" v-model="text" required placeholder="Ex: I loved this class. It's a must take in U1! "></textarea>
+          </div>
+          <div class="form-group">
+            <label class="input-label">Enter the semester for which you are rating the course:</label>
+            <input type="text" id="semester" v-model="semester" required placeholder="Ex: W2023">
           </div>
           <div class="msg">{{ msg }}</div>
           <div class="submit-container">
@@ -25,6 +33,7 @@
           </div>
         </form>
       </div>
+      <button @click="redirectToStudentHome">Return to Home</button>
     </div>
   </template>
     
@@ -32,6 +41,7 @@
     
   <script>
   import axios from 'axios'
+  import Vue from 'vue'
   var config = require('../../config')
   
   var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
@@ -44,17 +54,26 @@
   export default {
     data() {
       return {
+        courseCode: '',
         rating: '',
         text: '',
+        semester: '',
         msg: ''
       };
     },
     methods: {
-      submitReview() {
+      redirectToStudentHome() {
+        // Redirect to the student signup page
+        this.$router.push('/studenthome');
+      },submitReview() {
+        
         // Handle review submission (e.g., send data to server)
         const reviewData = {
           rating: this.rating,
           text: this.text,
+          studentEmail: this.logginInEmail,
+          courseCode: this.courseCode,
+          semester: this.semester
         };
         console.log(reviewData); // Replace with your submission logic
         axiosClient.post('/review/create', reviewData).then(response =>{
