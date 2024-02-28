@@ -91,7 +91,8 @@ public class ViewReviewStepDefinition {
         requestDto.setEmail(string);
         requestDto.setReviewId(fakeToRealIdMap.get(Integer.parseInt(string2)));
         requestDto.setType(true);
-        response = client.postForEntity("/upvote/{reviewId}", requestDto, VoteResponseDto.class, fakeToRealIdMap.get(Integer.parseInt(string2)));
+
+        response = client.postForEntity("/upvote/"+fakeToRealIdMap.get(Integer.parseInt(string2)), requestDto, VoteResponseDto.class);
     }
     
     @Then("the review should display as {string}, {string}, {string}, {string}, {string}")
