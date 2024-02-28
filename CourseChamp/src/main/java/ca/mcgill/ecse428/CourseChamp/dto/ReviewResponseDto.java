@@ -6,6 +6,8 @@ import ca.mcgill.ecse428.CourseChamp.model.Review;
 public class ReviewResponseDto {
 
     private int id;
+    private String courseCode;
+    private String semester;
     private int rating;
     private String text;
     private int upvotes;
@@ -14,8 +16,10 @@ public class ReviewResponseDto {
     public ReviewResponseDto() {
     }
 
-    public ReviewResponseDto(int id, int rating, String text, int upvotes, int downvotes) {
+    public ReviewResponseDto(int id, String courseCode, String semester, int rating, String text, int upvotes, int downvotes) {
         this.id = id;
+        this.courseCode = courseCode;
+        this.semester = semester;
         this.rating = rating;
         this.text = text;
         this.upvotes = upvotes;
@@ -25,6 +29,8 @@ public class ReviewResponseDto {
     // Constructor to directly map from the Review model
     public ReviewResponseDto(Review review) {
         this.id = review.getId();
+        this.courseCode = review.getCourseOffering().getCourse().getCourseCode();
+        this.semester = review.getCourseOffering().getSemester();
         this.rating = review.getRating();
         this.text = review.getText();
     }
@@ -70,5 +76,20 @@ public class ReviewResponseDto {
         return this.downvotes;
     }
 
+    public String getSemester(){
+        return this.semester;
+    }
+
+    public String getCourseCode(){
+        return this.courseCode;
+    }
+
+    public void setSemester(String semester){
+        this.semester = semester;
+    }
+
+    public void setCourseCode(String courseCode){
+        this.courseCode = courseCode;
+    }
     // toString, hashCode, equals methods as needed
 }
