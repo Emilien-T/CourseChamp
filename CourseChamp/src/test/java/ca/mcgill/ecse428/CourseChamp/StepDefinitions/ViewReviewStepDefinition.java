@@ -185,4 +185,33 @@ public class ViewReviewStepDefinition {
         HttpEntity<String> requestEntity = new HttpEntity<>(null);
         deleteResponse = client.exchange("/deletevote/?email=" + string + "&id=", HttpMethod.DELETE, requestEntity, String.class);
     }
+
+
+    @Given("the user {string} has not downvoted the review with id {string}")
+    public void the_user_has_not_downvoted_the_review_with_id(String string, String string2) {
+        Student student = studentRepository.findById(string).get();
+        assertNotNull(student);
+        Review review = reviewRepository.findById(fakeToRealIdMap.get(Integer.parseInt(string2))).get();
+        assertNotNull(review);
+        
+        Vote vote = voteRepository.findVoteByReviewAndStudentNamedParams(review,student);
+        assertNull(vote);    
+    }
+    @When("the user {string} selects the option to downvote a review with the id {string}")
+    public void the_user_selects_the_option_to_downvote_a_review_with_the_id(String string, String string2) {
+        response = client.postForEntity("/downvote/?email=" + string + "&id=" + fakeToRealIdMap.get(Integer.parseInt(string2)), null, ReviewResponseDto.class);
+    }
+
+    @Given("the user {string} has downvoted the review with id {string}")
+    public void the_user_has_downvoted_the_review_with_id(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        response = client.postForEntity("/downvote/?email=" + string + "&id=" + fakeToRealIdMap.get(Integer.parseInt(string2)), null, ReviewResponseDto.class);
+    }
+    @When("the user {string} selects the option to remove the downvote from the review with the id {string}")
+    public void the_user_selects_the_option_to_remove_the_downvote_from_the_review_with_the_id(String string, String string2) {
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        deleteResponse = client.exchange("/deletevote/?email=" + string + "&id=", HttpMethod.DELETE, requestEntity, String.class);
+    }
+
+
 }

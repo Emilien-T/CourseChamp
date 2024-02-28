@@ -25,7 +25,7 @@ public class VoteService {
         break;
       }
     }
-    voteRepository.save(vote);
+    vote = voteRepository.save(vote);
     return vote.getReview();
   }
 
