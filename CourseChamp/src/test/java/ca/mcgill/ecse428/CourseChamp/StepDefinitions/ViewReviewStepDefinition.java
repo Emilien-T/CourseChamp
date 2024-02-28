@@ -6,6 +6,12 @@ import static org.junit.Assert.assertNull;
 
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
+
+import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
+import ca.mcgill.ecse428.CourseChamp.dto.VoteRequestDto;
+import ca.mcgill.ecse428.CourseChamp.dto.VoteResponseDto;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
@@ -30,6 +36,11 @@ public class ViewReviewStepDefinition {
     CourseRepository courseRepository;
     @Autowired
     CourseOfferingRepository courseOfferingRepository;
+    
+    @Autowired
+    private TestRestTemplate client;
+    
+    private ResponseEntity<VoteResponseDto> response;
 
     private Map<Integer, Integer> fakeToRealIdMap = new HashMap<>();
     
@@ -68,7 +79,11 @@ public class ViewReviewStepDefinition {
 
     @When("the user {string} selects the option to upvote a review with the id {string}")
     public void the_user_selects_the_option_to_upvote_a_review_with_the_id(String string, String string2) {
-        
+        VoteRequestDto requestDto = new VoteRequestDto();
+        requestDto.setEmail(string);
+        requestDto.setReviewId(fakeToRealIdMap.get(Integer.parseInt(string2)));
+        requestDto.setType(true);
+        response = client.postForEntity("/upvote/{reviewId}", requestDto, VoteResponseDto.class, fakeToRealIdMap.get(Integer.parseInt(string2)));
     }
     
     @Then("the review should display as {string}, {string}, {string}, {string}, {string}")
