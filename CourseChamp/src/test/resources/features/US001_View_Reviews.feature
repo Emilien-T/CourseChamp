@@ -45,7 +45,7 @@ Feature: View and React to Reviews
       | ECSE428    | W2020,F2020 | Excellent content and helpful quizzes,I had so much fun in this course |     5,5 |     0,0 |       0,0 |
       | MATH262    | F2022,W2023 | Some topics could be explained better,CHARLES ROTH                     |     3,5 |     0,0 |       0,0 |
 
-  Scenario Outline: User adds an upvote to a review
+  Scenario Outline: User adds an upvote to a review (Alternate Flow)
     Given the user "<email>" has not upvoted the review with id "<reviewId>"
     When the user "<email>" selects the option to upvote a review with the id "<reviewId>"
     Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
@@ -56,36 +56,52 @@ Feature: View and React to Reviews
       | student3@mail.com |        1 | ECSE222    |      4 | Great course very informative!   |       2 |         0 |
       | student3@mail.com |        2 | ECSE222    |      3 | Very hard exams :(               |       1 |         1 |
 
-  Scenario Outline: User removes an upvote from a review
+  Scenario Outline: User removes an upvote from a review (Alternate Flow)
     Given the user "<email>" has upvoted the review with id "<reviewId>"
     When the user "<email>" selects the option to remove the upvote from the review with the id "<reviewId>"
-    Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
+    Then the review "<reviewId>" after removal should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
     Examples: 
       | email             | reviewId | courseCode | rating | comment                        | upvotes | downvotes |
       | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative! |       0 |         0 |
 
-  Scenario Outline: User adds a downvote to a review
+  Scenario Outline: User adds a downvote to a review (Alternate Flow)
     Given the user "<email>" has not downvoted the review with id "<reviewId>"
     When the user "<email>" selects the option to downvote a review with the id "<reviewId>"
     Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
     Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
-      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative!        |       0 |         1 |
-      | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       3 |         7 |
-      | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       5 |        11 |
+      | student2@mail.com |        1 | ECSE222    |      4 | Great course very informative!        |       1 |         1 |
+      | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       0 |         1 |
+      | student3@mail.com |        2 | ECSE222    |      3 | Very hard exams :(                    |       0 |         2 |
 
-  Scenario Outline: User removes an downvote from a review
+  Scenario Outline: User removes an downvote from a review (Alternate Flow)
     Given the user "<email>" has downvoted the review with id "<reviewId>"
     When the user "<email>" selects the option to remove the downvote from the review with the id "<reviewId>"
+    Then the review "<reviewId>" after removal should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
+
+    Examples: 
+      | email             | reviewId | courseCode | rating | comment            | upvotes | downvotes |
+      | student2@mail.com |        2 | ECSE222    |      3 | Very hard exams :( |       0 |         0 |
+
+  Scenario Outline: User upvotes a review they have already downvoted (Alternate Flow)
+    Given the user "<email>" has downvoted the review with id "<reviewId>"
+    When the user "<email>" selects the option to upvote a review with the id "<reviewId>"
     Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
     Examples: 
-      | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |
-      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative!        |       0 |         0 |
-      | student2@mail.com |        3 | ECSE428    |      5 | Excellent content and helpful quizzes |       3 |         6 |
-      | student3@mail.com |        5 | MATH262    |      3 | Some topics could be explained better |       5 |        10 |
+      | email             | reviewId | courseCode | rating | comment            | upvotes | downvotes |
+      | student2@mail.com |        2 | ECSE222    |      3 | Very hard exams :( |       1 |         0 |
+
+  Scenario Outline: User downvotes a review they have already upvoted (Alternate Flow)
+    Given the user "<email>" has upvoted the review with id "<reviewId>"
+    When the user "<email>" selects the option to downvote a review with the id "<reviewId>"
+    Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
+
+    Examples: 
+      | email             | reviewId | courseCode | rating | comment                        | upvotes | downvotes |
+      | student1@mail.com |        1 | ECSE222    |      4 | Great course very informative! |       0 |         1 |
 
   Scenario Outline: User views reviews for a different course with no reviews (Error Flow)
     When the user "<email>" unsuccessfully attempts to view reviews for the course "<courseCode>"

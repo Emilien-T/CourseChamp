@@ -43,7 +43,7 @@ public class VoteController {
     return createVote(email, id, false);
   }
 
-  @DeleteMapping("/deletevote")
+  @DeleteMapping("/deletevote/")
   public void deleteReview(@RequestParam String studentEmail, @RequestParam int reviewId){
     voteService.deleteVote(studentEmail, reviewId);
   }
@@ -56,7 +56,7 @@ public class VoteController {
     
 
     if(vote.getStudent() == null){
-      throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student email: " + email);
+      throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student not found");
     }
 
     if(vote.getReview() == null){
