@@ -69,6 +69,20 @@ public class ViewReviewStepDefinition {
       }
     }
 
+    @Given("the following votes exist in the system:")
+  public void the_following_votes_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for(var row : rows){
+      Student student = studentRepository.findStudentByEmail(row.get("email"));
+      Review review = reviewRepository.findReviewById(fakeToRealIdMap.get(Integer.parseInt(row.get("reviewId"))));
+      Vote vote = new Vote();
+      vote.setType((row.get("type")).equals("upvote"));
+      vote.setStudent(student);
+      vote.setReview(review);
+      voteRepository.save(vote);
+    }
+  }
+
     @Given("the user {string} has not upvoted the review with id {string}")
     public void the_user_has_not_upvoted_the_review_with_id(String string, String string2) {
         Student student = studentRepository.findById(string).get();
