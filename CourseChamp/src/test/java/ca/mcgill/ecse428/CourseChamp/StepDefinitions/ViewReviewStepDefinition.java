@@ -135,4 +135,14 @@ public class ViewReviewStepDefinition {
         // Write code here that turns the phrase above into concrete actions
         assertEquals(string.trim(), error.getBody().trim());
     }
+    @Given("the user {string} has upvoted the review with id {string}")
+    public void the_user_has_upvoted_the_review_with_id(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        response = client.postForEntity("/upvote/?email=" + string + "&id=" + fakeToRealIdMap.get(Integer.parseInt(string2)), null, ReviewResponseDto.class);
+    }
+    @When("the user {string} selects the option to remove the upvote from the review with the id {string}")
+    public void the_user_selects_the_option_to_remove_the_upvote_from_the_review_with_the_id(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        response = client.postForEntity("/upvote/?email=" + string + "&id=" + fakeToRealIdMap.get(Integer.parseInt(string2)), null, ReviewResponseDto.class);
+    }
 }
