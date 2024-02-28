@@ -2,11 +2,12 @@ package ca.mcgill.ecse428.CourseChamp.dto;
 
 import ca.mcgill.ecse428.CourseChamp.model.Vote;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 
 public class VoteRequestDto {
-  
+  @Email(message = "Email must follow this format xxx@email.address")
   @Schema(example= "student@email.com", description = "Email linked to the account of the admin")
-  private String email;
+  private String studentEmail;
 
   private int reviewId;
   private boolean type;
@@ -17,12 +18,12 @@ public class VoteRequestDto {
     return vote;
   }
 
-  public void setEmail(String email){
-    this.email = email;
+  public void setStudentEmail(String studentEmail){
+    this.studentEmail = studentEmail;
   }
 
-  public String getEmail(){
-    return this.email;
+  public String getStudentEmail(){
+    return this.studentEmail;
   }
 
   public void setReviewId(int reviewId){

@@ -88,7 +88,7 @@ public class ViewReviewStepDefinition {
     @When("the user {string} selects the option to upvote a review with the id {string}")
     public void the_user_selects_the_option_to_upvote_a_review_with_the_id(String string, String string2) {
         VoteRequestDto requestDto = new VoteRequestDto();
-        requestDto.setEmail(string);
+        requestDto.setStudentEmail(string);
         requestDto.setReviewId(fakeToRealIdMap.get(Integer.parseInt(string2)));
         requestDto.setType(true);
 

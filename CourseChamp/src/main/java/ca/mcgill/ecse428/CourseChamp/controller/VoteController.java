@@ -34,14 +34,14 @@ public class VoteController {
   @Autowired
   VoteRepository voteRepository;
 
-  @PostMapping("/upvote/{reviewId}")
-  public ResponseEntity<ReviewResponseDto> upvoteReview(@PathVariable int reviewId, @Valid @RequestBody VoteRequestDto request){
-    return createReview(reviewId, request);
+  @PostMapping("/upvote")
+  public ResponseEntity<ReviewResponseDto> upvoteReview(@Valid @RequestBody VoteRequestDto request){
+    return createReview(request);
   }
 
-  @PostMapping("/downvote/{reviewId}")
-  public ResponseEntity<ReviewResponseDto> downvoteReview(@PathVariable int reviewId, @Valid @RequestBody VoteRequestDto request){
-    return createReview(reviewId, request);
+  @PostMapping("/downvote")
+  public ResponseEntity<ReviewResponseDto> downvoteReview(@Valid @RequestBody VoteRequestDto request){
+    return createReview(request);
   }
 
   @DeleteMapping("/deletevote")
@@ -49,13 +49,13 @@ public class VoteController {
     voteService.deleteVote(studentEmail, reviewId);
   }
 
-  public ResponseEntity<ReviewResponseDto> createReview(int reviewId, VoteRequestDto request){
+  public ResponseEntity<ReviewResponseDto> createReview(VoteRequestDto request){
     Vote vote = request.toModel();
     Iterable<Student> students = studentRepository.findAll();
     Iterable<Review> reviews = reviewRepository.findAll();
 
     for(Student s : students){
-      if(s.getEmail().equals(request.getEmail())){
+      if(s.getEmail().equals(request.getStudentEmail())){
         vote.setStudent(s);
         break;
       }
@@ -64,6 +64,7 @@ public class VoteController {
     if(vote.getStudent() == null){
       throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student not found");
     }
+
 
     for(Review r : reviews){
       if(r.getId() == request.getReviewId()){
@@ -81,7 +82,7 @@ public class VoteController {
     int upvotes = 0;
     int downvotes = 0;
     for(Vote v : votes){
-      if(v.getReview().getId() == reviewId){
+      if(v.getReview().getId() == request.getReviewId()){
        if(v.getType()){
         upvotes++;
        }else{
