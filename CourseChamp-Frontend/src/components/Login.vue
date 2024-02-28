@@ -73,7 +73,7 @@ export default {
       }).catch(error1 =>{
         axiosClient.post(`/login/Admin/`, formData).then(response =>{
           this.msg = `Logged In successfully!`
-          this.$router.push('/createcourse');
+          this.$router.push('/adminhome');
         }).catch(error2 =>{
           this.msg = error1.response.data + " " + error2.response.data
         })
