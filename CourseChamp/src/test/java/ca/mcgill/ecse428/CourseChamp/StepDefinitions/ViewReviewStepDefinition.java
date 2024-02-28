@@ -89,11 +89,11 @@ public class ViewReviewStepDefinition {
     @When("the user {string} selects the option to upvote a review with the id {string}")
     public void the_user_selects_the_option_to_upvote_a_review_with_the_id(String string, String string2) {
         VoteRequestDto requestDto = new VoteRequestDto();
-        requestDto.setStudentEmail(string);
+        requestDto.setEmail(string);
         requestDto.setReviewId(fakeToRealIdMap.get(Integer.parseInt(string2)));
         requestDto.setType(true);
 
-        response = client.postForEntity("/upvote/"+fakeToRealIdMap.get(Integer.parseInt(string2)), requestDto, ReviewResponseDto.class);
+        response = client.postForEntity("/upvote", requestDto, ReviewResponseDto.class);
     }
     
     @Then("the review should display as {string}, {string}, {string}, {string}, {string}")

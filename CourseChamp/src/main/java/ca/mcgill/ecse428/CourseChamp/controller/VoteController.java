@@ -34,14 +34,14 @@ public class VoteController {
   @Autowired
   VoteRepository voteRepository;
 
-  @PostMapping("/upvote")
-  public ResponseEntity<ReviewResponseDto> upvoteReview(@Valid @RequestBody VoteRequestDto request){
-    return createReview(request);
+  @PostMapping("/upvote/{email}")
+  public ResponseEntity<ReviewResponseDto> upvoteReview(@PathVariable String email, @Valid @RequestBody VoteRequestDto request){
+    return createVote(email, request);
   }
 
-  @PostMapping("/downvote")
-  public ResponseEntity<ReviewResponseDto> downvoteReview(@Valid @RequestBody VoteRequestDto request){
-    return createReview(request);
+  @PostMapping("/downvote/{email}")
+  public ResponseEntity<ReviewResponseDto> downvoteReview(@PathVariable String email, @Valid @RequestBody VoteRequestDto request){
+    return createVote(email, request);
   }
 
   @DeleteMapping("/deletevote")
@@ -49,28 +49,14 @@ public class VoteController {
     voteService.deleteVote(studentEmail, reviewId);
   }
 
-  public ResponseEntity<ReviewResponseDto> createReview(VoteRequestDto request){
+  public ResponseEntity<ReviewResponseDto> createVote(String email, VoteRequestDto request){
     Vote vote = request.toModel();
-    Iterable<Student> students = studentRepository.findAll();
-    Iterable<Review> reviews = reviewRepository.findAll();
-
-    for(Student s : students){
-      if(s.getEmail().equals(request.getStudentEmail())){
-        vote.setStudent(s);
-        break;
-      }
-    }
+    vote.setStudent(studentRepository.findStudentByEmail(email));
+    vote.setReview(reviewRepository.findReviewById(request.getReviewId()));
+    
 
     if(vote.getStudent() == null){
-      throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student not found");
-    }
-
-
-    for(Review r : reviews){
-      if(r.getId() == request.getReviewId()){
-        vote.setReview(r);
-        break;
-      }
+      throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student email: " + email);
     }
 
     if(vote.getReview() == null){
