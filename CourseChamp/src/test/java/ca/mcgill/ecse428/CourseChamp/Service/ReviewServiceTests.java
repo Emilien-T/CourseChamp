@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -27,21 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
-import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
-import ca.mcgill.ecse428.CourseChamp.model.Review;
-import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
-import ca.mcgill.ecse428.CourseChamp.service.ReviewService;
 
 @SpringBootTest
 public class ReviewServiceTests {

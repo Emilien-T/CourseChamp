@@ -125,59 +125,6 @@ public class AdminServiceTests {
         assertEquals(e.getMessage(), "Another account with this username already exists");
     }
 
-    // User registers with an empty email
-    @Test
-    public void testCreateEmptyEmailAdmin() {
-
-        // THIS SHOULD BE AN INTEGRATION TEST (TESTING THE CONTROLLER!)
-        // final String email = "";
-        // final String username = "John Doe";
-        // final String password = "JohnDoe2002";
-        // final Admin john = new Admin(email, username, password);
-
-        // when(adminRepository.save(john)).thenReturn(john);
-
-        // CourseChampException e = assertThrows(CourseChampException.class, () ->
-        // adminService.createAdminAccount(john));
-        // assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-        // assertEquals(e.getMessage(), "All fields must be filled");
-    }
-
-    // User registers with an empty username
-    @Test
-    public void testCreateEmptyUsernameAdmin() {
-        // THIS SHOULD BE AN INTEGRATION TEST (TESTING THE CONTROLLER!)
-        // final String email = "john.doe@mcgill.ca";
-        // final String username = "";
-        // final String password = "JohnDoe2002";
-        // final Admin john = new Admin(email, username, password);
-
-        // when(adminRepository.save(john)).thenReturn(john);
-
-        // CourseChampException e = assertThrows(CourseChampException.class, () ->
-        // adminService.createAdminAccount(john));
-        // // assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-        // assertEquals(e.getMessage(), "All fields must be filled");
-    }
-
-    // User registers with an empty password
-    @Test
-    public void testCreateEmptyPasswordAdmin() {
-        // THIS SHOULD BE AN INTEGRATION TEST (TESTING THE CONTROLLER!)
-        // final String email = "john.doe@mcgill.ca";
-        // final String username = "John Doe";
-        // final String password = "";
-        // final Admin john = new Admin(email, username, password);
-
-        // when(adminRepository.save(john)).thenReturn(john);
-
-        // CourseChampException e = assertThrows(CourseChampException.class, () ->
-        // adminService.createAdminAccount(john));
-        // assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
-        // assertEquals(e.getMessage(), "All fields must be filled");
-    }
-
-    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//
 
     // =-=-=-=-=-=- Login Accout Service Tests -=-=-=-=-=-=//
     // User successfully login using email
