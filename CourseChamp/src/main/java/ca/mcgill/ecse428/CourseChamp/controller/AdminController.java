@@ -46,17 +46,14 @@ public class AdminController {
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "Hourly wage must be positive.", content = {
-                    @Content(mediaType = "String") }),
             @ApiResponse(responseCode = "409", description = "Admin account with this email already exists.", content = {
                     @Content(mediaType = "String") })
     })
     @PostMapping("/admin/create")
     public ResponseEntity<AdminResponseDto> createAdmin(@Valid @RequestBody AdminRequestDto AdminRequest) {
-        Admin Admin = AdminRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an Admin
-                                              // if they pass
-        Admin = adminService.createAdminAccount(Admin); // 2. You use the service class to check if it exists and save
-                                                        // it
+        // 1. You pass in a request, validates the constraints, creates an Admin if they pass
+        Admin Admin = adminService.createAdminAccount(AdminRequest.toModel()); // 2. You use the service class to check if it exists and save
+                                                                                  // it
         AdminResponseDto responseBody = new AdminResponseDto(Admin);
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
                                                                                        // returning a Response

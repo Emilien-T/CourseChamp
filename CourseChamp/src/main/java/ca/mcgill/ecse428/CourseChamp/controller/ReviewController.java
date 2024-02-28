@@ -9,7 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
+import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
+import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
+import ca.mcgill.ecse428.CourseChamp.model.Vote;
+import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
+import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
+import ca.mcgill.ecse428.CourseChamp.repository.VoteRepository;
 import ca.mcgill.ecse428.CourseChamp.service.CourseService;
 import ca.mcgill.ecse428.CourseChamp.service.ReviewService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,15 +24,25 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/reviews") // Base path for reviews
-
-
 public class ReviewController {
 
     @Autowired
+    private CourseOfferingRepository courseOfferingRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
     private CourseService courseService;
+    @Autowired
+    private ReviewService reviewService;
 
     /**
      * Retrieves a review by its review id
@@ -38,10 +55,25 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "Review found"),
             @ApiResponse(responseCode = "404", description = "Review not found", content = @Content)
     })
-    @GetMapping(value = { "/review/{reviewId", "/review/{reviewId}/" })
+    @GetMapping(value = { "/review/{reviewId}", "/review/{reviewId}/" })
     public ResponseEntity<ReviewResponseDto> getReviewById(@PathVariable int reviewId) {
-        return new ResponseEntity<>(new ReviewResponseDto(reviewService.getReviewById(reviewId)),
-                HttpStatus.OK);
+        Iterable<Vote> votes = voteRepository.findAll();
+        Review review = reviewService.getReviewById(reviewId);
+        int upvotes = 0;
+        int downvotes = 0;
+        for (Vote v : votes){
+            if (v.getReview().getId() == reviewId){
+                if(v.getType()){
+                    upvotes++;
+                }else{
+                    downvotes++;
+                }
+            }
+        }
+        ReviewResponseDto response = new ReviewResponseDto(review);
+        response.setUpvotes(upvotes);
+        response.setDownvotes(downvotes);
+        return new ResponseEntity<ReviewResponseDto>(response, HttpStatus.OK);
     }
 
     /**
@@ -58,9 +90,35 @@ public class ReviewController {
     })
     @PostMapping("/review/create")
     public ResponseEntity<ReviewResponseDto> createReview(@Valid @RequestBody ReviewRequestDto reviewRequest) {
-        Review review = reviewService.createReview(reviewRequest.toModel());
-        ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
-        return new ResponseEntity<>(reviewResponseDto, HttpStatus.CREATED);
+        Review review = new Review();
+        review.setText(reviewRequest.getText());
+        review.setRating(reviewRequest.getRating());
+        Iterable<CourseOffering> courseOfferings = courseOfferingRepository.findAll();
+        for (CourseOffering c : courseOfferings){
+            if(c.getCourse().getCourseCode().equals(reviewRequest.getCourseCode()) && c.getSemester().equals(reviewRequest.getSemester())){
+                review.setCourseOffering(c);
+                break;
+            }
+        }
+
+        if(review.getCourseOffering() == null){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Semester not found");
+        }
+
+        Iterable<Student> students = studentRepository.findAll();
+        for(Student s : students){
+            if(s.getEmail().equals(reviewRequest.getStudentEmail())){
+                review.setStudent(s);
+                break;
+            }
+        }
+
+        if(review.getStudent() == null){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Student not found");
+        }
+        review = reviewService.createReview(review);
+
+        return new ResponseEntity<ReviewResponseDto>(new ReviewResponseDto(review), HttpStatus.CREATED);
     }
 
     /**
@@ -81,6 +139,8 @@ public class ReviewController {
             @RequestParam int rating, @RequestParam String text) {
         Review review = reviewService.verifyReview(id, rating, text);
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
+        reviewResponseDto.setUpvotes(0);
+        reviewResponseDto.setDownvotes(0);
         return new ResponseEntity<>(reviewResponseDto, HttpStatus.OK);
     }
 
@@ -89,8 +149,6 @@ public class ReviewController {
     //public static void ViewReview(String number, String department) {}
     
     
-     @Autowired
-    private ReviewService reviewService;
 
     /**
      * View reviews for a specific course.
@@ -98,26 +156,14 @@ public class ReviewController {
      * @param courseCode - The code of the course to fetch reviews for.
      * @return A list of reviews for the specified course.
      */
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved reviews"),
-            @ApiResponse(responseCode = "404", description = "Course not found", content = @Content)
-    })
-    @GetMapping("/{courseCode}")
-    public ResponseEntity<List<ReviewResponseDto>> viewReviews(@PathVariable String courseCode) {
-        try {
-            List<Review> reviews = reviewService.findReviewsByCourseCode(courseCode);
-            List<ReviewResponseDto> responseDtos = reviews.stream()
-            .map(review -> new ReviewResponseDto(review.getId(), review.getRating(), review.getText()))
-            .collect(Collectors.toList());
-            return new ResponseEntity<>(responseDtos, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    // @ApiResponses(value = {
+    //         @ApiResponse(responseCode = "200", description = "Successfully retrieved reviews"),
+    //         @ApiResponse(responseCode = "404", description = "Course not found", content = @Content)
+    // })
+    @GetMapping("/getreviews/{courseCode}")
+    public Iterable<ReviewResponseDto> viewReviews(@PathVariable String courseCode) {
+        return StreamSupport.stream(reviewService.findReviewsByCourseCode(courseCode).spliterator(), false).map(ReviewResponseDto::new).collect(Collectors.toList());
     }
-
-
-
-    public static void CreateReview(String rating, String content, String number, String department) {}
 
 
 }

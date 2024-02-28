@@ -45,21 +45,19 @@ public class StudentController {
      */
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "Hourly wage must be positive.", content = {
-                    @Content(mediaType = "String") }),
             @ApiResponse(responseCode = "409", description = "Student account with this email already exists.", content = {
                     @Content(mediaType = "String") })
     })
     @PostMapping("/student/create")
     public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto StudentRequest) {
-        Student Student = StudentRequest.toModel(); // 1. You pass in a request, validates the constraints, creates an
-                                                    // Student if they pass
-        Student = studentService.createStudentAccount(Student); // 2. You use the service class to check if it exists
-                                                                // and save it
+        // 1. You pass in a request, validates the constraints, creates an Student if they pass
+        // 2. You use the service class to check if it exists and save it
+        Student Student = studentService.createStudentAccount(StudentRequest.toModel()) ;
+
         StudentResponseDto responseBody = new StudentResponseDto(Student);
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
-                                                                                         // returning a Response
-    }
+        }                                                                                    // returning a Response
+                                                                                
 
     @DeleteMapping("/student/delete/{email}")
     public void deleteStudent(@PathVariable String email) {

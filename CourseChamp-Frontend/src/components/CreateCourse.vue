@@ -33,6 +33,7 @@
         </div>
       </form>
     </div>
+      <button @click="redirectToAdminHome">Return to Home</button>
   </div>
 </template>
   
@@ -60,7 +61,10 @@ export default {
     };
   },
   methods: {
-    submitCourse() {
+    redirectToAdminHome() {
+        // Redirect to the student signup page
+        this.$router.push('/adminhome');
+      },submitCourse() {
       // Handle course submission (e.g., send data to server)
       const courseData = {
         department: this.department,

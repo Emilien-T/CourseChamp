@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +32,20 @@ public class ReviewService {
         if (courseCode == null || courseCode.isEmpty()) {
             throw new CourseChampException(HttpStatus.BAD_REQUEST, "Course code cannot be null or empty");
         }
-    
-        List<Review> reviews = reviewRepository.findReviewsByCourseCode(courseCode);
-        if (reviews.isEmpty()) {
+        
+        Iterable<Review> reviews = reviewRepository.findAll();
+        ArrayList<Review> reviewsByCourseCode = new ArrayList<>();  
+        for(Review r : reviews){
+            if(r.getCourseOffering() != null && r.getCourseOffering().getCourse() != null && r.getCourseOffering().getCourse().getCourseCode().equals(courseCode)){
+                reviewsByCourseCode.add(r);
+            }
+        }
+        
+        if (reviewsByCourseCode.isEmpty()) {
             throw new CourseChampException(HttpStatus.NOT_FOUND, "No reviews found for this course.");
         }
     
-        return reviews;
+        return reviewsByCourseCode;
     }
     
 
@@ -50,7 +58,7 @@ public class ReviewService {
      */
     @Transactional
     public Review getReviewById(int reviewId) {
-        Review review = reviewRepository.findReviewByReviewId(reviewId);
+        Review review = reviewRepository.findReviewById(reviewId);
         if (review == null) {
             throw new CourseChampException(HttpStatus.NOT_FOUND, "Review not found.");
         }
@@ -66,16 +74,21 @@ public class ReviewService {
      */
     @Transactional
     public Review createReview(Review review) {
-        if (reviewRepository.findReviewByReviewId(review.getId()) == null) {
-            return reviewRepository.save(review);
-        } else {
-            throw new CourseChampException(HttpStatus.CONFLICT, "A review with this Id already exists");
+        if(review == null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Please enter a review"); 
         }
+        if(review.getCourseOffering() == null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Please enter a course offering"); 
+        }
+        if(review.getStudent() == null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Please enter a student"); 
+        }
+            return reviewRepository.save(review);
     }
 
     public Review verifyReview(int id, int rating, String text) {
         // Find the review by id
-        Review review = reviewRepository.findReviewByReviewId(id);
+        Review review = reviewRepository.findReviewById(id);
     
         // If the review doesn't exist or the rating and text don't match, throw an exception
         if (review == null || review.getRating() != rating || !review.getText().equals(text)) {

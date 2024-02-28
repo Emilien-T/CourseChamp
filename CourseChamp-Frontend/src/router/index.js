@@ -8,6 +8,7 @@ import Login from '@/components/Login'
 import CreateCourse from '@/components/CreateCourse'
 import ViewReview from '@/components/ViewReview'
 import CreateReview from '@/components/CreateReview'
+import AdminHome from '@/components/AdminHome'
 
 Vue.use(Router)
 
@@ -52,6 +53,12 @@ export default new Router({
       path: '/createreview',
       name: 'CreateReview',
       component: CreateReview
-    }
+    },
+    {
+      path: '/adminhome',
+      name: 'AdminHome',
+      component: AdminHome
+    },
+
   ]
 })
