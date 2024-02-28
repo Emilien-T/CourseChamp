@@ -1,9 +1,15 @@
 package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
+import ca.mcgill.ecse428.CourseChamp.model.Vote;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
@@ -51,8 +57,17 @@ public class ViewReviewStepDefinition {
 
     @Given("the user {string} has not upvoted the review with id {string}")
     public void the_user_has_not_upvoted_the_review_with_id(String string, String string2) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        Student student = studentRepository.findById(string).get();
+        
+        assertNotNull(student);
+        Review review = reviewRepository.findById(fakeToRealIdMap.get(string2)).get();
+        assertNotNull(review);
+        try {
+            Vote vote = voteRepository.findVoteByReviewAndStudentNamedParams(review,student);
+            assertNull(vote);
+        } catch (org.springframework.dao.InvalidDataAccessApiUsageException e) {
+        } 
+        
     }
     @When("the user {string} selects the option to upvote a review with the id {string}")
     public void the_user_selects_the_option_to_upvote_a_review_with_the_id(String string, String string2) {
