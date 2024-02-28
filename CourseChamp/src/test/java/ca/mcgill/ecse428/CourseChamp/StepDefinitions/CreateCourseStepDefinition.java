@@ -116,44 +116,4 @@ public class CreateCourseStepDefinition {
     public void the_course_with_department_abbreviation_course_number_should_not_exist_in_the_course_pool(String string, String string2) {
         assertFalse(courseRepository.existsById(string+string2));
     }
-
-    // @When("no course with Department abbreviation {string} and course number {string} exists in the course pool")
-    // public void noCourseWithDepartmentAndCourseNumberExistsInTheCoursePool(String department, String courseNumber) {
-    //     // Check if the course exists in the course pool
-    //     assertNull(courseRepository.findCourseByCourseCode(department+courseNumber));
-    // }
-
-    // @Then("the system should confirm the successful addition")
-    // public void theSystemShouldConfirmTheSuccessfulAddition() {
-    //     // Verify that the successful addition message is displayed
-    //     assertTrue(response.getBody().contains("Course acreated"));
-    // }
-
-    // @And("a course with Department abbreviation {string} and course number {string} exists in the course pool")
-    // public void theCourseAppearsInTheCoursePool(String department, String courseNumber) {
-    //     // Verify that the new course appears in the course pool
-    //     assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    //     assertNotNull(response.getBody());
-    //     courseCode = department + courseNumber;
-    //     assertTrue(courseRepository.findCourseByCourseCode(courseCode)!= null);
-    //     assertEquals(courseRepository.findCourseByCourseCode(courseCode).getCourseCode(), courseCode);
-    // }
-
-    // @Then("the system should display an error message {string}")
-    // public void theSystemShouldDisplayAnErrorMessage(String errorMessage) {
-    //     // Verify that an error message is displayed
-    //     assertEquals(errorMessage, response.getBody());
-    // }
-
-    // @Then("the course should not be added to the course pool")
-    // public void theCourseShouldNotBeAddedToTheCoursePool() {
-    //     // Verify that the course is not added to the course pool
-    //     assertNull(courseRepository.findCourseByCourseCode(courseCode));  
-    // }
-
-    // @Then("a course with Department abbreviation {string} and course number {string} should exist in the course pool")
-    // public void a_course_with_department_abbreviation_and_course_number_should_exist_in_the_course_pool(String string, String string2) {
-    //     // Write code here that turns the phrase above into concrete actions
-    //     throw new io.cucumber.java.PendingException();
-    // }
 }

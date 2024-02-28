@@ -1,15 +1,7 @@
 package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
-import ca.mcgill.ecse428.CourseChamp.DummyRepo;
-import ca.mcgill.ecse428.CourseChamp.model.Admin;
-import ca.mcgill.ecse428.CourseChamp.model.Course;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
@@ -34,6 +26,7 @@ public class ViewReviewStepDefinition {
     CourseOfferingRepository courseOfferingRepository;
 
     private Map<Integer, Integer> fakeToRealIdMap = new HashMap<>();
+    
     @Given("the following reviews exist in the system:")
     public void the_following_reviews_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 
@@ -55,6 +48,23 @@ public class ViewReviewStepDefinition {
         fakeToRealIdMap.put(Integer.parseInt(row.get("reviewId")), review.getId());
       }
     }
+
+    @Given("the user {string} has not upvoted the review with id {string}")
+    public void the_user_has_not_upvoted_the_review_with_id(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+    @When("the user {string} selects the option to upvote a review with the id {string}")
+    public void the_user_selects_the_option_to_upvote_a_review_with_the_id(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+    @Then("the review should display as {string}, {string}, {string}, {string}, {string}")
+    public void the_review_should_display_as(String string, String string2, String string3, String string4, String string5) {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+    
     @When("the user attempts to view reviews for the course {string}")
     public void the_user_attempts_to_view_reviews_for_the_course(String string) {
         // Write code here that turns the phrase above into concrete actions
@@ -76,7 +86,4 @@ public class ViewReviewStepDefinition {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
-
-
-
 }
