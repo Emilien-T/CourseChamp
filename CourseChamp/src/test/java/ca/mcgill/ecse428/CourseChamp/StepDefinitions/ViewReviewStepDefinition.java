@@ -1,6 +1,7 @@
 package ca.mcgill.ecse428.CourseChamp.StepDefinitions;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -106,13 +107,14 @@ public class ViewReviewStepDefinition {
         responseList = client.getForEntity("/getreviews/" + string, List.class);
     }
 
-    @Then("the user should display the following reviews {string} with the ratings {string}, upvotes {string}, and downvotes {string}")
-    public void the_user_should_display_the_following_reviews_with_the_ratings_upvotes_and_downvotes(String string, String string2, String string3, String string4) {
+    @Then("the user should display the following reviews {string} with the semesters {string}, ratings {string}, upvotes {string}, and downvotes {string}")
+    public void the_user_should_display_the_following_reviews_with_the_ratings_upvotes_and_downvotes(String string, String string2, String string3, String string4, String string5) {
         // Write code here that turns the phrase above into concrete actions
-        String[] reviewContents = string.split(",");
-        String[] ratings = string2.split(",");
-        String[] upvotes = string3.split(",");
-        String[] downvotes = string4.split(",");
+        String[] semesters = string.split(",");
+        String[] reviewContents = string2.split(",");
+        String[] ratings = string3.split(",");
+        String[] upvotes = string4.split(",");
+        String[] downvotes = string5.split(",");
 
         List<Map<String, Object>> responseBody = responseList.getBody();
         for(Map<String, Object> map : responseBody){
@@ -120,6 +122,8 @@ public class ViewReviewStepDefinition {
                 if(reviewContents[i].equals(map.get("text"))){
                     assertEquals(Integer.parseInt(ratings[i]), map.get("rating"));
                     assertEquals(Integer.parseInt(upvotes[i]), map.get("upvotes"));
+                    assertEquals(semesters[i], map.get("semester"));
+                    assertNotEquals("", map.get("courseCode"));
                     assertEquals(Integer.parseInt(downvotes[i]), map.get("downvotes"));
                     break;
                 }
