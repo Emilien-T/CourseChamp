@@ -4,7 +4,6 @@
     <div class="container">
     <div class="button-container">
     <button @click="redirectToStudentSignup">Create Student Account</button>
-    <button @click="redirectToAdminSignup">Create Admin Account</button>
     <button @click="redirectToLogin">Log In</button>
   </div>
   <img src="../assets/people.png" alt="People Image">
