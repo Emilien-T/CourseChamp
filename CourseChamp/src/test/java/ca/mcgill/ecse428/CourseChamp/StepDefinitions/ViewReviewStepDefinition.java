@@ -124,21 +124,24 @@ public class ViewReviewStepDefinition {
         assertEquals(review.getCourseOffering().getCourse().getCourseCode(), string2);
         assertEquals(review.getRating(), Integer.parseInt(string3));
         assertEquals(review.getText(), string4);
-        // Iterable<Vote> votes = voteRepository.findAll();
-        // int upvotes = 0;
-        // int downvotes = 0;
-        // for(Vote v : votes){
-        //     if(v.getReview().getId() == Integer.parseInt(string)){
-        //         if(v.getType()){
-        //             upvotes++;
-        //         }else{
-        //             downvotes++;
-        //         }
-        //     }
-        // }
+        Iterable<Vote> votes = voteRepository.findAll();
+        int upvotes = 0;
+        int downvotes = 0;
+        for(Vote v : votes){
+            if(v.getReview().getId() == Integer.parseInt(string)){
+                if(v.getType()){
+                    upvotes++;
+                }else{
+                    downvotes++;
+                }
+            }
+        }
         
-        assertEquals(review.getUpvotes(), Integer.parseInt(string5));
-        assertEquals(review.getDownvotes(), Integer.parseInt(string6));
+        // assertEquals(review.getUpvotes(), Integer.parseInt(string5));
+        // assertEquals(review.getDownvotes(), Integer.parseInt(string6));
+                
+        assertEquals(upvotes, Integer.parseInt(string5));
+        assertEquals(downvotes, Integer.parseInt(string6));
     }
     
     @When("the user attempts to view reviews for the course {string}")
