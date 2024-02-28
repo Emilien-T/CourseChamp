@@ -6,6 +6,12 @@ import static org.junit.Assert.assertNull;
 
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
+
+import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
+import ca.mcgill.ecse428.CourseChamp.dto.VoteRequestDto;
+import ca.mcgill.ecse428.CourseChamp.dto.VoteResponseDto;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
@@ -32,6 +38,13 @@ public class ViewReviewStepDefinition {
     CourseOfferingRepository courseOfferingRepository;
 
     private Map<Integer, Integer> fakeToRealIdMap = new HashMap<>();
+
+    @Autowired
+    private TestRestTemplate client;
+    private VoteRequestDto voteRequest;
+    private ResponseEntity<ReviewResponseDto> response;
+    private ResponseEntity<String> error;
+    private ResponseEntity<List> responseList;
     
     @Given("the following reviews exist in the system:")
     public void the_following_reviews_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
@@ -82,8 +95,7 @@ public class ViewReviewStepDefinition {
     
     @When("the user attempts to view reviews for the course {string}")
     public void the_user_attempts_to_view_reviews_for_the_course(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        responseList = client.getForEntity("/getreviews/" + string, List.class);
     }
     @Then("the user should display the following reviews {string} with the ratings {string}, upvotes {string}, and downvotes {string}")
     public void the_user_should_display_the_following_reviews_with_the_ratings_upvotes_and_downvotes(String string, String string2, String string3, String string4) {
@@ -94,7 +106,7 @@ public class ViewReviewStepDefinition {
     @When("the user {string} unsuccessfully attempts to view reviews for the course {string}")
     public void the_user_unsuccessfully_attempts_to_view_reviews_for_the_course(String string, String string2) {
         // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        error = client.getForEntity("/getreviews/" + string, String.class);
     }
     @Then("the system displays the error message {string} to the user")
     public void the_system_displays_the_error_message_to_the_user(String string) {
