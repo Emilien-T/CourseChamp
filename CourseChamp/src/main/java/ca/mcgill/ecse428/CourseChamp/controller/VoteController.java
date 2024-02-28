@@ -43,7 +43,7 @@ public class VoteController {
     return createVote(email, id, false);
   }
 
-  @DeleteMapping("/deletevote")
+  @DeleteMapping("/deletevote/")
   public void deleteReview(@RequestParam String studentEmail, @RequestParam int reviewId){
     voteService.deleteVote(studentEmail, reviewId);
   }

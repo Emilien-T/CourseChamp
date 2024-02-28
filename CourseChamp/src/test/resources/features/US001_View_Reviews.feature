@@ -59,7 +59,7 @@ Feature: View and React to Reviews
   Scenario Outline: User removes an upvote from a review
     Given the user "<email>" has upvoted the review with id "<reviewId>"
     When the user "<email>" selects the option to remove the upvote from the review with the id "<reviewId>"
-    Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
+    Then the review "<reviewId>" after removal should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
     Examples: 
       | email             | reviewId | courseCode | rating | comment                        | upvotes | downvotes |
@@ -79,7 +79,7 @@ Feature: View and React to Reviews
   Scenario Outline: User removes an downvote from a review
     Given the user "<email>" has downvoted the review with id "<reviewId>"
     When the user "<email>" selects the option to remove the downvote from the review with the id "<reviewId>"
-    Then the review should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
+    Then the review "<reviewId>" after removal should display as "<courseCode>", "<rating>", "<comment>", "<upvotes>", "<downvotes>"
 
     Examples: 
       | email             | reviewId | courseCode | rating | comment                               | upvotes | downvotes |

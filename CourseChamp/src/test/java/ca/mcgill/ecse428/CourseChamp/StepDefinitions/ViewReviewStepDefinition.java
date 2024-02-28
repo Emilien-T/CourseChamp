@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNull;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
@@ -45,6 +47,7 @@ public class ViewReviewStepDefinition {
     private ResponseEntity<ReviewResponseDto> response;
     private ResponseEntity<String> stringResponse;
     private ResponseEntity<String> error;
+    private ResponseEntity<String> deleteResponse;
     private ResponseEntity<List> responseList;
     
     @Given("the following reviews exist in the system:")
@@ -108,6 +111,28 @@ public class ViewReviewStepDefinition {
         assertEquals(Integer.parseInt(string4), response.getBody().getUpvotes());
         assertEquals(Integer.parseInt(string5), response.getBody().getDownvotes());
     }
+
+    @Then("the review {string} after removal should display as {string}, {string}, {string}, {string}, {string}")
+    public void the_review_after_removal_should_display_as(String string, String string2, String string3, String string4, String string5, String string6) {
+        Review review = reviewRepository.findReviewById(fakeToRealIdMap.get(Integer.parseInt(string)));
+        assertEquals(review.getCourseOffering().getCourse().getCourseCode(), string2);
+        assertEquals(review.getRating(), Integer.parseInt(string3));
+        assertEquals(review.getText(), string4);
+        Iterable<Vote> votes = voteRepository.findAll();
+        int upvotes = 0;
+        int downvotes = 0;
+        for(Vote v : votes){
+            if(v.getReview().getId() == Integer.parseInt(string)){
+                if(v.getType()){
+                    upvotes++;
+                }else{
+                    downvotes++;
+                }
+            }
+        }
+        assertEquals(upvotes, Integer.parseInt(string5));
+        assertEquals(downvotes, Integer.parseInt(string6));
+    }
     
     @When("the user attempts to view reviews for the course {string}")
     public void the_user_attempts_to_view_reviews_for_the_course(String string) {
@@ -157,6 +182,7 @@ public class ViewReviewStepDefinition {
     @When("the user {string} selects the option to remove the upvote from the review with the id {string}")
     public void the_user_selects_the_option_to_remove_the_upvote_from_the_review_with_the_id(String string, String string2) {
         // Write code here that turns the phrase above into concrete actions
-        response = client.postForEntity("/upvote/?email=" + string + "&id=" + fakeToRealIdMap.get(Integer.parseInt(string2)), null, ReviewResponseDto.class);
+        HttpEntity<String> requestEntity = new HttpEntity<>(null);
+        deleteResponse = client.exchange("/deletevote/?email=" + string + "&id=", HttpMethod.DELETE, requestEntity, String.class);
     }
 }
