@@ -1,6 +1,11 @@
 package ca.mcgill.ecse428.CourseChamp.repository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
 import ca.mcgill.ecse428.CourseChamp.model.Course;
+import ca.mcgill.ecse428.CourseChamp.model.Review;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
 
 public interface CourseRepository extends CrudRepository<Course, String> {
     

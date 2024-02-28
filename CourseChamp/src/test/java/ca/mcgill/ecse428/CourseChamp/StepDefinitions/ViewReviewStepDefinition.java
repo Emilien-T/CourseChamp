@@ -49,7 +49,7 @@ public class ViewReviewStepDefinition {
     @Autowired
     private TestRestTemplate client;
     private VoteRequestDto voteRequest;
-    private ResponseEntity<VoteResponseDto> response;
+    private ResponseEntity<ReviewResponseDto> response;
     private ResponseEntity<String> error;
     private ResponseEntity<List> responseList;
     
@@ -93,13 +93,16 @@ public class ViewReviewStepDefinition {
         requestDto.setReviewId(fakeToRealIdMap.get(Integer.parseInt(string2)));
         requestDto.setType(true);
 
-        response = client.postForEntity("/upvote/"+fakeToRealIdMap.get(Integer.parseInt(string2)), requestDto, VoteResponseDto.class);
+        response = client.postForEntity("/upvote/"+fakeToRealIdMap.get(Integer.parseInt(string2)), requestDto, ReviewResponseDto.class);
     }
     
     @Then("the review should display as {string}, {string}, {string}, {string}, {string}")
     public void the_review_should_display_as(String string, String string2, String string3, String string4, String string5) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        assertEquals(response.getBody().getClass(), string);
+        assertEquals(response.getBody().getClass(), Integer.parseInt(string2));
+        assertEquals(response.getBody().getClass(), Integer.parseInt(string3));
+        assertEquals(response.getBody().getUpvotes(), string4);
+        assertEquals(response.getBody().getDownvotes(), string5);
     }
     
     @When("the user attempts to view reviews for the course {string}")
