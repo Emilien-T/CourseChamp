@@ -5,26 +5,18 @@ import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
 import ca.mcgill.ecse428.CourseChamp.dto.CourseRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.CourseResponseDto;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.en.And;
 
 public class CreateCourseStepDefinition {
     @Autowired
     private CourseRepository courseRepository;
-    @Autowired
-    private AdminRepository adminRepository;
     @Autowired
     private TestRestTemplate client;
 
