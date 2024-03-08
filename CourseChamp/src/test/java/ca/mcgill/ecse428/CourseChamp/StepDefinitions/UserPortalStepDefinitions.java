@@ -25,9 +25,11 @@ import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,8 @@ public class UserPortalStepDefinitions {
 
     private AdminRequestDto adminRequest;
     private ResponseEntity<AdminResponseDto> adminResponse;
+
+    private ResponseEntity<List> responseList;
 
     private ResponseEntity<String> errorMessage;
 
@@ -201,6 +205,16 @@ public class UserPortalStepDefinitions {
         errorMessage = client.postForEntity("/admin/update", adminRequest, String.class);
     }
 
+    @When("the student {string} attempts to view their reviews")
+    public void the_student_attemps_to_view_their_reviews(String string){
+        responseList = client.getForEntity("/student/getreviews/" + string, List.class);
+    }
+
+    @When("the student {string} unsuccessfully attempts to view their reviews")
+    public void the_student_unsuccessfully_attemps_to_view_their_reviews(String string){
+        errorMessage = client.getForEntity("/student/getreviews/" + string, String.class);
+    }
+
     @Then("the student shall have the new username {string}")
     public void the_student_shall_have_the_new_username(String string){
         assertEquals(string.trim(), studentResponse.getBody().getName());
@@ -241,6 +255,25 @@ public class UserPortalStepDefinitions {
     @Then("the system shall display the error message {string}")
     public void the_system_shall_display_the_error_message(String string){
         assertEquals(string.trim(), errorMessage.getBody());
+    }
+
+    @Then("the system shall display the following reviews to the student")
+    public void the_system_shall_display_the_following_reviews_to_the_student(io.cucumber.datatable.DataTable dataTable){
+        ArrayList<Map<String, String>> rows = (ArrayList<Map<String, String>>)dataTable.asMaps();
+
+        List<Map<String, Object>> responseBody = responseList.getBody();
+        for(Map<String, Object> map : responseBody){
+            for(int i = 0; i < rows.size(); i++){
+                if(rows.get(i).get("reviewId").equals(map.get("reviewId"))){
+                    assertEquals(rows.get(i).get("courseCode"), map.get("courseCode"));
+                    assertEquals(rows.get(i).get("semester"), map.get("semester"));
+                    assertEquals(rows.get(i).get("student"), map.get("student"));
+                    assertEquals(Integer.parseInt(rows.get(i).get("rating")), map.get("rating"));
+                    assertEquals(rows.get(i).get("comment"), map.get("comment"));
+                    break;
+                }
+            }
+        }
     }
 
 
