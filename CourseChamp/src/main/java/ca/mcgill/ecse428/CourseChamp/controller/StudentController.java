@@ -31,7 +31,7 @@ public class StudentController {
             @ApiResponse(responseCode = "404", description = "Student not found.", content = {
                     @Content(mediaType = "String") })
     })
-    @GetMapping(value = { "/student", "/student/" })
+    @GetMapping(value = { "/student/{email}", "/student/{email}/" })
     public ResponseEntity<StudentResponseDto> getStudentByEmail(@RequestParam String email) {
         return new ResponseEntity<StudentResponseDto>(new StudentResponseDto(studentService.getStudentByEmail(email)),
                 HttpStatus.OK);
