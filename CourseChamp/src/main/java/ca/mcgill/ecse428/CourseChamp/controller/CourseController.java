@@ -69,7 +69,7 @@ public class CourseController {
         @ApiResponse(responseCode = "400", description = "Invalid request", content = {
                 @Content(mediaType = "String") })
     })
-    @PutMapping("/course/{courseCode}/update")
+    @PutMapping("/course/{courseCode}/update/")
     public ResponseEntity<CourseResponseDto> updateCourse(@PathVariable String courseCode,
         @Valid @RequestBody CourseRequestDto courseRequest) {
     Course course = courseService.updateCourse(courseCode, courseRequest.toModel());

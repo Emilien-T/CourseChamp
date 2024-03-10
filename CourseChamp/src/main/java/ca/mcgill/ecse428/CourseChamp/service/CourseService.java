@@ -76,9 +76,8 @@ public class CourseService {
      */
     @Transactional
     public Course updateCourse(String courseCode, Course updatedCourse) {
-        Optional<Course> optionalCourse = courseRepository.findById(courseId);
-        if (optionalCourse.isPresent()) {
-            Course course = optionalCourse.get();
+       Course optionalCourse = courseRepository.findCourseByCourseCode(courseCode);
+        if (optionalCourse != null) {
             
             // Update properties with values from updatedCourse
 
@@ -86,12 +85,17 @@ public class CourseService {
             // course.setDepartment(updatedCourse.getDepartment());
             // course.setCourseCode(updatedCourse.getCourseCode());
             // course.setCourseNumber(updatedCourse.getCourseNumber());
-            course.setName(updatedCourse.getName());
-            course.setDescription(updatedCourse.getDescription());
-            course.setSyllabus(updatedCourse.getSyllabus());
-            
+            if (updatedCourse.getName()!= null) {
+            optionalCourse.setName(updatedCourse.getName());
+            }
+            if (updatedCourse.getDescription()!= null) {
+            optionalCourse.setDescription(updatedCourse.getDescription());
+            }
+            if (updatedCourse.getSyllabus()!= null) {
+            optionalCourse.setSyllabus(updatedCourse.getSyllabus());
+            }
             // Save and return the updated course
-            return courseRepository.save(course);
+            return courseRepository.save(optionalCourse);
         } else {
             throw new CourseChampException(HttpStatus.NOT_FOUND, "Course not found");
         }
