@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewRequestDto;
@@ -13,7 +15,10 @@ import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Optional;
 
 public class ManageReviewStepDefinition {
 
@@ -63,17 +68,18 @@ public class ManageReviewStepDefinition {
 
     @Then("the system shall display the {string} to the student after")
     public void the_system_shall_display_the_to_the_student_after(String string) {
+        assertEquals(responseError.getStatusCode(), HttpStatus.BAD_REQUEST);
         assertNotNull(responseError);
         assertNotNull(responseError.getBody());
         assertEquals(string, responseError.getBody());
     }
 
 
-    @When("the student {string} attempts to change the rating of the review {string} to {int}")
-    public void the_student_attempts_to_change_the_rating_of_the_review_to(String string, String string2, Integer int1) {
+    @When("the student {string} attempts to change the rating of the review {string} to {string}")
+    public void the_student_attempts_to_change_the_rating_of_the_review_to(String string, String string2, String string3) {
         ReviewRequestDto reviewRequestDto = new ReviewRequestDto();
 
-        reviewRequestDto.setRating(int1);
+        reviewRequestDto.setRating(Integer.parseInt(string3));
         reviewRequestDto.setStudentEmail(string);
 
         HttpEntity<ReviewRequestDto> requestEntity = new HttpEntity<>(reviewRequestDto);
@@ -81,20 +87,20 @@ public class ManageReviewStepDefinition {
     }
 
 
-    @Then("the review {string} shall have a new rating {int}")
-    public void the_review_shall_have_a_new_rating(String string, Integer int1) {
+    @Then("the review {string} shall have a new rating {string}")
+    public void the_review_shall_have_a_new_rating(String string, String string2) {
         assertNotNull(response);
         assertNotNull(response.getBody());
-        assertEquals(int1, response.getBody().getRating());
+        assertEquals(Integer.parseInt(string2), (Integer) response.getBody().getRating());
         assertEquals(Integer.parseInt(string), response.getBody().getId());
     }
 
 
-    @When("the student {string} unsuccessfully attempts to change the rating of the review {string} to {int}")
-    public void the_student_unsuccessfully_attempts_to_change_the_rating_of_the_review_to(String string, String string2, Integer int1) {
+    @When("the student {string} unsuccessfully attempts to change the rating of the review {string} to {string}")
+    public void the_student_unsuccessfully_attempts_to_change_the_rating_of_the_review_to(String string, String string2, String string3) {
         ReviewRequestDto reviewRequestDto = new ReviewRequestDto();
 
-        reviewRequestDto.setRating(int1);
+        reviewRequestDto.setRating(Integer.parseInt(string3));
         reviewRequestDto.setStudentEmail(string);
 
         HttpEntity<ReviewRequestDto> requestEntity = new HttpEntity<>(reviewRequestDto);
@@ -146,8 +152,9 @@ public class ManageReviewStepDefinition {
 
     @Then("the review {string} shall no longer exist in the system")
     public void the_review_shall_no_longer_exist_in_the_system(String string) {
-        Review review = reviewRepository.findById(Integer.parseInt(string)).get();
-        assertNull(review);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        Optional<Review> review = reviewRepository.findById(Integer.parseInt(string));
+        assertTrue(review.isEmpty());
     }
 
 
