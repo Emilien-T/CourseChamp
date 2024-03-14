@@ -165,5 +165,25 @@ public class ReviewController {
         return StreamSupport.stream(reviewService.findReviewsByCourseCode(courseCode).spliterator(), false).map(ReviewResponseDto::new).collect(Collectors.toList());
     }
 
+    @PutMapping("/review/{id}")
+    public ResponseEntity<ReviewResponseDto> updateReview(@PathVariable int id, @RequestBody ReviewRequestDto reviewRequestDto) {
+        try {
+            Review updatedReview = reviewService.updateReview(id, reviewRequestDto.getText(), reviewRequestDto.getRating(), reviewRequestDto.getSemester());
+            return new ResponseEntity<>(new ReviewResponseDto(updatedReview), HttpStatus.OK);
+        } catch (CourseChampException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/review/{id}")
+    public ResponseEntity<HttpStatus> deleteReview(@PathVariable int id) {
+        try {
+            reviewService.deleteReview(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (CourseChampException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
