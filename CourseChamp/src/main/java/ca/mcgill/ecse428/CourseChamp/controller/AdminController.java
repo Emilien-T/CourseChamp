@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ca.mcgill.ecse428.CourseChamp.dto.AdminRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.AdminResponseDto;
+import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.service.AdminService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,6 +59,18 @@ public class AdminController {
         AdminResponseDto responseBody = new AdminResponseDto(Admin);
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
                                                                                        // returning a Response
+    }
+
+    /**
+     * Updates an Admin
+     * 
+     * @param StudentRequest - Pass in a admin dto using a JSON request
+     * @return the dto response of the updtated admin
+     */// returning a Response
+    @PutMapping("/admin/update")
+    public ResponseEntity<AdminResponseDto> updateAdmin(@Valid @RequestBody AdminRequestDto AdminRequest) {
+        AdminResponseDto responseBody = new AdminResponseDto(new Admin());
+        return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/delete/{email}")

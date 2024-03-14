@@ -153,7 +153,7 @@ public class UserPortalStepDefinitions {
 
         studentRequest.setEmail(string);
         
-
+        
         studentResponse = client.postForEntity("/student/update", studentRequest, StudentResponseDto.class);
     }
 

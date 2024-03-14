@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
+import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -66,6 +68,16 @@ public class StudentService {
         else
             throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
 
+    }
+
+    @Transactional
+    public Student updateStudentAccount(Student Student){
+        return new Student();
+    }
+
+    @Transactional
+    public List<Review> getReviewsOfStudent(String email){
+        return null;
     }
 
     /**

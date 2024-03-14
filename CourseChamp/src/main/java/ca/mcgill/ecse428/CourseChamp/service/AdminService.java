@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 

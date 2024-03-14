@@ -1,12 +1,19 @@
 package ca.mcgill.ecse428.CourseChamp.controller;
 
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
+import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.service.StudentService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,6 +44,11 @@ public class StudentController {
                 HttpStatus.OK);
     }
 
+    @GetMapping(value = { "/student/getreviews/" })
+    public ArrayList<ReviewResponseDto> getReviewsOfStudentByEmail(@RequestParam String email) {
+        return new ArrayList<ReviewResponseDto>();
+    }
+
     /**
      * Creates a new Student
      * 
@@ -56,7 +68,19 @@ public class StudentController {
 
         StudentResponseDto responseBody = new StudentResponseDto(Student);
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
-        }                                                                                    // returning a Response
+        }
+        
+    /**
+     * Updates a Student
+     * 
+     * @param StudentRequest - Pass in a student dto using a JSON request
+     * @return the dto response of the updtated Student
+     */// returning a Response
+    @PutMapping("/student/update")
+    public ResponseEntity<StudentResponseDto> updateStudent(@Valid @RequestBody StudentRequestDto StudentRequest) {
+        StudentResponseDto responseBody = new StudentResponseDto(new Student());
+        return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.OK);
+    }
                                                                                 
 
     @DeleteMapping("/student/delete/{email}")
