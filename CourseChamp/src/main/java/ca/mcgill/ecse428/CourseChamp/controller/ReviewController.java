@@ -170,9 +170,7 @@ public class ReviewController {
         try {
             Review updatedReview = reviewService.updateReview(id, reviewRequestDto.getText(), reviewRequestDto.getRating(), reviewRequestDto.getSemester());
             return new ResponseEntity<>(new ReviewResponseDto(updatedReview), HttpStatus.OK);
-        } catch (CourseChampException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        } 
     }
 
     @DeleteMapping("/review/{id}")
@@ -180,9 +178,7 @@ public class ReviewController {
         try {
             reviewService.deleteReview(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (CourseChampException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        } 
     }
 
 
