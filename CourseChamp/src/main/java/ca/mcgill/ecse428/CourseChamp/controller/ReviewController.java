@@ -167,22 +167,15 @@ public class ReviewController {
 
     @PutMapping("/review/{id}")
     public ResponseEntity<ReviewResponseDto> updateReview(@PathVariable int id, @RequestBody ReviewRequestDto reviewRequestDto) {
-        try {
             Review updatedReview = reviewService.updateReview(id, reviewRequestDto.getText(), reviewRequestDto.getRating(), reviewRequestDto.getSemester());
             return new ResponseEntity<>(new ReviewResponseDto(updatedReview), HttpStatus.OK);
-        } finally {
-            // Add your code here
-        }
+        
     }
 
     @DeleteMapping("/review/{id}")
     public ResponseEntity<HttpStatus> deleteReview(@PathVariable int id) {
-        try {
             reviewService.deleteReview(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } finally {
-            // Add your code here
-        }
     }
 
 
