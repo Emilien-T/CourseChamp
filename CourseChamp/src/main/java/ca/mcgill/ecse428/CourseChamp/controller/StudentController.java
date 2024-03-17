@@ -2,8 +2,11 @@ package ca.mcgill.ecse428.CourseChamp.controller;
 
 import jakarta.validation.Valid;
 
+import static org.junit.jupiter.api.DynamicTest.stream;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +49,7 @@ public class StudentController {
 
     @GetMapping(value = { "/student/getreviews/{email}, /student/getreviews/{email}/" })
     public ResponseEntity<ArrayList<ReviewResponseDto>> getReviewsOfStudentByEmail(@RequestParam String email) {
-        ArrayList<Review> reviews = (ArrayList)studentService.getReviewsOfStudent(email);
+        List<Review> reviews = studentService.getReviewsOfStudent(email);
         ArrayList<ReviewResponseDto> reviewResponses = new ArrayList<ReviewResponseDto>();
         for(Review r : reviews){
             reviewResponses.add(new ReviewResponseDto(r));
@@ -66,10 +69,10 @@ public class StudentController {
                     @Content(mediaType = "String") })
     })
     @PostMapping("/student/create")
-    public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto StudentRequest) {
+    public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto studentRequest) {
         // 1. You pass in a request, validates the constraints, creates an Student if they pass
         // 2. You use the service class to check if it exists and save it
-        Student Student = studentService.createStudentAccount(StudentRequest.toModel()) ;
+        Student Student = studentService.createStudentAccount(studentRequest.toModel()) ;
 
         StudentResponseDto responseBody = new StudentResponseDto(Student);
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
@@ -78,12 +81,13 @@ public class StudentController {
     /**
      * Updates a Student
      * 
-     * @param email - Pass in the email argument by using /student={?email}
+     * @param StudentRequest - Pass in a student dto using a JSON request
      * @return the dto response of the updtated Student
      */// returning a Response
     @PutMapping("/student/update/{email}")
-    public ResponseEntity<StudentResponseDto> updateStudent(@RequestParam String email) {
-        StudentResponseDto responseBody = new StudentResponseDto(studentService.updateStudentAccount(studentService.getStudentByEmail(email)));
+    public ResponseEntity<StudentResponseDto> updateStudent(@Valid @RequestBody StudentRequestDto studentRequest) {
+        Student s = studentService.getStudentByEmail(studentRequest.getEmail());
+        StudentResponseDto responseBody = new StudentResponseDto(studentService.updateStudentAccount(s));
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.OK);
     }
                                                                                 

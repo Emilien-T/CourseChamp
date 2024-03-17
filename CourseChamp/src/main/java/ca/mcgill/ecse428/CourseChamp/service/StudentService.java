@@ -9,6 +9,7 @@ import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
+import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ public class StudentService {
     StudentRepository studentRepository;
     @Autowired
     AdminRepository adminRepository;
+     @Autowired
+    ReviewRepository reviewRepository;
 
     /**
      * Service method to fetch all existing students in the database
@@ -81,7 +84,22 @@ public class StudentService {
 
     @Transactional
     public List<Review> getReviewsOfStudent(String email){
-        return null;
+        if (email == null || email.isEmpty()) {
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "email cannot be null or empty");
+        }
+        
+        Iterable<Review> reviews = reviewRepository.findAll();
+        ArrayList<Review> reviewsOfStudent = new ArrayList<Review>();
+        for (Review r : reviews) {
+            if (r.getStudent() != null && r.getStudent() != null && r.getStudent().getEmail().equals(email)) {
+                reviewsOfStudent.add(r);
+            }
+        }
+        if (reviewsOfStudent.isEmpty()) {
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "No reviews found for this student.");
+        }
+
+        return reviewsOfStudent;
     }
 
     /**
