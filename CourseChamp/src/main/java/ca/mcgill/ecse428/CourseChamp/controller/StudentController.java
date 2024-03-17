@@ -42,7 +42,7 @@ public class StudentController {
                     @Content(mediaType = "String") })
     })
     @GetMapping(value = { "/student/{email}", "/student/{email}/" })
-    public ResponseEntity<StudentResponseDto> getStudentByEmail(@RequestParam String email) {
+    public ResponseEntity<StudentResponseDto> getStudentByEmail(@PathVariable String email) {
         return new ResponseEntity<StudentResponseDto>(new StudentResponseDto(studentService.getStudentByEmail(email)),
                 HttpStatus.OK);
     }
