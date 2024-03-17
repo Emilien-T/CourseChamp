@@ -44,9 +44,14 @@ public class StudentController {
                 HttpStatus.OK);
     }
 
-    @GetMapping(value = { "/student/getreviews/" })
-    public ArrayList<ReviewResponseDto> getReviewsOfStudentByEmail(@RequestParam String email) {
-        return new ArrayList<ReviewResponseDto>();
+    @GetMapping(value = { "/student/getreviews/{email}, /student/getreviews/{email}/" })
+    public ResponseEntity<ArrayList<ReviewResponseDto>> getReviewsOfStudentByEmail(@RequestParam String email) {
+        ArrayList<Review> reviews = (ArrayList)studentService.getReviewsOfStudent(email);
+        ArrayList<ReviewResponseDto> reviewResponses = new ArrayList<ReviewResponseDto>();
+        for(Review r : reviews){
+            reviewResponses.add(new ReviewResponseDto(r));
+        }
+        return new ResponseEntity<ArrayList<ReviewResponseDto>>(reviewResponses, HttpStatus.OK);
     }
 
     /**
@@ -73,12 +78,12 @@ public class StudentController {
     /**
      * Updates a Student
      * 
-     * @param StudentRequest - Pass in a student dto using a JSON request
+     * @param email - Pass in the email argument by using /student={?email}
      * @return the dto response of the updtated Student
      */// returning a Response
-    @PutMapping("/student/update")
-    public ResponseEntity<StudentResponseDto> updateStudent(@Valid @RequestBody StudentRequestDto StudentRequest) {
-        StudentResponseDto responseBody = new StudentResponseDto(new Student());
+    @PutMapping("/student/update/{email}")
+    public ResponseEntity<StudentResponseDto> updateStudent(@RequestParam String email) {
+        StudentResponseDto responseBody = new StudentResponseDto(studentService.updateStudentAccount(studentService.getStudentByEmail(email)));
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.OK);
     }
                                                                                 

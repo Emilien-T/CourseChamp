@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
+import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
@@ -71,8 +72,11 @@ public class StudentService {
     }
 
     @Transactional
-    public Student updateStudentAccount(Student Student){
-        return new Student();
+    public Student updateStudentAccount(Student student){
+        Student a = getStudentByEmail(student.getEmail());
+        a.setPassword(student.getPassword());
+        a.setUsername(student.getUsername());
+        return studentRepository.save(a);
     }
 
     @Transactional
