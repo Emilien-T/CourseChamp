@@ -34,8 +34,8 @@ public class AdminController {
             @ApiResponse(responseCode = "404", description = "Admin not found.", content = {
                     @Content(mediaType = "String") })
     })
-    @GetMapping(value = { "/admin", "/admin/" })
-    public ResponseEntity<AdminResponseDto> getAdminByEmail(@RequestParam String email) {
+    @GetMapping(value = { "/admin/{email}", "/admin/{email}/" })
+    public ResponseEntity<AdminResponseDto> getAdminByEmail(@PathVariable String email) {
         return new ResponseEntity<AdminResponseDto>(new AdminResponseDto(adminService.getAdminByEmail(email)),
                 HttpStatus.OK);
     }

@@ -12,14 +12,22 @@
           <div class="msg"><p>{{ email }}</p></div>
         </div>
         <div class="form-group">
+          <label for="email">Current Username:</label>
+          <div class="msg"><p>{{ currentUsername }}</p></div>
           <label for="username">New Username:</label>
           <input type="text" id="username" v-model="username" required>
         </div>
         <div class="form-group">
+          <label for="password">Old Password:</label>
+          <input type="password" id="oldPassword" v-model="enteredPassword" required>
           <label for="password">New Password:</label>
-          <input type="password" id="password" v-model="password" required>
+          <input type="password" id="newPassword" v-model="password" required>
+          <label for="password">Confirm New Password:</label>
+          <input type="password" id="confirmPassword" v-model="confirmPassword" required>
         </div>
-        <div class="form-group">
+        <div v-if='isStudent' class="form-group">
+          <label for="email">Current Major:</label>
+          <div class="msg"><p>{{ currentMajor }}</p></div>
           <label>Change Major:</label>
           <div>
             <label>
@@ -37,7 +45,8 @@
             </label>
           </div>
         </div>
-        <button type="submit" :disabled="!email || !username || !password || !selectedMajor" @click="submitForm">Sign Up</button>
+        <button type="submit" @click="submitForm">Submit Changes</button>
+        <button @click="redirectToHome">Return to Homepage</button>
         <div class="msg"><p>{{ msg }}</p></div>
       </form>
     </div>
@@ -66,29 +75,41 @@
     data() {
       return {
         email: Vue.prototype.logginInEmail,
+        currentUsername: '',
+        currentPassword: '',
+        enteredPassword: '',
+        confirmPassowrd: '',
+        currentMajor: '',
         username: '',
         password: '',
         selectedMajor: '',
         msg: '',
+        isStudent: Vue.prototype.userType === 'student',
       };
     },
     mounted() {
-      // Assuming you're making an API call to fetch reviews
-      this.fetchUserInfo(this.email);
+      // Assuming you're making an API call to fetch info
+      this.fetchUserInfo();
+      console.log(this.isStudent);
     },
     methods: {
-      redirectToLogin(){
-        this.$router.push('/login')
+      redirectToHome(){
+        if(Vue.prototype.userType === 'student'){
+          this.$router.push('/studenthome')
+        } else {
+          this.$router.push('/adminhome')
+        }
       },
-      fetchUserInfo(userEmail) {
-        // Assuming you're making an API call to fetch reviews
+      fetchUserInfo() {
+        // Assuming you're making an API call to fetch info
         // Replace this with your actual API call
-        axiosClient.get('/update')
+        console.log('/' + Vue.prototype.userType + '/' + this.email);
+        axiosClient.get('/' + Vue.prototype.userType + '/' + this.email)
           .then(response =>{
-            this.username = response.data.username;
-            this.password = response.data.password;
-            this.selectedMajor = response.data.major;
-            console.log(this.reviews);
+            this.currentUsername = response.data.name;
+            this.currentPassword = response.data.password;
+            this.currentMajor = response.data.major;
+            console.log(response.data);
           })
           .catch(error => {
             console.error('Error fetching user info:', error);
@@ -100,12 +121,19 @@
         const formData = {
           email: this.email,
           username: this.username,
-          password: this.password,
+          password: this.enteredPassword,
           major: this.selectedMajor // Selected major
         };
-        axiosClient.post('/student/create', formData).then(response =>{
-          this.msg = `Account created successfully!`
-          this.email = ''
+        
+        console.log(this.password !== this.confirmPassowrd);
+        if(this.password !== this.confirmPassowrd) {
+          this.msg = 'Password and confirmed password should match!'
+        } else {
+          if (this.enteredPassword !== this.currentPassword){
+          this.msg = 'Wrong Old Password!'
+          } else {
+        axiosClient.put('/'+ Vue.prototype.userType + '/update', formData).then(response =>{
+          this.msg = `Account parameters updated successfully!`
           this.username = ''
           this.password = ''
           this.selectedMajor = ''
@@ -115,6 +143,7 @@
             this.msg = error.response.data
           }
         })
+      }}
       }
     }
   };
