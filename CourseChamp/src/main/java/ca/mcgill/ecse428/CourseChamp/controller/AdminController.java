@@ -43,7 +43,7 @@ public class AdminController {
     /**
      * Creates a new Admin
      * 
-     * @param AdminRequest - Pass in a admin dto using a JSON request
+     * @param adminRequest - Pass in a admin dto using a JSON request
      * @return the dto response of the new Admin
      */
     @ApiResponses(value = {
@@ -64,12 +64,12 @@ public class AdminController {
     /**
      * Updates an Admin
      * 
-     * @param AdminRequest - Pass in a admin dto using a JSON request
+     * @param adminRequest - Pass in a admin dto using a JSON request
      * @return the dto response of the updtated admin
      */// returning a Response
     @PutMapping("/admin/update")
     public ResponseEntity<AdminResponseDto> updateAdmin(@Valid @RequestBody AdminRequestDto adminRequest) {
-        Admin a = adminService.getAdminByEmail(adminRequest.getEmail());
+        Admin a = adminRequest.toModel();
         AdminResponseDto responseBody = new AdminResponseDto(adminService.updateAdminAccount(a));
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.OK);
     }

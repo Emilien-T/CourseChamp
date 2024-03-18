@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
+import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.service.StudentService;
@@ -60,7 +61,7 @@ public class StudentController {
     /**
      * Creates a new Student
      * 
-     * @param StudentRequest - Pass in a student dto using a JSON request
+     * @param studentRequest - Pass in a student dto using a JSON request
      * @return the dto response of the new Student
      */
     @ApiResponses(value = {
@@ -81,12 +82,12 @@ public class StudentController {
     /**
      * Updates a Student
      * 
-     * @param StudentRequest - Pass in a student dto using a JSON request
+     * @param studentRequest - Pass in a student dto using a JSON request
      * @return the dto response of the updtated Student
      */// returning a Response
     @PutMapping("/student/update")
     public ResponseEntity<StudentResponseDto> updateStudent(@Valid @RequestBody StudentRequestDto studentRequest) {
-        Student s = studentService.getStudentByEmail(studentRequest.getEmail());
+        Student s = studentRequest.toModel();
         StudentResponseDto responseBody = new StudentResponseDto(studentService.updateStudentAccount(s));
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.OK);
     }
