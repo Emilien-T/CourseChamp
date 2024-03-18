@@ -90,7 +90,6 @@
     mounted() {
       // Assuming you're making an API call to fetch info
       this.fetchUserInfo();
-      console.log(this.isStudent);
     },
     methods: {
       redirectToHome(){
@@ -103,7 +102,6 @@
       fetchUserInfo() {
         // Assuming you're making an API call to fetch info
         // Replace this with your actual API call
-        console.log('/' + Vue.prototype.userType + '/' + this.email);
         axiosClient.get('/' + Vue.prototype.userType + '/' + this.email)
           .then(response =>{
             this.currentUsername = response.data.name;
@@ -125,7 +123,6 @@
           major: this.selectedMajor // Selected major
         };
         
-        console.log(this.password !== this.confirmPassowrd);
         if(this.password !== this.confirmPassowrd) {
           this.msg = 'Password and confirmed password should match!'
         } else {
@@ -134,12 +131,14 @@
           } else {
         axiosClient.put('/'+ Vue.prototype.userType + '/update', formData).then(response =>{
           this.msg = `Account parameters updated successfully!`
+          console.log("yep")
           this.username = ''
           this.password = ''
           this.selectedMajor = ''
         }  
         ).catch(error =>{
           if(error.response.status != 500){
+          console.log("nope")
             this.msg = error.response.data
           }
         })

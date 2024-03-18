@@ -2,7 +2,6 @@ package ca.mcgill.ecse428.CourseChamp.controller;
 
 import jakarta.validation.Valid;
 
-import static org.junit.jupiter.api.DynamicTest.stream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,7 @@ public class StudentController {
                 HttpStatus.OK);
     }
 
-    @GetMapping(value = { "/student/getreviews/{email}, /student/getreviews/{email}/" })
+    @GetMapping(value = { "/student/getreviews/{email}", "/student/getreviews/{email}/" })
     public ResponseEntity<ArrayList<ReviewResponseDto>> getReviewsOfStudentByEmail(@RequestParam String email) {
         List<Review> reviews = studentService.getReviewsOfStudent(email);
         ArrayList<ReviewResponseDto> reviewResponses = new ArrayList<ReviewResponseDto>();
@@ -84,7 +83,7 @@ public class StudentController {
      * @param StudentRequest - Pass in a student dto using a JSON request
      * @return the dto response of the updtated Student
      */// returning a Response
-    @PutMapping("/student/update/{email}")
+    @PutMapping("/student/update")
     public ResponseEntity<StudentResponseDto> updateStudent(@Valid @RequestBody StudentRequestDto studentRequest) {
         Student s = studentService.getStudentByEmail(studentRequest.getEmail());
         StudentResponseDto responseBody = new StudentResponseDto(studentService.updateStudentAccount(s));
