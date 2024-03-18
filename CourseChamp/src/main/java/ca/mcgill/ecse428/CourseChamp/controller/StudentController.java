@@ -84,7 +84,7 @@ public class StudentController {
      * @param StudentRequest - Pass in a student dto using a JSON request
      * @return the dto response of the updtated Student
      */// returning a Response
-    @PutMapping("/student/update/{email}")
+    @PutMapping("/student/update")
     public ResponseEntity<StudentResponseDto> updateStudent(@Valid @RequestBody StudentRequestDto studentRequest) {
         Student s = studentService.getStudentByEmail(studentRequest.getEmail());
         StudentResponseDto responseBody = new StudentResponseDto(studentService.updateStudentAccount(s));

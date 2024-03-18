@@ -67,7 +67,7 @@ public class AdminController {
      * @param AdminRequest - Pass in a admin dto using a JSON request
      * @return the dto response of the updtated admin
      */// returning a Response
-    @PutMapping("/admin/update/{email}")
+    @PutMapping("/admin/update")
     public ResponseEntity<AdminResponseDto> updateAdmin(@Valid @RequestBody AdminRequestDto adminRequest) {
         Admin a = adminService.getAdminByEmail(adminRequest.getEmail());
         AdminResponseDto responseBody = new AdminResponseDto(adminService.updateAdminAccount(a));
