@@ -2,7 +2,6 @@ package ca.mcgill.ecse428.CourseChamp.controller;
 
 import jakarta.validation.Valid;
 
-import static org.junit.jupiter.api.DynamicTest.stream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,7 @@ public class StudentController {
                 HttpStatus.OK);
     }
 
-    @GetMapping(value = { "/student/getreviews/{email}, /student/getreviews/{email}/" })
+    @GetMapping(value = { "/student/getreviews/{email}", "/student/getreviews/{email}/" })
     public ResponseEntity<ArrayList<ReviewResponseDto>> getReviewsOfStudentByEmail(@RequestParam String email) {
         List<Review> reviews = studentService.getReviewsOfStudent(email);
         ArrayList<ReviewResponseDto> reviewResponses = new ArrayList<ReviewResponseDto>();
