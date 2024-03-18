@@ -12,23 +12,17 @@
           <div class="msg"><p>{{ email }}</p></div>
         </div>
         <div class="form-group">
-          <label for="email">Current Username:</label>
-          <div class="msg"><p>{{ currentUsername }}</p></div>
-          <label for="username">New Username:</label>
+          <label for="username">Username:</label>
           <input type="text" id="username" v-model="username" required>
         </div>
         <div class="form-group">
-          <label for="password">Old Password:</label>
-          <input type="password" id="oldPassword" v-model="enteredPassword" required>
-          <label for="password">New Password:</label>
+          <label for="password">New Password (Optional):</label>
           <input type="password" id="newPassword" v-model="password" required>
-          <label for="password">Confirm New Password:</label>
+          <label for="password">Confirm New Password (Optional):</label>
           <input type="password" id="confirmPassword" v-model="confirmPassword" required>
         </div>
         <div v-if='isStudent' class="form-group">
-          <label for="email">Current Major:</label>
-          <div class="msg"><p>{{ currentMajor }}</p></div>
-          <label>Change Major:</label>
+          <label>Major:</label>
           <div>
             <label>
               <input type="radio" v-model="selectedMajor" value="Software" required> Software
@@ -45,6 +39,8 @@
             </label>
           </div>
         </div>
+          <label for="password">Enter Current Password<br>to Submit Changes:</label>
+          <input type="password" id="oldPassword" v-model="enteredPassword" required>
         <button type="submit" @click="submitForm">Submit Changes</button>
         <button @click="redirectToHome">Return to Homepage</button>
         <div class="msg"><p>{{ msg }}</p></div>
@@ -75,11 +71,9 @@
     data() {
       return {
         email: Vue.prototype.logginInEmail,
-        currentUsername: '',
         currentPassword: '',
         enteredPassword: '',
-        confirmPassowrd: '',
-        currentMajor: '',
+        confirmPassword: '',
         username: '',
         password: '',
         selectedMajor: '',
@@ -104,9 +98,9 @@
         // Replace this with your actual API call
         axiosClient.get('/' + Vue.prototype.userType + '/' + this.email)
           .then(response =>{
-            this.currentUsername = response.data.name;
+            this.username = response.data.name;
             this.currentPassword = response.data.password;
-            this.currentMajor = response.data.major;
+            this.selectedMajor = response.data.major;
             console.log(response.data);
           })
           .catch(error => {
@@ -116,29 +110,35 @@
       submitForm() {
         // Handle form submission (e.g., send data to server)
         this.msg = ''
+        var passwordInForm = this.password
+        if(passwordInForm === ''){
+              passwordInForm = this.currentPassword
+            }
         const formData = {
           email: this.email,
           username: this.username,
-          password: this.enteredPassword,
+          password: passwordInForm,
           major: this.selectedMajor // Selected major
         };
         
-        if(this.password !== this.confirmPassowrd) {
-          this.msg = 'Password and confirmed password should match!'
+        if(this.enteredPassword !== this.currentPassword ) {
+          this.msg = 'Wrong current password entered!'
         } else {
-          if (this.enteredPassword !== this.currentPassword){
-          this.msg = 'Wrong Old Password!'
+          if ((this.password !== '' || this.confirmPassword !== '') && this.password !== this.confirmPassword){
+          this.msg = 'Password and confirmed password should match!'          
           } else {
         axiosClient.put('/'+ Vue.prototype.userType + '/update', formData).then(response =>{
           this.msg = `Account parameters updated successfully!`
-          console.log("yep")
+          console.log(response.data)
           this.username = ''
           this.password = ''
+          this.confirmPassword = ''
+          this.enteredPassword = ''
           this.selectedMajor = ''
+          this.fetchUserInfo();
         }  
         ).catch(error =>{
           if(error.response.status != 500){
-          console.log("nope")
             this.msg = error.response.data
           }
         })
@@ -150,98 +150,106 @@
   
   
   <style scoped>
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  
-  .signup-form {
-    padding-top: 200px;
-    width: 350px;
-    height: 550px;
-    margin-right: 20px; /* Add some spacing between the form and the image */
-    background-color: #cfd9d3;
-    padding: 20px;
-    border-radius: 10px;
-    font-size: 13px;
-  }
-  
-  .image-container {
-    flex-grow: 1; /* Allow the image container to grow to fill the available space */
-  }
-  
-  /* Your existing CSS styles */
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-  }
-  
-  button {
-      color: #ffffff; /* Set text color to white */
-      background-color: #2b4826; /* Set background color to green */
-      border: none; /* Remove border */
-      cursor: pointer; /* Change cursor to pointer on hover */
-      border-radius: 5px !important; /* Add border radius for rounded corners */
-      width: 200px;
-      height: 50px;
-      font-size: 16px;
-      text-align: center !important;
-    }
-  
-  button:hover {
-    background-color: #3a5f32; /* Change background color on hover */
-  }
-  
-  header {
-      position: fixed !important;
-      z-index: 1000;
-      width: 100%;
-      top: 0;
-    background-color: #476141; /* Set background color for the header */
-    color: #fff; /* Set text color to white */
-    padding: 20px; /* Add padding */
-    text-align: center; /* Center align text */
-    margin: 0;
-    height: 100px;
-  }
-  
-  .form-group {
-    margin-bottom: 10px; /* Decrease margin to make elements closer together */
-  }
-  
-  label {
-    font-weight: bold;
-    margin-bottom: 2px; /* Decrease margin to make labels closer to inputs */
-    margin-top: 2px;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
-    width: 250px; /* Adjust width to make the textboxes smaller */
-    height: 30px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px; /* Decrease margin to make inputs closer together */
-  }
-  
-  button {
-    color: #ffffff;
-    background-color: #2b4826;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px !important;
-    width: 100px;
-    margin-top: 10px; /* Decrease margin to make button closer to inputs */
-  }
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 100px;
+}
+
+.signup-form {
+  background-color: #cfd9d3;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.signup-form:hover {
+  transform: translateY(-10px);
+}
+
+.section-heading {
+  color: #2b4826;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #2b4826;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn {
+  background-color: #2b4826;
+  color: #ffffff;
+}
+
+.return-btn {
+  background-color: #476141;
+  color: #ffffff;
+}
+
+button:hover {
+  background-color: #3a5f32;
+}
+
+.image-container {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+header {
+  background-color: #476141;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  z-index: 1000;
+}
+
+.msg {
+  color: #2b4826;
+  font-style: italic;
+}
   </style>
   
