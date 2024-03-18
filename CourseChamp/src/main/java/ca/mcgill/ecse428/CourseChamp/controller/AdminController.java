@@ -52,9 +52,9 @@ public class AdminController {
                     @Content(mediaType = "String") })
     })
     @PostMapping("/admin/create")
-    public ResponseEntity<AdminResponseDto> createAdmin(@Valid @RequestBody AdminRequestDto AdminRequest) {
+    public ResponseEntity<AdminResponseDto> createAdmin(@Valid @RequestBody AdminRequestDto adminRequest) {
         // 1. You pass in a request, validates the constraints, creates an Admin if they pass
-        Admin Admin = adminService.createAdminAccount(AdminRequest.toModel()); // 2. You use the service class to check if it exists and save
+        Admin Admin = adminService.createAdminAccount(adminRequest.toModel()); // 2. You use the service class to check if it exists and save
                                                                                   // it
         AdminResponseDto responseBody = new AdminResponseDto(Admin);
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
@@ -64,12 +64,13 @@ public class AdminController {
     /**
      * Updates an Admin
      * 
-     * @param StudentRequest - Pass in a admin dto using a JSON request
+     * @param AdminRequest - Pass in a admin dto using a JSON request
      * @return the dto response of the updtated admin
      */// returning a Response
     @PutMapping("/admin/update")
-    public ResponseEntity<AdminResponseDto> updateAdmin(@Valid @RequestBody AdminRequestDto AdminRequest) {
-        AdminResponseDto responseBody = new AdminResponseDto(new Admin());
+    public ResponseEntity<AdminResponseDto> updateAdmin(@Valid @RequestBody AdminRequestDto adminRequest) {
+        Admin a = adminService.getAdminByEmail(adminRequest.getEmail());
+        AdminResponseDto responseBody = new AdminResponseDto(adminService.updateAdminAccount(a));
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.OK);
     }
 
