@@ -79,6 +79,7 @@ public class StudentService {
         Student a = getStudentByEmail(student.getEmail());
         a.setPassword(student.getPassword());
         a.setUsername(student.getUsername());
+        a.setMajor(student.getMajor());
         return studentRepository.save(a);
     }
 
