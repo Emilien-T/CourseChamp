@@ -244,4 +244,82 @@ public class ReviewServiceTests {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+
+
+
+    @Test
+    public void testUpdateReviewSuccess() {
+        int reviewId = 1;
+        String updatedText = "Updated review text";
+        int updatedRating = 4;
+        String updatedSemester = "Fall 2024";
+
+        Review review = new Review();
+        review.setId(reviewId);
+        review.setText("Initial review text");
+        review.setRating(3);
+        CourseOffering courseOffering = new CourseOffering();
+        courseOffering.setSemester("Winter 2024");
+        review.setCourseOffering(courseOffering);
+
+        when(reviewRepository.findReviewById(reviewId)).thenReturn(review);
+        when(reviewRepository.save(any(Review.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Review updatedReview = reviewService.updateReview(reviewId, updatedText, updatedRating, updatedSemester);
+
+        assertNotNull(updatedReview);
+        assertEquals(updatedText, updatedReview.getText());
+        assertEquals(updatedRating, updatedReview.getRating());
+        assertEquals(updatedSemester, updatedReview.getCourseOffering().getSemester());
+    }
+
+    @Test
+    public void testUpdateReviewInvalidParameters() {
+        int reviewId = 1;
+        String invalidText = "";
+        int invalidRating = 6;
+        String invalidSemester = null;
+
+        when(reviewRepository.findReviewById(reviewId)).thenReturn(new Review());
+
+        assertThrows(CourseChampException.class, () -> {
+            reviewService.updateReview(reviewId, invalidText, 3, "Fall 2024");
+        });
+
+        assertThrows(CourseChampException.class, () -> {
+            reviewService.updateReview(reviewId, "Valid Text", invalidRating, "Fall 2024");
+        });
+
+        assertThrows(CourseChampException.class, () -> {
+            reviewService.updateReview(reviewId, "Valid Text", 3, invalidSemester);
+        });
+    }
+
+
+
+
+    @Test
+    public void testDeleteReviewSuccess() {
+        int reviewId = 1;
+        Review review = new Review();
+        review.setId(reviewId);
+
+        when(reviewRepository.findReviewById(reviewId)).thenReturn(review);
+        doNothing().when(reviewRepository).delete(any(Review.class));
+
+        assertDoesNotThrow(() -> reviewService.deleteReview(reviewId));
+    }
+
+    @Test
+    public void testDeleteReviewNotFound() {
+        int reviewId = 1;
+
+        when(reviewRepository.findReviewById(reviewId)).thenReturn(null);
+
+        assertThrows(CourseChampException.class, () -> {
+            reviewService.deleteReview(reviewId);
+        });
+    }
 }
+
+
