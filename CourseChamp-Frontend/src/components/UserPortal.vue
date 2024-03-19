@@ -46,8 +46,16 @@
         <div class="msg"><p>{{ msg }}</p></div>
       </form>
     </div>
-    <div class="image-container">
-        <img src="../assets/people.png" alt="People Image">
+    <label v-if='isStudent'>Your Reviews:</label>
+    <div v-if='isStudent'>
+      <CourseRating
+        v-for="(review, index) in reviews"
+        :key="index"
+        :rating="review.rating"
+        :semester="review.semester"
+        :text="review.text"
+        :courseCode="review.courseCode"
+      />
     </div>
       </div>
     </div>
@@ -56,6 +64,7 @@
   </template>
   
   <script>
+  import CourseRating from './ViewReview.vue'; // Import your CourseRating component
   import axios from 'axios'
   import Vue from 'vue'
   var config = require('../../config')
@@ -68,6 +77,9 @@
     headers: { 'Access-Control-Allow-Origin': frontendUrl }
   })
   export default {
+    components: {
+      CourseRating,
+    },
     data() {
       return {
         email: Vue.prototype.logginInEmail,
@@ -79,11 +91,13 @@
         selectedMajor: '',
         msg: '',
         isStudent: Vue.prototype.userType === 'student',
+        reviews: [],
       };
     },
     mounted() {
       // Assuming you're making an API call to fetch info
       this.fetchUserInfo();
+      this.fetchReviews();
     },
     methods: {
       redirectToHome(){
@@ -106,6 +120,18 @@
           .catch(error => {
             console.error('Error fetching user info:', error);
           });
+      },
+      fetchReviews() {
+        if (Vue.prototype.userType !== 'admin'){
+          axiosClient.get('/getreviews/' + this.email)
+        .then(response =>{
+          this.reviews = response.data;
+          console.log(this.reviews);
+        })
+        .catch(error => {
+          console.error('Error fetching reviews:', error);
+        });
+        }
       },
       submitForm() {
         // Handle form submission (e.g., send data to server)

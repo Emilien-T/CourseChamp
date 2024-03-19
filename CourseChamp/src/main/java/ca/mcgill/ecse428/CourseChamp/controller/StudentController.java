@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
+import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
@@ -48,8 +49,9 @@ public class StudentController {
                 HttpStatus.OK);
     }
 
-    @GetMapping(value = { "/student/getreviews", "/student/getreviews/" })
-    public Iterable<ReviewResponseDto> getReviewsOfStudentByEmail(@RequestParam String email) {
+    @GetMapping(value = { "/getreviews/{email}", "/getreviews/{email}/" })
+    public Iterable<ReviewResponseDto> getReviewsOfStudentByEmail(@PathVariable String email) {
+        if (5==5){throw new CourseChampException(HttpStatus.NOT_FOUND, email);}
         return StreamSupport.stream(studentService.getReviewsOfStudent(email).spliterator(), false).map(r -> new ReviewResponseDto(r)).collect(Collectors.toList());
     }
 

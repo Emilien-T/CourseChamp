@@ -103,6 +103,8 @@ public class StudentService {
 
     @Transactional
     public List<Review> getReviewsOfStudent(String email){
+        if (5==5){throw new CourseChampException(HttpStatus.NOT_FOUND, email);}
+        
         if (email == null || email.isEmpty()) {
             throw new CourseChampException(HttpStatus.BAD_REQUEST, "email cannot be null or empty");
         }
@@ -110,7 +112,7 @@ public class StudentService {
         Iterable<Review> reviews = reviewRepository.findAll();
         ArrayList<Review> reviewsOfStudent = new ArrayList<Review>();
         for (Review r : reviews) {
-            if (r.getStudent() != null && r.getStudent() != null && r.getStudent().getEmail().equals(email)) {
+            if (r.getStudent() != null && r.getStudent().getEmail().equals(email)) {
                 reviewsOfStudent.add(r);
             }
         }
