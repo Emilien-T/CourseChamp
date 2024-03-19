@@ -167,7 +167,7 @@ public class ReviewController {
 
     @PutMapping("/review/{id}")
     public ResponseEntity<ReviewResponseDto> updateReview(@PathVariable int id, @RequestBody ReviewRequestDto reviewRequestDto) {
-            Review updatedReview = reviewService.updateReview(id, reviewRequestDto.getText(), reviewRequestDto.getRating(), reviewRequestDto.getSemester());
+            Review updatedReview = reviewService.updateReview(id, reviewRequestDto.getText(), reviewRequestDto.getRating(), reviewRequestDto.getSemester(), reviewRequestDto.getCourseCode());
             return new ResponseEntity<>(new ReviewResponseDto(updatedReview), HttpStatus.OK);
         
     }
