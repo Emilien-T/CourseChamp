@@ -28,7 +28,7 @@ Feature: User Portal
       | ECSE428    | F2020    |
       | MATH262    | F2022    |
       | MATH262    | W2023    |
-    And the following reviews exist in the system:
+    And the following reviews are in the system:
       | courseCode | semester | reviewId | student           | rating | comment                               |
       | ECSE222    | W2022    |        1 | student1@mail.com |      4 | Great course very informative!        |
       | ECSE222    | F2022    |        2 | student2@mail.com |      3 | Very hard exams :(                    |
@@ -43,7 +43,7 @@ Feature: User Portal
 
     Examples: 
       | email             | username |
-      | student1@mail.com | student4 |
+      | student1@mail.com | student0 |
       | student2@mail.com | student5 |
       | student3@mail.com | student6 |
 
@@ -72,12 +72,12 @@ Feature: User Portal
     Then the system shall display the error message "<errorMessage>"
 
     Examples: 
-      | email             | password                                    | errorMessage                                                                         |
-      | student1@mail.com |                                        2hI$ | Password must have 5-13 character                                                    |
-      | student2@mail.com | Thi$isWaaaaaaaaaaaaaaaaayTooLongOfAPassw0rd | Password must have 5-13 character                                                    |
-      | student3@mail.com | N0SpecilChar                                | Password contains at least one uppercase, lowercase and special character [!@#$%^+=] |
-      | student1@mail.com | noupperca$e                                 | Password contains at least one uppercase, lowercase and special character [!@#$%^+=] |
-      | student2@mail.com | NOLOWERCA$E                                 | Password contains at least one uppercase, lowercase and special character [!@#$%^+=] |
+      | email             | password                                    | errorMessage                                                                                                    |
+      | student1@mail.com |                                        2hI$ | Password must have 5-13 character                                                                               |
+      | student2@mail.com | Thi$isWaaaaaaaaaaaaaaaaayTooLongOfAPassw0rd | Password must have 5-13 character                                                                               |
+      | student3@mail.com | N0SpecilChar                                | Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=] |
+      | student1@mail.com | noupperca$e                                 | Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=] |
+      | student2@mail.com | NOLOWERCA$E                                 | Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=] |
 
   Scenario Outline: Student successfully changes their major (Alternate Flow)
     When the student "<email>" attempts to change their major to "<major>"
@@ -124,12 +124,12 @@ Feature: User Portal
     Then the system shall display the error message "<errorMessage>"
 
     Examples: 
-      | email           | password                                    | errorMessage                                                                         |
-      | admin1@mail.com |                                        2hI$ | Password must have 5-13 character                                                    |
-      | admin2@mail.com | Thi$isWaaaaaaaaaaaaaaaaayTooLongOfAPassw0rd | Password must have 5-13 character                                                    |
-      | admin3@mail.com | N0SpecilChar                                | Password contains at least one uppercase, lowercase and special character [!@#$%^+=] |
-      | admin1@mail.com | noupperca$e                                 | Password contains at least one uppercase, lowercase and special character [!@#$%^+=] |
-      | admin2@mail.com | NOLOWERCA$E                                 | Password contains at least one uppercase, lowercase and special character [!@#$%^+=] |
+      | email           | password                                    | errorMessage                                                                                                    |
+      | admin1@mail.com |                                        2hI$ | Password must have 5-13 character                                                                               |
+      | admin2@mail.com | Thi$isWaaaaaaaaaaaaaaaaayTooLongOfAPassw0rd | Password must have 5-13 character                                                                               |
+      | admin3@mail.com | N0SpecilChar                                | Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=] |
+      | admin1@mail.com | noupperca$e                                 | Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=] |
+      | admin2@mail.com | NOLOWERCA$E                                 | Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=] |
 
   Scenario: Student successfully views their reviews #1 (Alternate Flow)
     When the student "student1@mail.com" attempts to view their reviews
@@ -153,4 +153,4 @@ Feature: User Portal
 
   Scenario: Student unsuccessfully view their reviews (Error Flow)
     When the student "student4@mail.com" unsuccessfully attempts to view their reviews
-    Then the system shall display the error message "No reviews found"
+    Then the system shall display the error message "No reviews found for this student."

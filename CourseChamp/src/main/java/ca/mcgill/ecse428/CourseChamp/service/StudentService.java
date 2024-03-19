@@ -13,6 +13,7 @@ import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class StudentService {
@@ -76,11 +77,28 @@ public class StudentService {
 
     @Transactional
     public Student updateStudentAccount(Student student){
-        Student a = getStudentByEmail(student.getEmail());
-        a.setPassword(student.getPassword());
-        a.setUsername(student.getUsername());
-        a.setMajor(student.getMajor());
-        return studentRepository.save(a);
+        Student s = getStudentByEmail(student.getEmail());
+        Student s2 = studentRepository.findStudentByUsername(student.getUsername());
+        if(s2 != null && !student.getEmail().equals(s2.getEmail())){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
+        }
+        if (adminRepository.findAdminByUsername(student.getUsername()) != null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
+        }
+
+        // Regular expression to match at least one lowercase letter
+        String regex = ".*[a-z].*";
+        
+        // Check if the string matches the regex
+        boolean containsLowercase = Pattern.matches(regex, student.getPassword());
+        if(!containsLowercase){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=]");
+        }
+        
+        s.setPassword(student.getPassword());
+        s.setUsername(student.getUsername());
+        s.setMajor(student.getMajor());
+        return studentRepository.save(s);
     }
 
     @Transactional

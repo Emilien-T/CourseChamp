@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,14 +48,9 @@ public class StudentController {
                 HttpStatus.OK);
     }
 
-    @GetMapping(value = { "/student/getreviews/{email}", "/student/getreviews/{email}/" })
-    public ResponseEntity<ArrayList<ReviewResponseDto>> getReviewsOfStudentByEmail(@RequestParam String email) {
-        List<Review> reviews = studentService.getReviewsOfStudent(email);
-        ArrayList<ReviewResponseDto> reviewResponses = new ArrayList<ReviewResponseDto>();
-        for(Review r : reviews){
-            reviewResponses.add(new ReviewResponseDto(r));
-        }
-        return new ResponseEntity<ArrayList<ReviewResponseDto>>(reviewResponses, HttpStatus.OK);
+    @GetMapping(value = { "/student/getreviews", "/student/getreviews/" })
+    public Iterable<ReviewResponseDto> getReviewsOfStudentByEmail(@RequestParam String email) {
+        return StreamSupport.stream(studentService.getReviewsOfStudent(email).spliterator(), false).map(r -> new ReviewResponseDto(r)).collect(Collectors.toList());
     }
 
     /**
