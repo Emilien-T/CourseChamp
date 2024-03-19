@@ -2,7 +2,9 @@ package ca.mcgill.ecse428.CourseChamp.service;
 
 import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
+import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.model.Review;
+import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private CourseOfferingRepository courseOfferingRepository;
 
     /**
      * 
@@ -100,18 +105,18 @@ public class ReviewService {
     }
 
     @Transactional
-    public Review updateReview(int reviewId, String text, int rating, String semester) {
+    public Review updateReview(int reviewId, String text, int rating, String semester, String courseCode) {
         // Find the review by id
         Review review = getReviewById(reviewId);
 
         // Check if the text is not null or empty
         if (text == null || text.trim().isEmpty()) {
-            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Text cannot be null or empty");
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Text cannot be blank.");
         }
 
         // Check if the rating is between 1 and 5
         if (rating < 1 || rating > 5) {
-            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Rating must be between 1-5");
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Rating must be between 1-5.");
         }
 
         // Check if the semester is not null or empty
@@ -122,7 +127,19 @@ public class ReviewService {
         // Update the text, rating, and semester
         review.setText(text);
         review.setRating(rating);
-        review.getCourseOffering().setSemester(semester);
+        Iterable<CourseOffering> courseOfferings = courseOfferingRepository.findAll();
+        CourseOffering newCourseOffering = null;
+        for(CourseOffering c : courseOfferings){
+            if(c.getCourse().getCourseCode().equals(courseCode) && c.getSemester().equals(semester)){
+                newCourseOffering = c;
+                break;
+            }
+        }
+
+        if(newCourseOffering == null){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Semester not found.");
+        }
+        review.setCourseOffering(newCourseOffering);
 
         // Save the updated review back to the repository
         return reviewRepository.save(review);

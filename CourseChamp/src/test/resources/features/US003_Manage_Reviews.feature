@@ -22,7 +22,7 @@ Feature: Manage Reviews
       | ECSE428    | F2020    |
       | MATH262    | F2022    |
       | MATH262    | W2023    |
-    And the following reviews exist in the system:
+    And the following reviews currently exist in the system:
       | courseCode | semester | reviewId | student           | rating | comment                               |
       | ECSE222    | W2022    |        1 | student1@mail.com |      4 | Great course very informative!        |
       | ECSE222    | F2022    |        2 | student2@mail.com |      3 | Very hard exams :(                    |
@@ -86,10 +86,10 @@ Feature: Manage Reviews
     Then the system shall display the "<errorMessage>" to the student after
 
     Examples: 
-      | email             | reviewId | semester | errorMessage       |
-      | student1@mail.com |        1 | F1999    | Semester not found |
-      | student2@mail.com |        2 | W1965    | Semester not found |
-      | student3@mail.com |        3 | F1994    | Semester not found |
+      | email             | reviewId | semester | errorMessage        |
+      | student1@mail.com |        1 | F1999    | Semester not found. |
+      | student2@mail.com |        2 | W1965    | Semester not found. |
+      | student3@mail.com |        3 | F1994    | Semester not found. |
 
   Scenario Outline: Student successfully deletes a review (Alternate Flow)
     When the student "<email>" attempts to delete the review "<reviewId>"
@@ -106,7 +106,7 @@ Feature: Manage Reviews
     Then the system shall display the "<errorMessage>" to the student after
 
     Examples: 
-      | email             | reviewId | errorMessage     |
-      | student1@mail.com |       -1 | Review not found |
-      | student2@mail.com |       -2 | Review not found |
-      | student3@mail.com |       -3 | Review not found |
+      | email             | reviewId | errorMessage      |
+      | student1@mail.com |       -1 | Review not found. |
+      | student2@mail.com |       -2 | Review not found. |
+      | student3@mail.com |       -3 | Review not found. |
