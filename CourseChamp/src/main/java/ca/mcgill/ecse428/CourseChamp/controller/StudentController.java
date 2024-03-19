@@ -49,10 +49,9 @@ public class StudentController {
                 HttpStatus.OK);
     }
 
-    @GetMapping(value = { "/getreviews/{email}", "/getreviews/{email}/" })
+    @GetMapping(value = { "/getreviewsStudent/{email}", "/getreviewsStudent/{email}/" })
     public Iterable<ReviewResponseDto> getReviewsOfStudentByEmail(@PathVariable String email) {
-        if (5==5){throw new CourseChampException(HttpStatus.NOT_FOUND, email);}
-        return StreamSupport.stream(studentService.getReviewsOfStudent(email).spliterator(), false).map(r -> new ReviewResponseDto(r)).collect(Collectors.toList());
+        return StreamSupport.stream(studentService.getReviewsOfStudent(email).spliterator(), false).map(ReviewResponseDto::new).collect(Collectors.toList());
     }
 
     /**

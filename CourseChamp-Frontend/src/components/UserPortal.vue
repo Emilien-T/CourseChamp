@@ -46,8 +46,9 @@
         <div class="msg"><p>{{ msg }}</p></div>
       </form>
     </div>
-    <label v-if='isStudent'>Your Reviews:</label>
+    
     <div v-if='isStudent'>
+      <label>Your Reviews:</label>
       <CourseRating
         v-for="(review, index) in reviews"
         :key="index"
@@ -123,7 +124,7 @@
       },
       fetchReviews() {
         if (Vue.prototype.userType !== 'admin'){
-          axiosClient.get('/getreviews/' + this.email)
+          axiosClient.get('/getreviewsStudent/' + this.email)
         .then(response =>{
           this.reviews = response.data;
           console.log(this.reviews);

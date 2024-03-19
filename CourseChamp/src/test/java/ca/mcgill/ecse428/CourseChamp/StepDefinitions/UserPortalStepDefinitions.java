@@ -239,13 +239,13 @@ public class UserPortalStepDefinitions {
     @When("the student {string} attempts to view their reviews")
     public void the_student_attemps_to_view_their_reviews(String string){
         String username = studentRepository.findStudentByEmail(string).getUsername();
-        responseList = client.getForEntity("/student/getreviews?email=" + username, List.class);
+        responseList = client.getForEntity("/getreviewsStudent/" + string, List.class);
     }
 
     @When("the student {string} unsuccessfully attempts to view their reviews")
     public void the_student_unsuccessfully_attemps_to_view_their_reviews(String string){
         String username = studentRepository.findStudentByEmail(string).getUsername();
-        errorMessage = client.getForEntity("/student/getreviews?email=" + username, String.class);
+        errorMessage = client.getForEntity("/getreviewsStudent/" + string, String.class);
     }
 
     @Then("the student shall have the new username {string}")
@@ -290,7 +290,7 @@ public class UserPortalStepDefinitions {
         assertEquals(string.trim(), errorMessage.getBody().trim());
     }
 
-    @Then("the system shall display the following reviews to the student")
+    @Then("the system shall display the following reviews to the student:")
     public void the_system_shall_display_the_following_reviews_to_the_student(io.cucumber.datatable.DataTable dataTable){
         List<Map<String, String>> rows = (List<Map<String, String>>)dataTable.asMaps();
 

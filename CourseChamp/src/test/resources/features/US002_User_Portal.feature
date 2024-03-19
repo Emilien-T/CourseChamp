@@ -29,7 +29,7 @@ Feature: User Portal
       | MATH262    | F2022    |
       | MATH262    | W2023    |
     And the following reviews are in the system:
-      | courseCode | semester | reviewId | student           | rating | comment                               |
+      | courseCode | semester | reviewId | email             | rating | comment                               |
       | ECSE222    | W2022    |        1 | student1@mail.com |      4 | Great course very informative!        |
       | ECSE222    | F2022    |        2 | student2@mail.com |      3 | Very hard exams :(                    |
       | ECSE428    | W2020    |        3 | student3@mail.com |      5 | Excellent content and helpful quizzes |
