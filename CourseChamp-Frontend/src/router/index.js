@@ -10,6 +10,7 @@ import CoursePage from '@/components/CoursePage'
 import CreateReview from '@/components/CreateReview'
 import AdminHome from '@/components/AdminHome'
 import StudentHome from '@/components/StudentHome'
+import EditReview from '../components/EditReview.vue'
 
 Vue.use(Router)
 
@@ -65,6 +66,11 @@ export default new Router({
       name: 'StudentHome',
       component: StudentHome
     },
+    {
+      path: '/editreview/:reviewId',
+      name: 'EditReview',
+      component: EditReview
+    }
 
   ]
 })
