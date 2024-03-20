@@ -9,6 +9,7 @@ import CreateCourse from '@/components/CreateCourse'
 import CoursePage from '@/components/CoursePage'
 import CreateReview from '@/components/CreateReview'
 import AdminHome from '@/components/AdminHome'
+import UserPortal from '@/components/UserPortal'
 import StudentHome from '@/components/StudentHome'
 
 Vue.use(Router)
@@ -64,6 +65,11 @@ export default new Router({
       path: '/studenthome',
       name: 'StudentHome',
       component: StudentHome
+    },
+    {
+      path: '/userportal',
+      name: 'UserPortal',
+      component: UserPortal
     },
 
   ]

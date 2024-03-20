@@ -5,6 +5,7 @@
       <div class="button-container">
       <button @click="redirectToCreateCourse">Create Course</button>
       <button @click="redirectToAdminSignup">Create Admin Account</button>
+      <button @click="redirectToAccountSettings">Account Settings</button>
       <button @click="redirectToHomePage">Return to Home Page</button>
     </div>
     <img src="../assets/people.png" alt="People Image">
@@ -26,6 +27,10 @@
       redirectToAdminSignup() {
         // Redirect to the admin signup page
         this.$router.push('/signup/admin');
+      },
+      redirectToAccountSettings() {
+        // Redirect to the admin signup page
+        this.$router.push('/userportal');
       }
     }
   }

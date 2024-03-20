@@ -12,7 +12,7 @@ public class StudentRequestDto {
     @Schema(example = "student@email.com", description = "Email linked to the account of the student", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
 
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%^+=]).+$", message = "Password contains at least one uppercase, lowercase and special character [!@#$%^+=]")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$%^+=]).+$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=]")
     @Size(min = 5, max = 13, message = "Password must have 5-13 character")
     @NotBlank(message = "Password cannot be blank.")
     @Schema(example = "Password1!", description = "Password linked to the account of the student", requiredMode = Schema.RequiredMode.REQUIRED)

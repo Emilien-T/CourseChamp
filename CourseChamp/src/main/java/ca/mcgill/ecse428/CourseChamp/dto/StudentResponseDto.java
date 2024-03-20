@@ -30,7 +30,7 @@ public class StudentResponseDto {
     public String getPassword()
     { return password; }
 
-    public String getName()
+    public String getUsername()
     { return username; }
 
     public Major getMajor()
