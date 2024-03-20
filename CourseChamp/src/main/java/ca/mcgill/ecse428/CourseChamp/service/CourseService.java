@@ -67,6 +67,42 @@ public class CourseService {
     }
 
     /**
+     * Service method to update an existing course in the database.
+     * 
+     * @param courseId - The ID of the course to be updated
+     * @param updatedCourse - The updated instance of the course
+     * @return The updated course
+     * @throws CourseChampException - If the course to be updated does not exist
+     */
+    @Transactional
+    public Course updateCourse(String courseCode, Course updatedCourse) {
+       Course optionalCourse = courseRepository.findCourseByCourseCode(courseCode);
+        if (optionalCourse != null) {
+            
+            // Update properties with values from updatedCourse
+
+            // Uncomment if you would like to modify department and course number
+            // course.setDepartment(updatedCourse.getDepartment());
+            // course.setCourseCode(updatedCourse.getCourseCode());
+            // course.setCourseNumber(updatedCourse.getCourseNumber());
+            if (updatedCourse.getName()!= null) {
+            optionalCourse.setName(updatedCourse.getName());
+            }
+            if (updatedCourse.getDescription()!= null) {
+            optionalCourse.setDescription(updatedCourse.getDescription());
+            }
+            if (updatedCourse.getSyllabus()!= null) {
+            optionalCourse.setSyllabus(updatedCourse.getSyllabus());
+            }
+            // Save and return the updated course
+            return courseRepository.save(optionalCourse);
+        } else {
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Course not found");
+        }
+    }
+
+
+    /**
      * Service method to verify if a course exists based on its department and
      * course number
      * 

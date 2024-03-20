@@ -9,6 +9,7 @@ import CreateCourse from '@/components/CreateCourse'
 import CoursePage from '@/components/CoursePage'
 import CreateReview from '@/components/CreateReview'
 import AdminHome from '@/components/AdminHome'
+import UserPortal from '@/components/UserPortal'
 import StudentHome from '@/components/StudentHome'
 import EditReview from '../components/EditReview.vue'
 
@@ -70,7 +71,10 @@ export default new Router({
       path: '/editreview/:reviewId',
       name: 'EditReview',
       component: EditReview
-    }
 
+      path: '/userportal',
+      name: 'UserPortal',
+      component: UserPortal
+    },
   ]
 })

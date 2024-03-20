@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ca.mcgill.ecse428.CourseChamp.dto.AdminRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.AdminResponseDto;
+import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.service.AdminService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,8 +34,8 @@ public class AdminController {
             @ApiResponse(responseCode = "404", description = "Admin not found.", content = {
                     @Content(mediaType = "String") })
     })
-    @GetMapping(value = { "/admin", "/admin/" })
-    public ResponseEntity<AdminResponseDto> getAdminByEmail(@RequestParam String email) {
+    @GetMapping(value = { "/admin/{email}", "/admin/{email}/" })
+    public ResponseEntity<AdminResponseDto> getAdminByEmail(@PathVariable String email) {
         return new ResponseEntity<AdminResponseDto>(new AdminResponseDto(adminService.getAdminByEmail(email)),
                 HttpStatus.OK);
     }
@@ -41,7 +43,7 @@ public class AdminController {
     /**
      * Creates a new Admin
      * 
-     * @param AdminRequest - Pass in a admin dto using a JSON request
+     * @param adminRequest - Pass in a admin dto using a JSON request
      * @return the dto response of the new Admin
      */
     @ApiResponses(value = {
@@ -50,13 +52,26 @@ public class AdminController {
                     @Content(mediaType = "String") })
     })
     @PostMapping("/admin/create")
-    public ResponseEntity<AdminResponseDto> createAdmin(@Valid @RequestBody AdminRequestDto AdminRequest) {
+    public ResponseEntity<AdminResponseDto> createAdmin(@Valid @RequestBody AdminRequestDto adminRequest) {
         // 1. You pass in a request, validates the constraints, creates an Admin if they pass
-        Admin Admin = adminService.createAdminAccount(AdminRequest.toModel()); // 2. You use the service class to check if it exists and save
+        Admin Admin = adminService.createAdminAccount(adminRequest.toModel()); // 2. You use the service class to check if it exists and save
                                                                                   // it
         AdminResponseDto responseBody = new AdminResponseDto(Admin);
         return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
                                                                                        // returning a Response
+    }
+
+    /**
+     * Updates an Admin
+     * 
+     * @param adminRequest - Pass in a admin dto using a JSON request
+     * @return the dto response of the updtated admin
+     */// returning a Response
+    @PutMapping("/admin/update")
+    public ResponseEntity<AdminResponseDto> updateAdmin(@Valid @RequestBody AdminRequestDto adminRequest) {
+        Admin a = adminRequest.toModel();
+        AdminResponseDto responseBody = new AdminResponseDto(adminService.updateAdminAccount(a));
+        return new ResponseEntity<AdminResponseDto>(responseBody, HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/delete/{email}")

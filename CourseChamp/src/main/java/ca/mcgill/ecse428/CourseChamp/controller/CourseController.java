@@ -56,6 +56,28 @@ public class CourseController {
         return new ResponseEntity<CourseResponseDto>(courseResponseDto, HttpStatus.CREATED);
     }
 
+        /**
+     * Updates an existing course.
+     * 
+     * @param courseId      - ID of the course to be updated
+     * @param courseRequest - Request body containing updated course details
+     * @return ResponseEntity containing CourseResponseDto with updated course
+     *         details, or 400 if invalid request
+     */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course updated"),
+        @ApiResponse(responseCode = "400", description = "Invalid request", content = {
+                @Content(mediaType = "String") })
+    })
+    @PutMapping("/course/{courseCode}/update/")
+    public ResponseEntity<CourseResponseDto> updateCourse(@PathVariable String courseCode,
+        @Valid @RequestBody CourseRequestDto courseRequest) {
+    Course course = courseService.updateCourse(courseCode, courseRequest.toModel());
+    CourseResponseDto courseResponseDto = new CourseResponseDto(course);
+    return new ResponseEntity<CourseResponseDto>(courseResponseDto, HttpStatus.OK);
+    }
+
+
     /**
      * Verifies if a course exists based on its department and course number.
      * 

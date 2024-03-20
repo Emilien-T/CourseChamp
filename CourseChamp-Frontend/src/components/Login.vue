@@ -72,12 +72,14 @@ export default {
         // Check the type of the user and redirect to the appropriate page
         this.msg = `Logged In successfully!`
         Vue.prototype.logginInEmail = this.email
+        Vue.prototype.userType = 'student'
       console.log(this.logginInEmail)
         this.$router.push('/studenthome');
       }).catch(error1 =>{
         axiosClient.post(`/login/Admin/`, formData).then(response =>{
           this.msg = `Logged In successfully!`
         Vue.prototype.logginInEmail = this.email
+        Vue.prototype.userType = 'admin'
           this.$router.push('/adminhome');
         }).catch(error2 =>{
           this.msg = error1.response.data + " " + error2.response.data

@@ -3,12 +3,14 @@ package ca.mcgill.ecse428.CourseChamp.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
 import ca.mcgill.ecse428.CourseChamp.model.Admin;
+import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 
@@ -62,6 +64,22 @@ public class AdminService {
     @Transactional
     public Admin updateAdminAccount(Admin admin) {
         Admin a = getAdminByEmail(admin.getEmail());
+        Admin a2 = adminRepository.findAdminByUsername(admin.getUsername());
+
+        if(a2 != null && !admin.getEmail().equals(a2.getEmail())){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
+        }
+        if (studentRepository.findStudentByUsername(admin.getUsername()) != null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
+        }
+        // Regular expression to match at least one lowercase letter
+        String regex = ".*[a-z].*";
+        
+        // Check if the string matches the regex
+        boolean containsLowercase = Pattern.matches(regex, admin.getPassword());
+        if(!containsLowercase){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=]");
+        }
         a.setPassword(admin.getPassword());
         a.setUsername(admin.getUsername());
         return adminRepository.save(a);

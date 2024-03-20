@@ -1,12 +1,24 @@
 package ca.mcgill.ecse428.CourseChamp.controller;
 
 import jakarta.validation.Valid;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import ca.mcgill.ecse428.CourseChamp.dto.ReviewResponseDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.StudentResponseDto;
+import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
+import ca.mcgill.ecse428.CourseChamp.model.Admin;
+import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.service.StudentService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,15 +44,20 @@ public class StudentController {
                     @Content(mediaType = "String") })
     })
     @GetMapping(value = { "/student/{email}", "/student/{email}/" })
-    public ResponseEntity<StudentResponseDto> getStudentByEmail(@RequestParam String email) {
+    public ResponseEntity<StudentResponseDto> getStudentByEmail(@PathVariable String email) {
         return new ResponseEntity<StudentResponseDto>(new StudentResponseDto(studentService.getStudentByEmail(email)),
                 HttpStatus.OK);
+    }
+
+    @GetMapping(value = { "/getreviewsStudent/{email}", "/getreviewsStudent/{email}/" })
+    public Iterable<ReviewResponseDto> getReviewsOfStudentByEmail(@PathVariable String email) {
+        return StreamSupport.stream(studentService.getReviewsOfStudent(email).spliterator(), false).map(ReviewResponseDto::new).collect(Collectors.toList());
     }
 
     /**
      * Creates a new Student
      * 
-     * @param StudentRequest - Pass in a student dto using a JSON request
+     * @param studentRequest - Pass in a student dto using a JSON request
      * @return the dto response of the new Student
      */
     @ApiResponses(value = {
@@ -49,14 +66,27 @@ public class StudentController {
                     @Content(mediaType = "String") })
     })
     @PostMapping("/student/create")
-    public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto StudentRequest) {
+    public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto studentRequest) {
         // 1. You pass in a request, validates the constraints, creates an Student if they pass
         // 2. You use the service class to check if it exists and save it
-        Student Student = studentService.createStudentAccount(StudentRequest.toModel()) ;
+        Student Student = studentService.createStudentAccount(studentRequest.toModel()) ;
 
         StudentResponseDto responseBody = new StudentResponseDto(Student);
         return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.CREATED); // 3. You mask the model by
-        }                                                                                    // returning a Response
+        }
+        
+    /**
+     * Updates a Student
+     * 
+     * @param studentRequest - Pass in a student dto using a JSON request
+     * @return the dto response of the updtated Student
+     */// returning a Response
+    @PutMapping("/student/update")
+    public ResponseEntity<StudentResponseDto> updateStudent(@Valid @RequestBody StudentRequestDto studentRequest) {
+        Student s = studentRequest.toModel();
+        StudentResponseDto responseBody = new StudentResponseDto(studentService.updateStudentAccount(s));
+        return new ResponseEntity<StudentResponseDto>(responseBody, HttpStatus.OK);
+    }
                                                                                 
 
     @DeleteMapping("/student/delete/{email}")

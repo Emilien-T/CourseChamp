@@ -26,6 +26,6 @@ public class AdminResponseDto {
     public String getPassword()
     { return password; }
 
-    public String getName()
+    public String getUsername()
     { return username; }
 }

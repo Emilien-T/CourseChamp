@@ -5,6 +5,7 @@
       <div class="button-container">
       <button @click="redirectToCreateReview">Create Review</button>
       <button @click="redirectToAdminSignup">View Reviews</button>
+      <button @click="redirectToAccountSettings">Account Settings</button>
       <button @click="redirectToHomePage">Return to Home Page</button>
     </div>
     <img src="../assets/people.png" alt="People Image">
@@ -26,6 +27,10 @@
       redirectToAdminSignup() {
         // Redirect to the admin signup page
         this.$router.push('/viewreview');
+      },
+      redirectToAccountSettings() {
+        // Redirect to the admin signup page
+        this.$router.push('/userportal');
       }
     }
   }
