@@ -12,9 +12,13 @@ import ca.mcgill.ecse428.CourseChamp.dto.CourseResponseDto;
 import ca.mcgill.ecse428.CourseChamp.dto.CourseRequestDto;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.*;
+
 
 
 public class UpdateACourseInformationStepDefinitions {
@@ -26,7 +30,19 @@ public class UpdateACourseInformationStepDefinitions {
     private ResponseEntity<CourseResponseDto> response;
     private ResponseEntity<String> responseError;
 
-
+    @Given("the following courses are in the system:")
+  public void the_following_courses_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for(var row : rows){
+      String department = row.get("department");
+      int courseNumber = Integer.parseInt(row.get("courseNumber"));
+      String name = row.get("name");
+      String description = row.get("description");
+      String syllabus = row.get("syllabus");
+      Course course = new Course(department, courseNumber, name, description, syllabus);
+      courseRepository.save(course);
+    }
+  }
 
     @When("the admin attempts to update the course {string}, with name {string}, description {string}, and syllabus {string}")
     public void the_admin_attempts_to_update_the_course_with_name_description_and_syllabus(String courseCode, String name, String description, String syllabus) {

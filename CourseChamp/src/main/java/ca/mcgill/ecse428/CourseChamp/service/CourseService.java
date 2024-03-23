@@ -76,7 +76,17 @@ public class CourseService {
      */
     @Transactional
     public Course updateCourse(String courseCode, Course updatedCourse) {
+        if(updatedCourse.getSyllabus() == null || updatedCourse.getSyllabus().trim().isEmpty()){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Syllabus cannot be blank.");
+        }
        Course optionalCourse = courseRepository.findCourseByCourseCode(courseCode);
+
+       Iterable<Course> courses = courseRepository.findAll();
+       for(Course c : courses){
+        if(c.getName().equals(updatedCourse.getName())){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Another course already has this name.");
+        }
+       }
         if (optionalCourse != null) {
             
             // Update properties with values from updatedCourse
