@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -71,4 +75,48 @@ public class CourseServiceTests {
     }
 
 
+
+
+     // Test for successfully deleting a course
+    @Test
+    public void testSuccessfulDeletion() {
+        final String courseCode = "ECSE223";
+        Course course = new Course("ECSE", 223, "Software Engineering Principles", "", "");
+        when(courseRepository.findById(courseCode)).thenReturn(Optional.of(course));
+        when(course.getPrerequirement()).thenReturn(Collections.emptyList());
+
+        courseService.deleteCourse(courseCode);
+
+        verify(courseRepository).deleteById(courseCode);
+    }
+
+    // Test for attempting to delete a non-existing course
+    @Test
+    public void testDeleteNonExistingCourse() {
+        final String courseCode = "ECSE223";
+        when(courseRepository.findById(courseCode)).thenReturn(Optional.empty());
+
+        CourseChampException e = assertThrows(CourseChampException.class, () -> {
+            courseService.deleteCourse(courseCode);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        assertEquals("This course doesn't exist in the system.", e.getMessage());
+    }
+
+    // Test for attempting to delete a course that is a prerequisite for others
+    @Test
+    public void testDeleteCourseWithPrerequisites() {
+        final String courseCode = "ECSE223";
+        Course course = new Course("ECSE", 223, "Software Engineering Principles", "", "");
+        when(courseRepository.findById(courseCode)).thenReturn(Optional.of(course));
+        when(course.getPrerequirement()).thenReturn(Arrays.asList("SomePrerequisite"));
+
+        CourseChampException e = assertThrows(CourseChampException.class, () -> {
+            courseService.deleteCourse(courseCode);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
+        assertEquals("This course cannot be removed as it is a prerequisite. ", e.getMessage());
+    }
 }
