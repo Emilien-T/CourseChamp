@@ -71,7 +71,8 @@ export default new Router({
       path: '/editreview/:reviewId',
       name: 'EditReview',
       component: EditReview
-
+    },
+    {
       path: '/userportal',
       name: 'UserPortal',
       component: UserPortal
