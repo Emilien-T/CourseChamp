@@ -101,6 +101,7 @@ public class CourseController {
         return new ResponseEntity<CourseResponseDto>(courseResponseDto, HttpStatus.OK);
     }
 
+
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Courses found"),
         @ApiResponse(responseCode = "404", description = "No courses found", content = @Content)
@@ -116,5 +117,19 @@ public class CourseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(courseDtos, HttpStatus.OK);
+
+    /**
+     * Deletes an existing course
+     *
+     * @param courseCode - courseCode of an existing course
+     */
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course succefully deleted."),
+        @ApiResponse(responseCode = "404", description = "Course not found.", content = {@Content(mediaType = "String")})
+    })
+    @DeleteMapping("/course/delete/{courseCode}")
+    public void deleteCourseController(@PathVariable String courseCode) {
+        courseService.deleteCourse(courseCode);
+
     }
 }
