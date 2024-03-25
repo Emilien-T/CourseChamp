@@ -2,10 +2,13 @@ package ca.mcgill.ecse428.CourseChamp.Service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -87,7 +90,8 @@ public class CourseServiceTests {
 
         courseService.deleteCourse(courseCode);
 
-        verify(courseRepository).deleteById(courseCode);
+        assertNull(courseRepository.findById(courseCode).get());
+
     }
 
     // Test for attempting to delete a non-existing course
@@ -109,8 +113,11 @@ public class CourseServiceTests {
     public void testDeleteCourseWithPrerequisites() {
         final String courseCode = "ECSE223";
         Course course = new Course("ECSE", 223, "Software Engineering Principles", "", "");
+        Course prerequisite = new Course("ECSE", 224, "Software Engineering Principles", "", "");
         when(courseRepository.findById(courseCode)).thenReturn(Optional.of(course));
-        when(course.getPrerequirement()).thenReturn(Arrays.asList("SomePrerequisite"));
+        List<Course> prerequisites = new ArrayList<>();
+        prerequisites.add(prerequisite);
+        when(course.getPrerequesite()).thenReturn(prerequisites);
 
         CourseChampException e = assertThrows(CourseChampException.class, () -> {
             courseService.deleteCourse(courseCode);
