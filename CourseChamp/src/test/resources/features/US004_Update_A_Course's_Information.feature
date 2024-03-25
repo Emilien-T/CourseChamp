@@ -27,21 +27,21 @@ Feature: Update a Course's information
       | MATH262    | Calculus me that     | J'habite seul avec Maman   | Headache exercises          |
 
   Scenario Outline: Admin unsuccessfully attempts to update various fields of a course to invalid values (Error Flow)
-    When the admin attempts to update the course "<courseCode>", with name "<newName>", description "<newDescription>", and syllabus "<newSyllabus>"
+    When the admin unsuccessfully attempts to update the course "<courseCode>", with name "<newName>", description "<newDescription>", and syllabus "<newSyllabus>"
     Then the system should display the error message for unsuccessful update of a course's information "<error>"
-    And the course with course code "<courseCode>" should have the name "<oldName>", description "<oldDescription>", and syllabus "<oldSyllabus>"
-
-    Examples: 
-      | courseCode | oldName                       | newName              | oldDescription | newDescription             | oldSyllabus         | newSyllabus    | error                        |
-      | ECSE222    | Digital Logic                 |                      | Scary course   | I said I like it like that | Boris course        | Bye bye Boris  | Name cannot be blank.        |
-      | ECSE428    | Software Engineering Practice | That Software Course | Fun course     |                            | Robert course       | Rob Sab course | Description cannot be blank. |
-      | MATH262    | Intermediate Calculus         | Calculus me that     | Charles Roth   | J'habite seul avec Maman   | Charles Roth course |                | Syllabus cannot be blank.    |
+    And the course with course code "<courseCode>" should keep the name "<finalName>", description "<finalDescription>", and syllabus "<finalSyllabus>"
+    
+    Examples:
+      | courseCode  | newName               | newDescription                | newSyllabus                   | finalName             | finalDescription          | finalSyllabus                 | error                         |
+      | ECSE222     |                       | I said I like it like that    | VHDL then VHDL                | Digital Logic         | I said I like it like that| VHDL then VHDL                | Name cannot be blank.         |
+      | ECSE428     | That Software Course  |                               | Interviews with Prof.Robert   | That Software Course  | Fun course                | Interviews with Prof.Robert   | Description cannot be blank.  |
+      | MATH262     | Calculus me that      | J'habite seul avec Maman      |                               | Calculus me that      | J'habite seul avec Maman  | Headache exercises            | Syllabus cannot be blank.     |
 
   Scenario Outline: Admin unsuccessfully attempts to update the name of a course to be the same as another course (Error Flow)
-    When the admin attempts to update the course "<courseCode>", with name "<newName>", description "<newDescription>", and syllabus "<newSyllabus>"
+    When the admin unsuccessfully attempts to update the course "<courseCode>", with name "<newName>", description "<newDescription>", and syllabus "<newSyllabus>"
     Then the system should display the error message for unsuccessful update of a course's information "<error>"
-    And the course with course code "<courseCode>" should have the name "<oldName>", description "<oldDescription>", and syllabus "<oldSyllabus>"
-
-    Examples: 
-      | courseCode | oldName       | newName    | oldDescription | newDescription             | oldSyllabus  | newSyllabus   | error                                 |
-      | ECSE222    | Digital Logic | Calculus 2 | Scary course   | I said I like it like that | Boris course | Bye bye Boris | Another course already has this name. |
+    And the course with course code "<courseCode>" should keep the name "<finalName>", description "<finalDescription>", and syllabus "<finalSyllabus>"
+    
+    Examples:
+      | courseCode  | newName               | newDescription                | newSyllabus                   | finalName             | finalDescription          | finalSyllabus                 | error                                         |
+      | ECSE222     | Calculus 2            | I said I like it like that    | VHDL then VHDL                | Digital Logic         | I said I like it like that| VHDL then VHDL                | Name cannot be the same as another course's.  |
