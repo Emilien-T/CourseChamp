@@ -1,41 +1,52 @@
 <template>
-    <div class="create-review-container">
-      <header>
-        <h1>Create A Review</h1>
-        <router-link to="/reviews" class="back-link">Back To Review</router-link>
-      </header>
-      <div class="form-container">
-        <form @submit.prevent="submitReview">
-          <div class="form-group">
-            <label class="input-label">Enter the course code of the course you are rating:</label>
-            <input type="text" id="courseCode" v-model="courseCode" required placeholder="Ex: ECSE200">
+  <div class="create-review-container">
+    <header>
+      <h1>Create A Review</h1>
+      <router-link to="/reviews" class="back-link">Back To Reviews</router-link>
+    </header>
+    <div class="form-container">
+      <form @submit.prevent="submitReview">
+        <div class="form-group">
+          <label class="input-label">Select the course you are rating:</label>
+          <select id="courseCode" v-model="courseCode" required>
+            <option value="" disabled>Select your course</option>
+            <option v-for="course in courses" :key="course.courseCode" :value="course.courseCode">{{ course.name }}</option>
+          </select>
+        </div>
+        <div class="form-group rating-group">
+          <label class="input-label">Enter your rating:</label>
+          <div class="rating-options">
+            <label v-for="num in 5" :key="num" class="rating-label">
+              <input type="radio" name="rating" :value="num" v-model="rating" required>{{ num }}
+            </label>
           </div>
-          <div class="form-group">
-            <label class="input-label">Enter your rating:</label>
-            <input type="text" id="rating" v-model="rating" required placeholder="Ex: 5">
-          </div>
-          <div class="form-group">
-            <label class="input-label">Enter your review:</label>
-            <textarea id="text" v-model="text" required placeholder="Ex: I loved this class. It's a must take in U1! "></textarea>
-          </div>
-          <div class="form-group">
-            <label class="input-label">Enter the semester for which you are rating the course:</label>
-            <input type="text" id="semester" v-model="semester" required placeholder="Ex: W2023">
-          </div>
-          <div class="msg">{{ msg }}</div>
-          <div class="submit-container">
-            <button type="submit" :disabled="!rating || !text" class="submit-button">
-              Submit
-              <span class="arrow-icon">
-                <img src="../assets/arrow.png" alt="Arrow">
-              </span>
-            </button>
-          </div>
-        </form>
-      </div>
-      <button @click="redirectToStudentHome">Return to Home</button>
+        </div>
+        <div class="form-group">
+          <label class="input-label">Enter your review:</label>
+          <textarea id="text" v-model="text" required placeholder="Ex: I loved this class. It's a must take in U1!"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="input-label">Enter the semester for which you are rating the course:</label>
+          <select id="semester" v-model="semester" required>
+            <option value="" disabled>Select the semester</option>
+            <option v-for="semester in semesters" :key="semester.code" :value="semester.code">{{ semester.name }}</option>
+          </select>
+        </div>
+        <div class="msg">{{ msg }}</div>
+        <div class="submit-container">
+          <button type="submit" :disabled="!courseCode || !rating || !text" class="submit-button">
+            Submit
+            <span class="arrow-icon">
+              <img src="../assets/arrow.png" alt="Arrow">
+            </span>
+          </button>
+        </div>
+      </form>
     </div>
-  </template>
+    <button @click="redirectToStudentHome">Return to Home</button>
+  </div>
+</template>
+
     
     
     
@@ -53,14 +64,22 @@
   })
   export default {
     data() {
-      return {
-        courseCode: '',
-        rating: '',
-        text: '',
-        semester: '',
-        msg: ''
-      };
-    },
+  return {
+    courseCode: '',
+    rating: '',
+    text: '',
+    semester: '',
+    msg: '',
+    courses: ['MATH133', 'ECSE200', 'ECSE324', 'ECSE 428'], 
+    semesters: [
+      { code: 'W2023', name: 'Winter 2023' },
+      { code: 'S2023', name: 'Summer 2023' },
+      { code: 'F2023', name: 'Fall 2023' },
+      { code: 'W2024', name: 'Winter 2024' },
+    ]
+  };
+},
+
     methods: {
       redirectToStudentHome() {
         // Redirect to the student signup page
@@ -75,7 +94,7 @@
           courseCode: this.courseCode,
           semester: this.semester
         };
-        console.log(reviewData); // Replace with your submission logic
+        console.log(reviewData);
         axiosClient.post('/review/create', reviewData).then(response =>{
           this.msg = `Review created Successfully!`
           this.rating = ''
@@ -86,8 +105,19 @@
             this.msg = error.response.data
           }
         })
-      }
-    }
+      },  fetchCourses() {
+    axiosClient.get('/courses')
+      .then(response => {
+        this.courses = response.data.map(courseDto => courseDto.courseCode);
+      })
+      .catch(error => {
+        console.error('Error fetching courses:', error);
+      });
+  },
+},
+mounted() {
+  this.fetchCourses(); 
+}
   };
   </script>
   <style scoped>
@@ -175,4 +205,11 @@
     padding: 5px;
     margin-left: 8px;
   }
+  .rating-options {
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: center; /* Aligns items vertically in the middle */
+  flex-wrap: nowrap; /* Prevents wrapping, ensuring all items are on one line */
+}
+
   </style>

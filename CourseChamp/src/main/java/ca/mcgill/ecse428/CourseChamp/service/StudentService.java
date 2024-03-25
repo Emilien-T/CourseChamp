@@ -5,10 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse428.CourseChamp.exception.CourseChampException;
+import ca.mcgill.ecse428.CourseChamp.model.Admin;
+import ca.mcgill.ecse428.CourseChamp.model.Review;
 import ca.mcgill.ecse428.CourseChamp.model.Student;
 import ca.mcgill.ecse428.CourseChamp.repository.AdminRepository;
+import ca.mcgill.ecse428.CourseChamp.repository.ReviewRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.StudentRepository;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class StudentService {
@@ -17,6 +22,8 @@ public class StudentService {
     StudentRepository studentRepository;
     @Autowired
     AdminRepository adminRepository;
+     @Autowired
+    ReviewRepository reviewRepository;
 
     /**
      * Service method to fetch all existing students in the database
@@ -66,6 +73,52 @@ public class StudentService {
         else
             throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
 
+    }
+
+    @Transactional
+    public Student updateStudentAccount(Student student){
+        Student s = getStudentByEmail(student.getEmail());
+        Student s2 = studentRepository.findStudentByUsername(student.getUsername());
+        if(s2 != null && !student.getEmail().equals(s2.getEmail())){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
+        }
+        if (adminRepository.findAdminByUsername(student.getUsername()) != null){
+            throw new CourseChampException(HttpStatus.CONFLICT, "Another account with this username already exists");
+        }
+
+        // Regular expression to match at least one lowercase letter
+        String regex = ".*[a-z].*";
+        
+        // Check if the string matches the regex
+        boolean containsLowercase = Pattern.matches(regex, student.getPassword());
+        if(!containsLowercase){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Password must contain at least one uppercase letter, one lowercase letter, and one special character [!@#$%^+=]");
+        }
+        
+        s.setPassword(student.getPassword());
+        s.setUsername(student.getUsername());
+        s.setMajor(student.getMajor());
+        return studentRepository.save(s);
+    }
+
+    @Transactional
+    public List<Review> getReviewsOfStudent(String email){
+        if (email == null || email.isEmpty()) {
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "email cannot be null or empty");
+        }
+        
+        Iterable<Review> reviews = reviewRepository.findAll();
+        ArrayList<Review> reviewsOfStudent = new ArrayList<Review>();
+        for (Review r : reviews) {
+            if (r.getStudent() != null && r.getStudent().getEmail().equals(email)) {
+                reviewsOfStudent.add(r);
+            }
+        }
+        if (reviewsOfStudent.isEmpty()) {
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "No reviews found for this student.");
+        }
+
+        return reviewsOfStudent;
     }
 
     /**

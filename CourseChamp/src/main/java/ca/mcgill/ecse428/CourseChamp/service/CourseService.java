@@ -10,6 +10,7 @@ import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -67,6 +68,52 @@ public class CourseService {
     }
 
     /**
+     * Service method to update an existing course in the database.
+     * 
+     * @param courseId - The ID of the course to be updated
+     * @param updatedCourse - The updated instance of the course
+     * @return The updated course
+     * @throws CourseChampException - If the course to be updated does not exist
+     */
+    @Transactional
+    public Course updateCourse(String courseCode, Course updatedCourse) {
+        if(updatedCourse.getSyllabus() == null || updatedCourse.getSyllabus().trim().isEmpty()){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Syllabus cannot be blank.");
+        }
+       Course optionalCourse = courseRepository.findCourseByCourseCode(courseCode);
+
+       Iterable<Course> courses = courseRepository.findAll();
+       for(Course c : courses){
+        if(c.getName().equals(updatedCourse.getName())){
+            throw new CourseChampException(HttpStatus.BAD_REQUEST, "Another course already has this name.");
+        }
+       }
+        if (optionalCourse != null) {
+            
+            // Update properties with values from updatedCourse
+
+            // Uncomment if you would like to modify department and course number
+            // course.setDepartment(updatedCourse.getDepartment());
+            // course.setCourseCode(updatedCourse.getCourseCode());
+            // course.setCourseNumber(updatedCourse.getCourseNumber());
+            if (updatedCourse.getName()!= null) {
+            optionalCourse.setName(updatedCourse.getName());
+            }
+            if (updatedCourse.getDescription()!= null) {
+            optionalCourse.setDescription(updatedCourse.getDescription());
+            }
+            if (updatedCourse.getSyllabus()!= null) {
+            optionalCourse.setSyllabus(updatedCourse.getSyllabus());
+            }
+            // Save and return the updated course
+            return courseRepository.save(optionalCourse);
+        } else {
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "Course not found");
+        }
+    }
+
+
+    /**
      * Service method to verify if a course exists based on its department and
      * course number
      * 
@@ -81,5 +128,22 @@ public class CourseService {
             throw new CourseChampException(HttpStatus.NOT_FOUND, "Course not found.");
         }
         return course;
+    }
+
+    /**
+     * Service method to delete a course from the database
+     * @param courseCode of the course to be deleted from persistence layer
+     */
+    @Transactional
+    public void deleteCourse(String courseCode) {
+        Course course = courseRepository.findById(courseCode).get();
+        try{
+            if(!course.getPrerequirement().isEmpty()){
+                throw new CourseChampException(HttpStatus.BAD_REQUEST, "This course cannot be removed as it is a prerequisite.");
+            }
+            courseRepository.deleteById(courseCode); // I am assuming here that composition cascading will also delete course offerings
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "This course doesn't exist in the system.");
+        }
     }
 }
