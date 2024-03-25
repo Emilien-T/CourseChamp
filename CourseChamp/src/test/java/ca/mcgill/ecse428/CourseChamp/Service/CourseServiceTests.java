@@ -2,6 +2,7 @@ package ca.mcgill.ecse428.CourseChamp.Service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -69,6 +70,75 @@ public class CourseServiceTests {
         assertEquals(HttpStatus.CONFLICT, e.getStatus());
         assertEquals("A course with this code already exists", e.getMessage());
     }
+
+
+    // =-=-=-=-=-=- Update Course Service Tests -=-=-=-=-=-=//
+    // Admin updates course
+    @Test
+    public void testAdminUpdatesCourse() {
+        final String department = "ECSE";
+        final int courseNumber = 223;
+        final String name = "Software Engineering Principles";
+        final String courseCode = department + courseNumber;
+
+        Course course = new Course(department, courseNumber, name, "", "");
+
+        // Mock the repository to return the course
+        when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(course);
+        // Mock the repository to return the course after it is saved
+        when(courseRepository.save(course)).thenReturn(course);
+
+        course.setDescription("This course is about software engineering principles");
+
+        // Call the updateCourse method
+        Course updatedCourse = courseService.updateCourse(courseCode, course);
+
+        // Assertions
+        assertNotNull(updatedCourse);
+        assertEquals(courseCode, updatedCourse.getCourseCode());
+    }
+
+
+    // Admin attempts to update a course that does not exist
+    @Test
+    public void testAdminAttemptsToUpdateNonExistentCourse() {
+        final String department = "ECSE";
+        final int courseNumber = 223;
+        final String name = "Software Engineering Principles";
+        final String courseCode = department + courseNumber;
+
+        Course course = new Course(department, courseNumber, name, "", "");
+
+        when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(null);
+
+        CourseChampException e = assertThrows(CourseChampException.class, () -> {
+            courseService.updateCourse(courseCode, course);
+        });
+        assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        assertEquals("Course not found", e.getMessage());
+    }
+
+    @Test
+    public void testUpdateNonExistentCourse() {
+        final String department = "ECSE";
+        final int courseNumber = 223;
+        final String name = "Software Engineering Principles";
+        final String courseCode = department + courseNumber;
+
+        Course course = new Course(department, courseNumber, name, "", "");
+
+        // Mock the repository to return null, indicating the course does not exist
+        when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(null);
+
+        // Call the updateCourse method
+        Course updatedCourse = courseService.updateCourse(courseCode, course);
+
+        // Assertions
+        assertNull(updatedCourse);
+    }
+
+
+
 
 
 }
