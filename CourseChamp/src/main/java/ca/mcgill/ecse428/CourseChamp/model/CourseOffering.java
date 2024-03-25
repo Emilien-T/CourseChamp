@@ -1,6 +1,10 @@
 package ca.mcgill.ecse428.CourseChamp.model;
 
 import java.util.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,6 +41,7 @@ public class CourseOffering {
           @JoinColumn(name = "id") })
   private List<Professor> professors;
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Course course;
 
   // ------------------------
