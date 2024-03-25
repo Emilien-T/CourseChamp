@@ -1,5 +1,8 @@
 package ca.mcgill.ecse428.CourseChamp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -98,6 +101,23 @@ public class CourseController {
         return new ResponseEntity<CourseResponseDto>(courseResponseDto, HttpStatus.OK);
     }
 
+
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Courses found"),
+        @ApiResponse(responseCode = "404", description = "No courses found", content = @Content)
+    })
+    @GetMapping("/courses")
+    public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
+        Iterable<Course> courses = courseService.getAllCourses();
+        List<CourseResponseDto> courseDtos = new ArrayList<>();
+        for (Course course : courses) {
+            courseDtos.add(new CourseResponseDto(course));
+        }
+        if (courseDtos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(courseDtos, HttpStatus.OK);
+
     /**
      * Deletes an existing course
      *
@@ -110,5 +130,6 @@ public class CourseController {
     @DeleteMapping("/course/delete/{courseCode}")
     public void deleteCourseController(@PathVariable String courseCode) {
         courseService.deleteCourse(courseCode);
+
     }
 }

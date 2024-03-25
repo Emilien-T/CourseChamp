@@ -10,7 +10,7 @@
           <label class="input-label">Select the course you are rating:</label>
           <select id="courseCode" v-model="courseCode" required>
             <option value="" disabled>Select your course</option>
-            <option v-for="course in courses" :key="course" :value="course">{{ course }}</option>
+            <option v-for="course in courses" :key="course.courseCode" :value="course.courseCode">{{ course.name }}</option>
           </select>
         </div>
         <div class="form-group rating-group">
@@ -70,7 +70,7 @@
     text: '',
     semester: '',
     msg: '',
-    courses: ['MATH 133', 'ECSE 200', 'ECSE 222', 'MATH 140', 'ECSE 428'], // Added courses array
+    courses: ['MATH133', 'ECSE200', 'ECSE324', 'ECSE 428'], 
     semesters: [
       { code: 'W2023', name: 'Winter 2023' },
       { code: 'S2023', name: 'Summer 2023' },
@@ -94,7 +94,7 @@
           courseCode: this.courseCode,
           semester: this.semester
         };
-        console.log(reviewData); // Replace with your submission logic
+        console.log(reviewData);
         axiosClient.post('/review/create', reviewData).then(response =>{
           this.msg = `Review created Successfully!`
           this.rating = ''
@@ -105,8 +105,19 @@
             this.msg = error.response.data
           }
         })
-      }
-    }
+      },  fetchCourses() {
+    axiosClient.get('/courses')
+      .then(response => {
+        this.courses = response.data.map(courseDto => courseDto.courseCode);
+      })
+      .catch(error => {
+        console.error('Error fetching courses:', error);
+      });
+  },
+},
+mounted() {
+  this.fetchCourses(); 
+}
   };
   </script>
   <style scoped>
