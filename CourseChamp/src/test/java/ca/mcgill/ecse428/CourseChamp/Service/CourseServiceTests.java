@@ -98,7 +98,7 @@ public class CourseServiceTests {
     @Test
     public void testDeleteNonExistingCourse() {
         final String courseCode = "ECSE223";
-        when(courseRepository.findById(courseCode)).thenReturn(Optional.empty());
+        when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(null);
 
         CourseChampException e = assertThrows(CourseChampException.class, () -> {
             courseService.deleteCourse(courseCode);
@@ -114,16 +114,14 @@ public class CourseServiceTests {
         final String courseCode = "ECSE223";
         Course course = new Course("ECSE", 223, "Software Engineering Principles", "", "");
         Course prerequisite = new Course("ECSE", 224, "Software Engineering Principles", "", "");
-        when(courseRepository.findById(courseCode)).thenReturn(Optional.of(course));
-        List<Course> prerequisites = new ArrayList<>();
-        prerequisites.add(prerequisite);
-        when(course.getPrerequesite()).thenReturn(prerequisites);
+        course.addPrerequirement(prerequisite);
+        when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(course);
 
         CourseChampException e = assertThrows(CourseChampException.class, () -> {
             courseService.deleteCourse(courseCode);
         });
 
         assertEquals(HttpStatus.BAD_REQUEST, e.getStatus());
-        assertEquals("This course cannot be removed as it is a prerequisite. ", e.getMessage());
+        assertEquals("This course cannot be removed as it is a prerequisite.", e.getMessage());
     }
 }
