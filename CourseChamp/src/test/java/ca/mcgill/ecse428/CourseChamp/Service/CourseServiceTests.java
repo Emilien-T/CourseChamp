@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -85,13 +88,10 @@ public class CourseServiceTests {
     public void testSuccessfulDeletion() {
         final String courseCode = "ECSE223";
         Course course = new Course("ECSE", 223, "Software Engineering Principles", "", "");
-        when(courseRepository.findById(courseCode)).thenReturn(Optional.of(course));
-        when(course.getPrerequirement()).thenReturn(Collections.emptyList());
+        when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(course);
 
         courseService.deleteCourse(courseCode);
-
-        assertNull(courseRepository.findById(courseCode).get());
-
+        verify(courseRepository, times(1)).deleteById(courseCode);
     }
 
     // Test for attempting to delete a non-existing course

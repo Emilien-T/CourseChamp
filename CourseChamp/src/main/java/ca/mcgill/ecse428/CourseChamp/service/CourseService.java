@@ -136,14 +136,14 @@ public class CourseService {
      */
     @Transactional
     public void deleteCourse(String courseCode) {
-        Course course = courseRepository.findById(courseCode).get();
-        try{
+        Course course = courseRepository.findCourseByCourseCode(courseCode);
+        if(course == null){
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "This course doesn't exist in the system.");  
+        }else{
             if(!course.getPrerequirement().isEmpty()){
                 throw new CourseChampException(HttpStatus.BAD_REQUEST, "This course cannot be removed as it is a prerequisite.");
             }
             courseRepository.deleteById(courseCode); // I am assuming here that composition cascading will also delete course offerings
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "This course doesn't exist in the system.");
         }
     }
 }
