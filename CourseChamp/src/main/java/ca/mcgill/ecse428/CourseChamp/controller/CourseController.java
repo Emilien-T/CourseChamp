@@ -117,7 +117,7 @@ public class CourseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(courseDtos, HttpStatus.OK);
-
+    }
     /**
      * Deletes an existing course
      *
