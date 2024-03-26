@@ -1,25 +1,28 @@
 {
   "name": "coursechamp-frontend",
   "version": "1.0.0",
+  "private": true,
   "description": "A Vue.js frontend for Course Champ App",
   "author": "Evan Boyd <evan.boyd@mail.mcgill.ca>",
-  "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
+    "dev": "node build/dev-server.js",
     "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit && npm run e2e"
+    "start": "node build/dev-server.js",
+    "test": "npm run unit && npm run e2e",
+    "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run"
   },
   "dependencies": {
     "axios": "^0.18.1",
     "bootstrap": "^4.0.0-beta.2",
     "bootstrap-vue": "latest",
     "jquery": "^3.7.1",
+    "material-design-icons-iconfont": "6.1.0",
     "popper.js": "^1.12.9",
+    "roboto-fontface": "*",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuetify": "^3.5.11"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -62,28 +65,32 @@
     "ora": "^1.2.0",
     "phantomjs-prebuilt": "^2.1.14",
     "rimraf": "^2.6.0",
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
     "selenium-server": "^3.0.1",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "sinon": "^2.1.0",
     "sinon-chai": "^2.8.0",
     "url-loader": "^0.5.8",
+    "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-loader": "^13.0.4",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.4.2",
+    "vuetify-loader": "^1.7.0",
     "webpack": "^2.6.1",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0"
   },
-  "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  }
 }

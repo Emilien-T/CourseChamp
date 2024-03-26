@@ -13,6 +13,9 @@ import UserPortal from '@/components/UserPortal'
 import StudentHome from '@/components/StudentHome'
 import EditReview from '../components/EditReview.vue'
 import UpdateCourse from '@/components/UpdateCourse'
+import ViewReview from '@/components/ViewReview'
+import ViewCourse from '@/components/ViewCourse'
+import ViewTable from '@/components/ViewTable'
 
 
 Vue.use(Router)
@@ -84,5 +87,11 @@ export default new Router({
       name: 'UpdateCourse',
       component: UpdateCourse
     },
+ 
+    // {
+    //   path: '/viewtable',
+    //   name: 'ViewTable',
+    //   component: ViewTable
+    // }
   ]
 })
