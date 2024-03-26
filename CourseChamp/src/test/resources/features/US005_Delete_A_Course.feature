@@ -20,6 +20,7 @@ Feature: Delete a course
       | ECSE428    | W2020    |
       | ECSE428    | W2021    |
       | ECSE428    | W2022    |
+      | MATH141    | F2022    |
       | MATH262    | F2022    |
 
   Scenario Outline: Admin successfully deletes a course (Normal Flow)
@@ -48,7 +49,7 @@ Feature: Delete a course
 
   Scenario Outline: Admin attempts to delete a prerequisite course (Error Flow)
     When the admin unsuccessfully attempts to delete a course with the course code "<courseCode>"
-    Then the system should display the error message for unsuccessful deletion "<error>"
+    Then the system should display the error message for unsuccessful prerequisite deletion "<error>"
     And the course with course code "<courseCode>" should still exist in the course pool
     And there should still exist all the course offerings associated with the course code "<courseCode>" in the system
 

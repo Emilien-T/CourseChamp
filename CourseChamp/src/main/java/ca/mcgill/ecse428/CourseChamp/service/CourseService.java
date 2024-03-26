@@ -9,6 +9,8 @@ import ca.mcgill.ecse428.CourseChamp.model.Course;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
+
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 

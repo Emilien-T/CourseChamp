@@ -36,13 +36,13 @@ public class DeleteACourseStepDefinitions {
 
     @When("the admin attempts to delete a course with the course code {string}")
     public void the_admin_attempts_to_delete_a_course_with_the_course_code(String courseCode) {
-    // Assuming you have a service endpoint set up to handle DELETE requests
-    // Since TestRestTemplate.delete() does not return a response, you might need to adjust your approach
-    client.delete("/course/delete/" + courseCode);
-    // You may need to follow up with a get or another suitable request to verify deletion or capture an error response
-    // This is a placeholder to illustrate the point and might need adjustment
-    response = client.getForEntity("/course/" + courseCode, String.class);
-}
+        // Assuming you have a service endpoint set up to handle DELETE requests
+        // Since TestRestTemplate.delete() does not return a response, you might need to adjust your approach
+        client.delete("/course/delete/" + courseCode);
+        // You may need to follow up with a get or another suitable request to verify deletion or capture an error response
+        // This is a placeholder to illustrate the point and might need adjustment
+        response = client.getForEntity("/course/" + courseCode, String.class);
+    }
 
     @When("the admin unsuccessfully attempts to delete a course with the course code {string}")
     public void the_admin_unsuccessfully_attempts_to_delete_a_course_with_the_course_code(String courseCode) {
@@ -77,6 +77,14 @@ public class DeleteACourseStepDefinitions {
         assertEquals(HttpStatus.NOT_FOUND, responseError.getStatusCode());
         assertTrue(responseError.getBody().contains(errorMessage));
     }
+
+    @Then("the system should display the error message for unsuccessful prerequisite deletion {string}")
+    public void the_system_should_display_the_error_message_for_unsuccessful_prerequisite_deletion(String errorMessage) {
+        assertEquals(HttpStatus.BAD_REQUEST, responseError.getStatusCode());
+        assertTrue(responseError.getBody().contains(errorMessage));
+    }
+
+    
 
     @Then("the course with course code {string} should still exist in the course pool")
     public void the_course_with_course_code_should_still_exist_in_the_course_pool(String courseCode) {
