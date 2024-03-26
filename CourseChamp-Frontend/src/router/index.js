@@ -13,12 +13,30 @@ import UserPortal from '@/components/UserPortal'
 import StudentHome from '@/components/StudentHome'
 import EditReview from '../components/EditReview.vue'
 import UpdateCourse from '@/components/UpdateCourse'
+import ViewTables from '@/components/ViewTables'
+import HelloWorld from '@/components/HelloWorld'
+import HT from '@/views/HomeView'
 
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/ht',
+      name: 'HomeView',
+      component: HT
+    },
+    {
+      path: '/helloworld',
+      name: 'HelloWorld',
+      component: HelloWorld
+    },
+    {
+      path: '/viewtables',
+      name: 'ViewTables',
+      component: ViewTables
+    },
     {
       path: '/',
       name: 'SignUp',
