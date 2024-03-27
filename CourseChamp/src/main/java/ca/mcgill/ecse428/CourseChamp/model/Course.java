@@ -2,6 +2,7 @@ package ca.mcgill.ecse428.CourseChamp.model;
 
 import java.util.*;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -40,9 +41,9 @@ public class Course {
   @ManyToMany
   @JoinTable(name = "Corequesite_Corequirement", joinColumns = @JoinColumn(name = "Corequesite"), inverseJoinColumns = @JoinColumn(name = "Corequeriment"))
   private List<Course> Corequesite;
-  @ManyToMany(mappedBy = "Prerequesite")
+  @ManyToMany(mappedBy = "Prerequesite", fetch = FetchType.EAGER)
   private List<Course> Prerequirement;
-  @ManyToMany(mappedBy = "Corequesite")
+  @ManyToMany(mappedBy = "Corequesite", fetch = FetchType.EAGER)
   private List<Course> Corequirement;
 
   // ------------------------

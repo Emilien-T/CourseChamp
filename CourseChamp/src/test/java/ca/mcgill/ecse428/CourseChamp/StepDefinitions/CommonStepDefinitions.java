@@ -80,7 +80,14 @@ public class CommonStepDefinitions {
       int courseNumber = Integer.parseInt(row.get("courseNumber"));
       String name = row.get("name");
       String description = row.get("description");
+      String prerequisite = row.get("prerequisite");
       Course course = new Course(department, courseNumber, name, description, description);
+      if(prerequisite != null && !prerequisite.isEmpty()){
+        Course prerequeCourse = courseRepository.findCourseByCourseCode(prerequisite);
+        if(prerequeCourse != null){
+          course.addPrerequesite(prerequeCourse);
+        }
+      }
       courseRepository.save(course);
     }
   }

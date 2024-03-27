@@ -9,7 +9,10 @@ import ca.mcgill.ecse428.CourseChamp.model.Course;
 import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseOfferingRepository;
 import ca.mcgill.ecse428.CourseChamp.repository.CourseRepository;
+
+import java.io.Console;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -127,5 +130,22 @@ public class CourseService {
             throw new CourseChampException(HttpStatus.NOT_FOUND, "Course not found.");
         }
         return course;
+    }
+
+    /**
+     * Service method to delete a course from the database
+     * @param courseCode of the course to be deleted from persistence layer
+     */
+    @Transactional
+    public void deleteCourse(String courseCode) {
+        Course course = courseRepository.findCourseByCourseCode(courseCode);
+        if(course == null){
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "This course doesn't exist in the system.");  
+        }else{
+            if(!course.getPrerequirement().isEmpty()){
+                throw new CourseChampException(HttpStatus.BAD_REQUEST, "This course cannot be removed as it is a prerequisite.");
+            }
+            courseRepository.deleteById(courseCode); // I am assuming here that composition cascading will also delete course offerings
+        }
     }
 }
