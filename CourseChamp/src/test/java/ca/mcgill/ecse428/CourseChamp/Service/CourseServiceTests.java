@@ -81,6 +81,56 @@ public class CourseServiceTests {
     }
 
 
+    // =-=-=-=-=-=- Update Course Service Tests -=-=-=-=-=-=//
+    // Admin updates course
+    @Test
+    public void testAdminUpdatesCourse() {
+        final String department = "ECSE";
+        final int courseNumber = 223;
+        final String name = "Software Engineering Principles";
+        final String courseCode = department + courseNumber;
+
+        Course course = new Course(department, courseNumber, name, "descriptive description", "syllabussy syllabus");
+
+        // Mock the repository to return the course
+        when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(course);
+        // Mock the repository to return the course after it is saved
+        when(courseRepository.save(course)).thenReturn(course);
+
+        course.setDescription("This course is about software engineering principles");
+
+        // Call the updateCourse method
+        Course updatedCourse = courseService.updateCourse(courseCode, course);
+
+        // Assertions
+        assertNotNull(updatedCourse);
+        assertEquals(courseCode, updatedCourse.getCourseCode());
+    }
+
+
+    // Admin attempts to update a course that does not exist
+    @Test
+    public void testAdminAttemptsToUpdateNonExistentCourse() {
+        final String department = "ECSE";
+        final int courseNumber = 226;
+        final String name = "Fake Software Engineering Principles";
+        final String courseCode = department + courseNumber;
+
+        Course course = new Course(department, courseNumber, name, "descriptive description", "syllabussy syllabus");
+
+        when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(null);
+
+        CourseChampException e = assertThrows(CourseChampException.class, () -> {
+            courseService.updateCourse(courseCode, course);
+        });
+        assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        assertEquals("Course not found", e.getMessage());
+    }
+
+
+
+
+
 
 
      // Test for successfully deleting a course
