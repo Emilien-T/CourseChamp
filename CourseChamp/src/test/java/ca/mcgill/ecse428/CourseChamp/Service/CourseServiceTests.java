@@ -90,7 +90,7 @@ public class CourseServiceTests {
         final String name = "Software Engineering Principles";
         final String courseCode = department + courseNumber;
 
-        Course course = new Course(department, courseNumber, name, "", "");
+        Course course = new Course(department, courseNumber, name, "descriptive description", "syllabussy syllabus");
 
         // Mock the repository to return the course
         when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(course);
@@ -130,11 +130,11 @@ public class CourseServiceTests {
     @Test
     public void testUpdateNonExistentCourse() {
         final String department = "ECSE";
-        final int courseNumber = 223;
-        final String name = "Software Engineering Principles";
+        final int courseNumber = 226;
+        final String name = "Fake Software Engineering Principles";
         final String courseCode = department + courseNumber;
 
-        Course course = new Course(department, courseNumber, name, "", "");
+        Course course = new Course(department, courseNumber, name, "descriptive description", "syllabussy syllabus");
 
         // Mock the repository to return null, indicating the course does not exist
         when(courseRepository.findCourseByCourseCode(courseCode)).thenReturn(null);
