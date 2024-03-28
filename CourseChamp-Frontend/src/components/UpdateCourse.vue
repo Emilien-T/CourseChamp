@@ -104,7 +104,7 @@ export default {
         })
       },
       onCouseCodeChange(){
-        axios.get('/course/' + this.courseCode + '/').then(response => {
+        axiosClient.get('/course/' + this.courseCode + '/').then(response => {
           this.name= response.data.name
           this.description= response.data.description
           this.syllabus= response.data.syllabus
