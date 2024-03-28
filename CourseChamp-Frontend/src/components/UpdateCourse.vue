@@ -23,11 +23,11 @@
           </div>
           <div class="form-group">
             <label class="input-label">Enter the Course Syllabus:</label>
-            <textarea id="description" v-model="syllabus" required placeholder="Ex: Schedule, Grading breakdown, etc."></textarea>
+            <textarea id="syllabus" v-model="syllabus" required placeholder="Ex: Schedule, Grading breakdown, etc."></textarea>
           </div>
           <div class="msg">{{ msg }}</div>
           <div class="submit-container">
-            <button @click="updateCourse" type="submit" :disabled="!courseCode || !name || !description || !syllabus" class="submit-button" >
+            <button @click="updateCourse" :disabled="!courseCode || !name || !description || !syllabus" class="submit-button" >
               Update
               <span class="arrow-icon">
                 <img src="../assets/arrow.png" alt="Arrow">
@@ -83,19 +83,24 @@
         });
       },
       updateCourse() {
+        console.log(this.courseCode)
+        console.log(this.courseCode.substring(0,4))
+        console.log(this.courseCode.substring(4))
+        console.log(this.name)
+        console.log(this.description)
+        console.log(this.syllabus)
+
         const courseData = {
           department: this.courseCode.substring(0,4),
-          courseNumber: this.courseCode.substring(4),
+          courseNumber: Number(this.courseCode.substring(4)),
           name: this.name,
           description: this.description,
           syllabus: this.syllabus
         };
-        axiosClient.put(`/course/${this.courseCode}/update`, courseData).then(response => {
-          this.msg = `Course updated Successfully!`
+        axiosClient.put('/course/' + this.courseCode + '/update', courseData).then(response => {
+          this.msg = 'Course updated Successfully!'
         }).catch(error => {
-          if(error.response && error.response.status !== 500){
-            this.msg = error.response.data
-          }
+          this.msg = error.response
         })
       },
       deleteCourse(){}
