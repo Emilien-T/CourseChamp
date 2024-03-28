@@ -1,9 +1,7 @@
 <template>
-  <div class="create-review-container">
-    <header>
-      <h1>Create A Review</h1>
-      <router-link to="/reviews" class="back-link">Back To Reviews</router-link>
-    </header>
+  <div>
+    <StudentNavBar/>
+    
     <div class="form-container">
       <form @submit.prevent="submitReview">
         <div class="form-group">
@@ -53,6 +51,7 @@
   <script>
   import axios from 'axios'
   import Vue from 'vue'
+import StudentNavBar from './StudentNavBar.vue'
   var config = require('../../config')
   
   var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
@@ -63,6 +62,9 @@
     headers: { 'Access-Control-Allow-Origin': frontendUrl }
   })
   export default {
+    components: {
+    StudentNavBar
+  },
     data() {
   return {
     courseCode: '',
@@ -146,7 +148,8 @@ mounted() {
     background-color: #d4ded7; /* Sage but better */
     padding: 20px;
     border-radius: 10px;
-    margin-top: 20px;
+    margin-top: 40px;
+
     width: 50%; /* Adjust width as needed */
     margin-left: auto;
     margin-right: auto;
