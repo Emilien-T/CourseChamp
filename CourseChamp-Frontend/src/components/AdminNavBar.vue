@@ -35,7 +35,6 @@
           // Redirect to the admin signup page
           this.$router.push('/signup/admin');
         }
-
       }
   }
   </script>
