@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import ca.mcgill.ecse428.CourseChamp.dto.CourseOfferingResponseDto;
 import ca.mcgill.ecse428.CourseChamp.dto.CourseRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.CourseResponseDto;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
@@ -132,4 +134,21 @@ public class CourseController {
         courseService.deleteCourse(courseCode);
 
     }
+
+    // @ApiResponses(value = {
+    //     @ApiResponse(responseCode = "200", description = "Courses found"),
+    //     @ApiResponse(responseCode = "404", description = "No courses found", content = @Content)
+    // })
+    // @GetMapping("/courseOffering/{courseCode}")
+    // public ResponseEntity<List<CourseOfferingResponseDto>> getAllCourseOfferings(@PathVariable String courseCode) {
+    //     Iterable<CourseOfferingResponseDto> courseOfferings = courseService.getAllCourses();
+    //     List<CourseResponseDto> courseDtos = new ArrayList<>();
+    //     for (Course course : courses) {
+    //         courseDtos.add(new CourseResponseDto(course));
+    //     }
+    //     if (courseDtos.isEmpty()) {
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    //     return new ResponseEntity<>(courseDtos, HttpStatus.OK);
+    // }
 }

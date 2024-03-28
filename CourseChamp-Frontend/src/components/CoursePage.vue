@@ -32,6 +32,7 @@
     },
     data() {
       return {
+        courseCode: '',
         reviews: [],
         errorMsg: '',
       };

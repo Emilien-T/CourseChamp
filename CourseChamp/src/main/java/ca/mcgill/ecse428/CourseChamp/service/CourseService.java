@@ -148,4 +148,18 @@ public class CourseService {
             courseRepository.deleteById(courseCode); // I am assuming here that composition cascading will also delete course offerings
         }
     }
+
+    /**
+     * Service method to fetch all existing courses in the database
+     * 
+     * @throws CourseChampException - if no courses exist in the system
+     */
+    @Transactional
+    public Iterable<Course> getAllCourseOfferings() {
+        ArrayList<Course> courses = (ArrayList<Course>) courseRepository.findAll();
+        if (courses.isEmpty()) {
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "There are no courses in the system");
+        }
+        return courses;
+    }
 }
