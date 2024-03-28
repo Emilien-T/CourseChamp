@@ -1,7 +1,7 @@
 <template>
   <div>
     <StudentNavBar/>
-    <div id="selectCourse">
+    <div class="selectCourse">
       <p>Select the course you want to view: </p>
       <select id="courseCode" v-model="courseCode" @change="onCouseCodeChange($event)" required>
         <option value="" disabled>Select your course</option>
@@ -151,5 +151,8 @@ import CourseRating from './ViewReview.vue'; // Import your CourseRating compone
   display: flex; /* Use flexbox layout */
   flex-wrap: wrap; /* Allow items to wrap to the next line */
   justify-content: center; /* Center items horizontally */
+}
+.selectCourse{
+  margin-top: 100px;
 }
 </style>
