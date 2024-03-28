@@ -7,12 +7,11 @@
       <div class="form-container">
         <form @submit.prevent="updateCourse">
           <div class="form-group">
-            <label class="input-label">Enter the Department:</label>
-            <input type="text" id="department" v-model="department" required placeholder="Ex: ECSE">
-          </div>
-          <div class="form-group">
-            <label class="input-label">Enter the Course Number:</label>
-            <input type="text" id="course-number" v-model="courseNumber" required placeholder="Ex: 428">
+          <p>Select the course you want to update: </p>
+          <select id="courseCode" v-model="courseCode" required>
+          <option value="" disabled>Select course</option>
+          <option v-for="course in availableCourses" :key="course.courseCode" :value="course.courseCode">{{ course.courseCode }}</option>
+          </select>
           </div>
           <div class="form-group">
             <label class="input-label">Enter the Course Name:</label>
@@ -22,13 +21,20 @@
             <label class="input-label">Enter the Course Description:</label>
             <textarea id="description" v-model="description" required placeholder="Ex: This is a really fun course"></textarea>
           </div>
+          <div class="form-group">
+            <label class="input-label">Enter the Course Syllabus:</label>
+            <textarea id="description" v-model="syllabus" required placeholder="Ex: Schedule, Grading breakdown, etc."></textarea>
+          </div>
           <div class="msg">{{ msg }}</div>
           <div class="submit-container">
-            <button type="submit" :disabled="!department || !courseNumber || !name || !description" class="submit-button">
+            <button @click="updateCourse" type="submit" :disabled="!courseCode || !name || !description || !syllabus" class="submit-button" >
               Update
               <span class="arrow-icon">
                 <img src="../assets/arrow.png" alt="Arrow">
               </span>
+            </button>
+            <button @click="deleteCourse" type="delete" :disabled="!courseCode" class="delete-button">
+              Delete Course
             </button>
           </div>
         </form>
@@ -51,25 +57,38 @@
   export default {
     data() {
       return {
-        department: '',
-        courseNumber: '',
+        courseCode: '',
         name: '',
         description: '',
+        syllabus: '',
         msg: '',
-        //courseCode is passed as a route parameter (from coursecontroller think)
-        courseCode: this.$route.params.courseCode
+        availableCourses: [],
       };
+    },
+    mounted() {
+      // Assuming you're making an API call to fetch reviews
+      this.fetchCourses();
     },
     methods: {
       redirectToAdminHome() {
         this.$router.push('/adminhome');
       },
+      fetchCourses() {
+        axiosClient.get('/courses')
+        .then(response => {
+          this.availableCourses = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching courses:', error);
+        });
+      },
       updateCourse() {
         const courseData = {
-          department: this.department,
-          courseNumber: Number(this.courseNumber),
+          department: this.courseCode.substring(0,4),
+          courseNumber: this.courseCode.substring(4),
           name: this.name,
-          description: this.description
+          description: this.description,
+          syllabus: this.syllabus
         };
         axiosClient.put(`/course/${this.courseCode}/update`, courseData).then(response => {
           this.msg = `Course updated Successfully!`
@@ -78,7 +97,8 @@
             this.msg = error.response.data
           }
         })
-      }
+      },
+      deleteCourse(){}
     }
   };
   </script>
