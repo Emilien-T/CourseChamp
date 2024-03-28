@@ -8,7 +8,7 @@
         <form @submit.prevent="updateCourse">
           <div class="form-group">
           <p>Select the course you want to update: </p>
-          <select id="courseCode" v-model="courseCode" required>
+          <select id="courseCode" @change="onCouseCodeChange($event)" v-model="courseCode" required>
           <option value="" disabled>Select course</option>
           <option v-for="course in availableCourses" :key="course.courseCode" :value="course.courseCode">{{ course.courseCode }}</option>
           </select>
@@ -80,16 +80,10 @@
         })
         .catch(error => {
           console.error('Error fetching courses:', error);
+          this.availableCourses = []
         });
       },
       updateCourse() {
-        console.log(this.courseCode)
-        console.log(this.courseCode.substring(0,4))
-        console.log(this.courseCode.substring(4))
-        console.log(this.name)
-        console.log(this.description)
-        console.log(this.syllabus)
-
         const courseData = {
           department: this.courseCode.substring(0,4),
           courseNumber: Number(this.courseCode.substring(4)),
@@ -97,13 +91,33 @@
           description: this.description,
           syllabus: this.syllabus
         };
-        axiosClient.put('/course/' + this.courseCode + '/update', courseData).then(response => {
+        axiosClient.put('/course/' + this.courseCode + '/update/', courseData).then(response => {
           this.msg = 'Course updated Successfully!'
         }).catch(error => {
-          this.msg = error.response
+          this.msg = error.response.data
         })
       },
-      deleteCourse(){}
+      onCouseCodeChange(){
+        axios.get('/course/' + this.courseCode + '/').then(response => {
+          this.name= response.data.name
+          this.description= response.data.description
+          this.syllabus= response.data.syllabus
+        }).catch(error => {
+          console.error(error.response)
+        })
+      },
+      deleteCourse(){
+        axiosClient.delete('/course/delete/' + this.courseCode).then(response => {
+          this.fetchCourses()
+          this.courseCode = ''
+          this.name = ''
+          this.description = ''
+          this.syllabus = ''
+          this.msg = 'Course deleted Successfully!'
+        }).catch(error => {
+          this.msg = error.response.data
+        })
+      }
     }
   };
   </script>
