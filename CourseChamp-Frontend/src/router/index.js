@@ -14,6 +14,7 @@ import StudentHome from '@/components/StudentHome'
 import EditReview from '../components/EditReview.vue'
 import UpdateCourse from '@/components/UpdateCourse'
 import StudentNavBar from '@/components/StudentNavBar'
+import AdminNavBar from '@/components/AdminNavBar'
 
 
 Vue.use(Router)
@@ -89,6 +90,11 @@ export default new Router({
       path: '/studentnavbar',
       name: 'StudentNavBar',
       component: StudentNavBar
+    },
+    {
+      path: '/adminnavbar',
+      name: 'AdminNavBar',
+      component: AdminNavBar
     }
   ]
 })
