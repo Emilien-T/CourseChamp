@@ -8,7 +8,7 @@
           <label class="input-label">Select the course you are rating:</label>
           <select id="courseCode" v-model="courseCode" required>
             <option value="" disabled>Select your course</option>
-            <option v-for="course in courses" :key="course.courseCode" :value="course.courseCode">{{ course.name }}</option>
+            <option v-for="course in courses" :key="course.courseCode" :value="course.courseCode">{{ course.courseCode }}</option>
           </select>
         </div>
         <div class="form-group rating-group">
@@ -72,7 +72,7 @@ import StudentNavBar from './StudentNavBar.vue'
     text: '',
     semester: '',
     msg: '',
-    courses: ['MATH133', 'ECSE200', 'ECSE324', 'ECSE 428'], 
+    courses: [], 
     semesters: [
       { code: 'W2023', name: 'Winter 2023' },
       { code: 'S2023', name: 'Summer 2023' },
@@ -112,7 +112,7 @@ import StudentNavBar from './StudentNavBar.vue'
       fetchCourses() {
         axiosClient.get('/courses')
         .then(response => {
-          this.courses = response.data.map(courseDto => courseDto.courseCode);
+          this.courses = response.data;
         })
         .catch(error => {
           console.error('Error fetching courses:', error);
