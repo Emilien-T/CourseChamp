@@ -72,8 +72,13 @@
       return this.reviews && this.reviews.length > 0;
     },
     calculateAverageRating() {
-      const sum = this.reviews.reduce((total, rating) => total + rating, 0);
-      return (sum / this.reviews.length).toFixed(2);
+      let sum = 0;
+      let total = 0;
+      this.reviews.forEach(review => {
+        sum += review.rating;
+        total += 1;
+      });
+      return (sum / total).toFixed(1);
     }
   },
     mounted() {
