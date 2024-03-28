@@ -1,9 +1,6 @@
 <template>
   <div class="create-course-container">
-    <header>
-      <h1>Create A Course</h1>
-      <router-link to="/courses" class="back-link">Back To Course</router-link>
-    </header>
+    <AdminNavBar />
     <div class="form-container">
       <form @submit.prevent="submitCourse">
         <div class="form-group">
@@ -40,6 +37,7 @@
   
   
 <script>
+import AdminNavBar from './AdminNavBar.vue';
 import axios from 'axios'
 var config = require('../../config')
 
@@ -51,6 +49,9 @@ var axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
 export default {
+  components: {
+    AdminNavBar
+  },
   data() {
     return {
       department: '',
@@ -113,7 +114,7 @@ header {
   background-color: #d4ded7; /* Sage but better */
   padding: 20px;
   border-radius: 10px;
-  margin-top: 20px;
+  margin-top: 80px;
   width: 50%; /* Adjust width as needed */
   margin-left: auto;
   margin-right: auto;

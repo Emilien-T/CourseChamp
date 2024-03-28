@@ -1,7 +1,6 @@
 <template>
   <div>
-
-    <header><h1>Create an Admin Account</h1></header>
+    <AdminNavBar/>
     <div class="content-wrapper">
     <div class="container">
       <div class="signup-form">
@@ -34,6 +33,7 @@
 </template>
 
 <script>
+import AdminNavBar from './AdminNavBar.vue';
 import axios from 'axios'
 var config = require('../../config')
 
@@ -45,6 +45,9 @@ var axiosClient = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
 export default {
+  components: {
+    AdminNavBar
+  },
   data() {
     return {
       email: '',
