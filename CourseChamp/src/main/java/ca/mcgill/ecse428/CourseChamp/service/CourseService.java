@@ -155,11 +155,16 @@ public class CourseService {
      * @throws CourseChampException - if no courses exist in the system
      */
     @Transactional
-    public Iterable<Course> getAllCourseOfferings() {
-        ArrayList<Course> courses = (ArrayList<Course>) courseRepository.findAll();
-        if (courses.isEmpty()) {
-            throw new CourseChampException(HttpStatus.NOT_FOUND, "There are no courses in the system");
+    public Iterable<CourseOffering> getAllCourseOfferings(String courseCode) {
+        ArrayList<CourseOffering> courseOfferings = new ArrayList<>();
+        for (CourseOffering courseOffering : courseOfferingRepository.findAll()) {
+            if(courseOffering.getCourse().getCourseCode().equals(courseCode)){
+                courseOfferings.add(courseOffering);
+            }
         }
-        return courses;
+        if (courseOfferings.isEmpty()) {
+            throw new CourseChampException(HttpStatus.NOT_FOUND, "There are no course offerings for this course.");
+        }
+        return courseOfferings;
     }
 }

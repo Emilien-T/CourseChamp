@@ -12,6 +12,7 @@ import ca.mcgill.ecse428.CourseChamp.dto.CourseOfferingResponseDto;
 import ca.mcgill.ecse428.CourseChamp.dto.CourseRequestDto;
 import ca.mcgill.ecse428.CourseChamp.dto.CourseResponseDto;
 import ca.mcgill.ecse428.CourseChamp.model.Course;
+import ca.mcgill.ecse428.CourseChamp.model.CourseOffering;
 import ca.mcgill.ecse428.CourseChamp.service.CourseService;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -135,20 +136,17 @@ public class CourseController {
 
     }
 
-    // @ApiResponses(value = {
-    //     @ApiResponse(responseCode = "200", description = "Courses found"),
-    //     @ApiResponse(responseCode = "404", description = "No courses found", content = @Content)
-    // })
-    // @GetMapping("/courseOffering/{courseCode}")
-    // public ResponseEntity<List<CourseOfferingResponseDto>> getAllCourseOfferings(@PathVariable String courseCode) {
-    //     Iterable<CourseOfferingResponseDto> courseOfferings = courseService.getAllCourses();
-    //     List<CourseResponseDto> courseDtos = new ArrayList<>();
-    //     for (Course course : courses) {
-    //         courseDtos.add(new CourseResponseDto(course));
-    //     }
-    //     if (courseDtos.isEmpty()) {
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //     }
-    //     return new ResponseEntity<>(courseDtos, HttpStatus.OK);
-    // }
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Courses found"),
+        @ApiResponse(responseCode = "404", description = "No courses found", content = @Content)
+    })
+    @GetMapping("/courseOffering/{courseCode}")
+    public ResponseEntity<List<CourseOfferingResponseDto>> getAllCourseOfferings(@PathVariable String courseCode) {
+        Iterable<CourseOffering> courseOfferings = courseService.getAllCourseOfferings(courseCode);
+        List<CourseOfferingResponseDto> courseOfferingDtos = new ArrayList<>();
+        for (CourseOffering courseOffering : courseOfferings) {
+            courseOfferingDtos.add(new CourseOfferingResponseDto(courseOffering));
+        }
+        return new ResponseEntity<>(courseOfferingDtos, HttpStatus.OK);
+    }
 }

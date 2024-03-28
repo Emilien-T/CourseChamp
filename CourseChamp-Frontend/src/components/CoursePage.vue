@@ -1,5 +1,9 @@
 <template>
     <div>
+      <select id="courseCode" v-model="courseCode" @change="onCouseCodeChange($event)" required>
+        <option value="" disabled>Select your course</option>
+        <option v-for="course in availableCourses" :key="course.courseCode" :value="course.courseCode">{{ course.courseCode }}</option>
+      </select>
       <CourseRating
         v-for="(review, index) in reviews"
         :key="index"
@@ -35,26 +39,42 @@
         courseCode: '',
         reviews: [],
         errorMsg: '',
+        availableCourses: []
       };
     },
     mounted() {
       // Assuming you're making an API call to fetch reviews
       this.fetchReviews('ECSE202');
+      this.fetchCourses();
     },
     methods: {
       fetchReviews(courseCode) {
         // Assuming you're making an API call to fetch reviews
         // Replace this with your actual API call
-        axiosClient.get('/getreviews/ECSE202')
+        axiosClient.get('/getreviews/'+courseCode)
           .then(response =>{
             this.reviews = response.data;
+            this.errorMsg = '';
             console.log(this.reviews);
           })
           .catch(error => {
             console.error('Error fetching reviews:', error);
+            this.reviews = [];
             this.errorMsg = error.response.data;
           });
       },
+      fetchCourses() {
+        axiosClient.get('/courses')
+        .then(response => {
+          this.availableCourses = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching courses:', error);
+        });
+      },
+      onCouseCodeChange(event){
+        this.fetchReviews(this.courseCode);
+      }
     },
   };
   </script>

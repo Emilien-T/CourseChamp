@@ -84,7 +84,8 @@
       redirectToStudentHome() {
         // Redirect to the student signup page
         this.$router.push('/studenthome');
-      },submitReview() {
+      },
+      submitReview() {
         
         // Handle review submission (e.g., send data to server)
         const reviewData = {
@@ -105,15 +106,16 @@
             this.msg = error.response.data
           }
         })
-      },  fetchCourses() {
-    axiosClient.get('/courses')
-      .then(response => {
-        this.courses = response.data.map(courseDto => courseDto.courseCode);
-      })
-      .catch(error => {
-        console.error('Error fetching courses:', error);
-      });
-  },
+      },
+      fetchCourses() {
+        axiosClient.get('/courses')
+        .then(response => {
+          this.courses = response.data.map(courseDto => courseDto.courseCode);
+        })
+        .catch(error => {
+          console.error('Error fetching courses:', error);
+        });
+      },
 },
 mounted() {
   this.fetchCourses(); 
