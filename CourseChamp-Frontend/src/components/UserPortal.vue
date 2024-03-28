@@ -1,7 +1,6 @@
 <template>
     <div>
-  
-      <header><h1>User Portal</h1></header>
+      <StudentNavBar/>
       <div class="content-wrapper">
       <div class="container">
         <div class="signup-form">
@@ -68,6 +67,7 @@
   import CourseRating from './ViewReview.vue'; // Import your CourseRating component
   import axios from 'axios'
   import Vue from 'vue'
+import StudentNavBar from './StudentNavBar.vue';
   var config = require('../../config')
   
   var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
@@ -80,6 +80,7 @@
   export default {
     components: {
       CourseRating,
+      StudentNavBar
     },
     data() {
       return {
