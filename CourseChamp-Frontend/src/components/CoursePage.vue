@@ -1,4 +1,18 @@
 <template>
+  <div >
+    <div v-if="isCourseValid" class="course-info">
+    <h2>{{ course.name }}</h2>
+    <p><strong>Course Code:</strong> {{ course.courseCode }}</p>
+    <p><strong>Department:</strong> {{ course.department }}</p>
+    <p><strong>Course Number:</strong> {{ course.courseNumber }}</p>
+    <p><strong>Description:</strong> {{ course.description }}</p>
+    <p v-if="course.syllabus"><strong>Syllabus:</strong> {{ course.syllabus }}</p>
+    <p v-if="hasReviews"><strong>Average Rating:</strong> {{ calculateAverageRating }}</p>
+    <p v-else>No reviews for this course.</p>
+  </div>
+    <div v-else class="errorMsg">Course not found</div>
+  </div>
+
     <div>
       <CourseRating
         v-for="(review, index) in reviews"
@@ -32,20 +46,42 @@
     },
     data() {
       return {
-        courseCode: '',
+        courseCode: 'ECSE428',
         reviews: [],
         errorMsg: '',
+        course: {
+        department: '',
+        courseNumber: 202,
+        courseCode: '',
+        name: '',
+        description: '',
+        syllabus: ''
+      }
       };
     },
+    computed: {
+    isCourseValid() {
+      const { courseCode, department, courseNumber, name, description, syllabus } = this.course;
+      return courseCode && department && courseNumber && name && description;
+    },
+    hasReviews() {
+      return this.reviews && this.reviews.length > 0;
+    },
+    calculateAverageRating() {
+      const sum = this.reviews.reduce((total, rating) => total + rating, 0);
+      return (sum / this.reviews.length).toFixed(2);
+    }
+  },
     mounted() {
       // Assuming you're making an API call to fetch reviews
-      this.fetchReviews('ECSE202');
+      this.fetchReviews(this.courseCode);
+      this.fetchCourse(this.courseCode);
     },
     methods: {
       fetchReviews(courseCode) {
         // Assuming you're making an API call to fetch reviews
         // Replace this with your actual API call
-        axiosClient.get('/getreviews/ECSE202')
+        axiosClient.get(`/getreviews/${courseCode}`)
           .then(response =>{
             this.reviews = response.data;
             console.log(this.reviews);
@@ -55,6 +91,24 @@
             this.errorMsg = error.response.data;
           });
       },
+      fetchCourse(courseCode){
+        axiosClient.get(`/course/${courseCode}`).then(response=>{
+            this.course = response.data;
+          }).catch(error =>{
+            console.error('Error fetching reviews:', error);
+          })
+      }
     },
   };
   </script>
+
+<style>
+.course-info {
+  background-color: #cfd9d3;
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  padding: 20px; /* Add padding */
+  width: 400px; /* Set a specific width */
+  margin: 0 auto; /* Center the div horizontally */
+}
+</style>
