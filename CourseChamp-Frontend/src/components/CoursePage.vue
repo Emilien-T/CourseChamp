@@ -8,6 +8,7 @@
         :text="review.text"
         :courseCode="review.courseCode"
       />
+      <p class="errorMsg"> {{ errorMsg }} </p>
     </div>
   </template>
   
@@ -32,6 +33,7 @@
     data() {
       return {
         reviews: [],
+        errorMsg: '',
       };
     },
     mounted() {
@@ -49,6 +51,7 @@
           })
           .catch(error => {
             console.error('Error fetching reviews:', error);
+            this.errorMsg = error.response.data;
           });
       },
     },
