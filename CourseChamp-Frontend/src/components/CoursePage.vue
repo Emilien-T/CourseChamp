@@ -1,5 +1,6 @@
 <template>
   <div>
+    <StudentNavBar/>
     <div id="selectCourse">
       <p>Select the course you want to view: </p>
       <select id="courseCode" v-model="courseCode" @change="onCouseCodeChange($event)" required>
@@ -7,19 +8,20 @@
         <option v-for="course in availableCourses" :key="course.courseCode" :value="course.courseCode">{{ course.courseCode }}</option>
       </select>
     </div>
+   
     <div>
       <div v-if="isCourseValid" class="course-info">
-      <h2>{{ course.name }}</h2>
-      <p><strong>Course Code:</strong> {{ course.courseCode }}</p>
-      <p><strong>Department:</strong> {{ course.department }}</p>
-      <p><strong>Course Number:</strong> {{ course.courseNumber }}</p>
-      <p><strong>Description:</strong> {{ course.description }}</p>
-      <p v-if="course.syllabus"><strong>Syllabus:</strong> {{ course.syllabus }}</p>
-      <p v-if="hasReviews"><strong>Average Rating:</strong> {{ calculateAverageRating }}</p>
-      <p v-else>No reviews for this course.</p>
+        <h2>{{ course.name }}</h2>
+        <p><strong>Course Code:</strong> {{ course.courseCode }}</p>
+        <p><strong>Department:</strong> {{ course.department }}</p>
+        <p><strong>Course Number:</strong> {{ course.courseNumber }}</p>
+        <p><strong>Description:</strong> {{ course.description }}</p>
+        <p v-if="course.syllabus"><strong>Syllabus:</strong> {{ course.syllabus }}</p>
+        <p v-if="hasReviews"><strong>Average Rating:</strong> {{ calculateAverageRating }}</p>
+        <p v-else>No reviews for this course.</p>
+      </div>
+      <div v-else class="errorMsg">Course not found</div>
     </div>
-    <div v-else class="errorMsg">Course not found</div>
-  </div>
     <div class="course-rating-container">
       <CourseRating
         v-for="(review, index) in reviews"
@@ -30,11 +32,14 @@
         :courseCode="review.courseCode"
       />
     </div>
+    
   </div>
-  </template>
+</template>
+
   
   <script>
-  import CourseRating from './ViewReview.vue'; // Import your CourseRating component
+  import StudentNavBar from './StudentNavBar.vue';
+import CourseRating from './ViewReview.vue'; // Import your CourseRating component
   import axios from 'axios'
   var config = require('../../config')
   
@@ -50,6 +55,7 @@
     name: 'ReviewList',
     components: {
       CourseRating,
+      StudentNavBar
     },
     data() {
       return {
@@ -139,6 +145,7 @@
   padding: 20px; /* Add padding */
   width: 400px; /* Set a specific width */
   margin: 0 auto; /* Center the div horizontally */
+  margin-top: 20px;
 }
 .course-rating-container {
   display: flex; /* Use flexbox layout */

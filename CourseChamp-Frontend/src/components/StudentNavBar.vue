@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div class="spacer"></div> <!-- Add a spacer div -->
     <nav>
       <ul class="navbar">
         <li><router-link to="/createreview">Create Review</router-link></li>
-        <li><router-link to="/viewreview">View Reviews</router-link></li>
-        <li><router-link to="/userportal">Account Settings</router-link></li>
-        <li><router-link to="/">Return to Home Page</router-link></li>
+        <li><router-link to="/viewreview">View Courses</router-link></li>
+        <li><router-link to="/userportal">My Account</router-link></li>
+        <li><router-link to="/">Logout</router-link></li>
       </ul>
     </nav>
   </div>
@@ -36,6 +35,12 @@ export default {
 </script>
 
 <style>
+nav
+{
+   position: fixed;
+   top: 0px;
+   width: 100%; /* Set the width to 100% */
+}
 body { 
   margin: 0; 
   padding: 0; 
@@ -47,7 +52,6 @@ body {
   padding: 0;
   background-color: #476141; /* Set background color for the navbar */
   overflow: hidden;
-  margin-top: 20px; /* Add margin to create space between navbar and header */
 }
 
 
