@@ -12,7 +12,7 @@
           </div>
           <div class="form-group">
             <label class="input-label">Enter the Course Syllabus:</label>
-            <textarea id="syllabus" v-model="course.syllabus" required placeholder="Ex: Schedule, Grading breakdown, etc."></textarea>
+            <textarea id="syllabus" v-model="course.syllabus" placeholder="Ex: Schedule, Grading breakdown, etc."></textarea>
           </div>
           <div class="msg">{{ msg }}</div>
           <div class="submit-container">
