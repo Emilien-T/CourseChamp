@@ -15,12 +15,30 @@ import EditReview from '../components/EditReview.vue'
 import UpdateCourse from '@/components/UpdateCourse'
 import StudentNavBar from '@/components/StudentNavBar'
 import AdminNavBar from '@/components/AdminNavBar'
+import ManageCourses from '@/components/ManageCourses'
+import CreateCourseForm from '../components/CreateCourseForm.vue'
+import UpdateCourseForm from '../components/UpdateCourseForm.vue'
 
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/updatecourseform',
+      name: 'UpdateCourseForm',
+      component: UpdateCourseForm
+    },
+    {
+      path: '/createcourseform',
+      name: 'CreateCourseForm',
+      component: CreateCourseForm
+    },
+    {
+      path: '/admin/courses',
+      name: 'ManageCourses',
+      component: ManageCourses
+    },
     {
       path: '/',
       name: 'SignUp',
