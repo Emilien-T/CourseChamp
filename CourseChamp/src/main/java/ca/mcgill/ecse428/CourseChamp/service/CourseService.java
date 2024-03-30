@@ -86,7 +86,7 @@ public class CourseService {
 
        Iterable<Course> courses = courseRepository.findAll();
        for(Course c : courses){
-        if(c.getName().equals(updatedCourse.getName())){
+        if(c.getName().equals(updatedCourse.getName()) && !c.getCourseCode().equals(courseCode)){
             throw new CourseChampException(HttpStatus.BAD_REQUEST, "Another course already has this name.");
         }
        }
