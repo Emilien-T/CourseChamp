@@ -3,8 +3,7 @@
       <header><h1>Admin Home</h1></header>
       <div class="container">
       <div class="button-container">
-      <button @click="redirectToCreateCourse">Create Course</button>
-      <button @click="redirectToUpdateCourse">Update Course</button>
+      <button @click="redirectToCourseManagement">Manage Courses</button>
       <button @click="redirectToAdminSignup">Create Admin Account</button>
       <button @click="redirectToAccountSettings">Account Settings</button>
       <button @click="redirectToHomePage">Return to Home Page</button>
@@ -36,6 +35,9 @@
       redirectToUpdateCourse() {
         // Redirect to the admin signup page
         this.$router.push('/updatecourse');
+      },
+      redirectToCourseManagement(){
+        this.$router.push('/admin/courses')
       }
     }
   }

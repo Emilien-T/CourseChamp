@@ -3,15 +3,28 @@
     <AdminNavBar />
 
       <!-- <h3 class="heading">Manage Courses</h3> -->
-  
+    
+              <!-- Search input -->
+        <div style="float:left;margin:10px;">
+            <b-form-input v-model="filter" placeholder="Search by Course Code"></b-form-input>
+        </div>
+
       <!-- Button for adding a new course -->
       <div style="float:right;margin:10px;">
         <b-button size="sm" @click="openAddModal">Add New Course</b-button>
 
       </div>
   
+       <!-- Dropdown menu for filtering by department -->
+    <div style="float:left;margin:10px;">
+        <b-form-select v-model="selectedDepartment" :options="departmentOptions" placeholder="Filter by Department" @change="filterCoursesByDepartment(selectedDepartment)">
+        </b-form-select>
+    </div>
+
       <!-- Table to display courses -->
-      <b-table striped hover :items="courses" :fields="fields" responsive="sm" show-empty>
+    
+    <b-table striped hover :items="filteredCourses" :fields="fields" responsive="sm" show-empty>
+
         <!-- Actions column -->
         <template v-slot:cell(actions)="data">
           <b-button size="sm" class="mr-1" @click="editCourse(data.item)">Edit</b-button>
@@ -24,14 +37,14 @@
       </b-table>
   
       <!-- Modal for adding a new course -->
-      <b-modal v-model="showAddModal" title="Add New Course" header-class="custom-modal-header" hide-footer>
+      <b-modal v-model="showAddModal" title="Add New Course" header-class="custom-modal-header" hide-footer hide-header>
         <!-- Include the CreateCourseForm component and emit event to close modal -->
         <CreateCourseForm @courseAdded="courseAdded" />
       </b-modal>
   
       <!-- Modal for editing a course -->
 
-      <b-modal v-model="showEditModal" title="Edit Course" hide-footer>
+      <b-modal v-model="showEditModal" title="Edit Course" hide-footer hide-header>
         <UpdateCourseForm :course="selectedCourse" @courseUpdated="courseUpdated" @closeModal="courseUpdate" />
         </b-modal>
 
@@ -101,7 +114,9 @@
         pageOptions: [2, 5, 10, 15],
         showAddModal: false,
         showEditModal: false,
-        selectedCourse: null
+        selectedCourse: null,
+        selectedDepartment: null, 
+        departmentOptions: [] 
       }
     },
     computed: {
@@ -111,7 +126,17 @@
           .map(f => {
             return { text: f.label, value: f.key }
           })
-      }
+      },
+     
+  // Other computed properties remain unchanged
+    filteredCourses() {
+        if (!this.filter) {
+        return this.courses;
+        }
+        return this.courses.filter(course => course.courseCode.toLowerCase().includes(this.filter.toLowerCase()));
+    }
+
+
     },
     created() {
       this.fetchCourses();
@@ -122,15 +147,39 @@
           .then(response => {
             this.courses = response.data;
             this.totalRows = this.courses.length;
+            const departments = new Set(this.courses.map(course => course.department));
+            this.departmentOptions = [
+                { value: null, text: 'All Departments' }, // Option for selecting all departments
+                ...Array.from(departments).map(department => ({ value: department, text: department }))
+            ];
           })
           .catch(error => {
             console.error('Error fetching courses:', error);
             this.courses = []
+            this.departmentOptions = [{ value: null, text: 'All Departments' }]; // Reset departmentOptions if an error occurs
           });
       },
       openAddModal() {
         this.showAddModal = true
       },
+      filterCoursesByDepartment(department) {
+        console.log('Selected Department:', department);
+        if (department === null) {
+        console.log('All Departments');
+        this.fetchCourses(); // Retrieve all courses
+        } else {
+            axiosClient.get('/courses')
+                .then(response => {
+                    // Filter courses based on the selected department
+                    this.courses = response.data.filter(course => course.department === department);
+                    this.totalRows = this.courses.length;
+                })
+                .catch(error => {
+                    console.error('Error fetching courses:', error);
+                    this.courses = [];
+                });
+        }
+        },
       editCourse(course) {
         // this.selectedCourse = course
         console.log('YES')
