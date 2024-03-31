@@ -8,19 +8,35 @@ import Login from '@/components/Login'
 import CreateCourse from '@/components/CreateCourse'
 import CoursePage from '@/components/CoursePage'
 import CreateReview from '@/components/CreateReview'
-import AdminHome from '@/components/AdminHome'
 import UserPortal from '@/components/UserPortal'
-import StudentHome from '@/components/StudentHome'
 import EditReview from '../components/EditReview.vue'
 import UpdateCourse from '@/components/UpdateCourse'
 import StudentNavBar from '@/components/StudentNavBar'
 import AdminNavBar from '@/components/AdminNavBar'
+import ManageCourses from '@/components/ManageCourses'
+import CreateCourseForm from '../components/CreateCourseForm.vue'
+import UpdateCourseForm from '../components/UpdateCourseForm.vue'
 
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/updatecourseform',
+      name: 'UpdateCourseForm',
+      component: UpdateCourseForm
+    },
+    {
+      path: '/createcourseform',
+      name: 'CreateCourseForm',
+      component: CreateCourseForm
+    },
+    {
+      path: '/admin/courses',
+      name: 'ManageCourses',
+      component: ManageCourses
+    },
     {
       path: '/',
       name: 'SignUp',
@@ -60,16 +76,6 @@ export default new Router({
       path: '/createreview',
       name: 'CreateReview',
       component: CreateReview
-    },
-    {
-      path: '/adminhome',
-      name: 'AdminHome',
-      component: AdminHome
-    },
-    {
-      path: '/studenthome',
-      name: 'StudentHome',
-      component: StudentHome
     },
     {
       path: '/editreview/:reviewId',

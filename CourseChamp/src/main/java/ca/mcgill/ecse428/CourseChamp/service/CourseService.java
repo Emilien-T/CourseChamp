@@ -62,6 +62,9 @@ public class CourseService {
     public Course createCourse(Course course) {
         if (courseRepository.findCourseByCourseCode(course.getCourseCode()) == null) {
             Course course1 = courseRepository.save(course);
+            courseOfferingRepository.save(new CourseOffering("W2023", course1));
+            courseOfferingRepository.save(new CourseOffering("S2024", course1));
+            courseOfferingRepository.save(new CourseOffering("F2023", course1));
             courseOfferingRepository.save(new CourseOffering("W2024", course1));
             return course1;
         } else {
@@ -86,7 +89,7 @@ public class CourseService {
 
        Iterable<Course> courses = courseRepository.findAll();
        for(Course c : courses){
-        if(c.getName().equals(updatedCourse.getName())){
+        if(c.getName().equals(updatedCourse.getName()) && !c.getCourseCode().equals(courseCode)){
             throw new CourseChampException(HttpStatus.BAD_REQUEST, "Another course already has this name.");
         }
        }

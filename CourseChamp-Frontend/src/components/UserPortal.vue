@@ -44,7 +44,6 @@
             <label for="password">Enter Current Password<br>to Submit Changes:</label>
             <input type="password" id="oldPassword" v-model="enteredPassword" required>
             <button type="submit" @click="submitForm">Submit Changes</button>
-            <button @click="redirectToHome">Return to Homepage</button>
             <div class="msg">
               <p>{{ msg }}</p>
             </div>
@@ -54,7 +53,8 @@
         <div v-if='isStudent'>
           <label>Your Reviews:</label>
           <CourseRating v-for="(review, index) in reviews" :key="index" :rating="review.rating"
-            :semester="review.semester" :text="review.text" :courseCode="review.courseCode" />
+            :semester="review.semester" :text="review.text" :courseCode="review.courseCode"  :reviewId = "review.id" :showDelete ='true' @delete-review="handleDeleteReview"/>
+          <!-- <button @click="deleteReview">Delete</button> -->
         </div>
       </div>
     </div>
@@ -103,6 +103,7 @@ export default {
     this.fetchReviews();
   },
   methods: {
+    
     redirectToHome() {
       if (Vue.prototype.userType === 'student') {
         this.$router.push('/studenthome')
@@ -133,9 +134,25 @@ export default {
           })
           .catch(error => {
             console.error('Error fetching reviews:', error);
+            this.reviews = [];
           });
       }
     },
+
+    handleDeleteReview(reviewId) {
+      if (window.confirm('Are you sure you want to delete this review?')) {
+        axiosClient.delete(`/review/${reviewId}`)
+      .then(response => {
+        console.log('Review deleted successfully!');
+        this.fetchReviews(); // Call the fetchReviews() method to refresh the reviews
+      })
+      .catch(error => {
+        console.error('Error deleting review:', error.response.data);
+        // Handle error
+      });
+  }
+      },
+
     submitForm() {
       // Handle form submission (e.g., send data to server)
       this.msg = ''
@@ -174,8 +191,9 @@ export default {
         }
       }
     }
-  }
+  },
 };
+
 </script>
 
 

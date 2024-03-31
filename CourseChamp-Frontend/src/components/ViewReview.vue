@@ -15,6 +15,7 @@
             ★
           </span>
         </div>
+        <button v-if="showDelete" @click="deleteReview">Delete</button>
       </div>
     </div>
   </template>
@@ -23,6 +24,10 @@
   export default {
     name: 'CourseRating',
     props: {
+      reviewId:{
+        type: Number,
+        default: 96.
+      },
       rating: {
         type: Number,
         default: 0
@@ -39,6 +44,11 @@
         type: String,
         default: "" 
       },
+      showDelete: {
+        type: Boolean,
+        default: false
+      }
+
     },
     computed: {
       computedRating() {
@@ -47,6 +57,12 @@
         return Array(Math.round(this.rating)).fill('★');
       },
     },
+    methods: {
+    deleteReview() {
+      // Emit an event to notify the parent component to delete the review
+      this.$emit('delete-review', this.reviewId);
+    },
+  },
   };
   </script>
   
