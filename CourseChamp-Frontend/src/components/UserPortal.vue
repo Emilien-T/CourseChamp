@@ -53,7 +53,7 @@
         <div v-if='isStudent'>
           <label>Your Reviews:</label>
           <CourseRating v-for="(review, index) in reviews" :key="index" :rating="review.rating"
-            :semester="review.semester" :text="review.text" :courseCode="review.courseCode"  :reviewId = "review.id"  @delete-review="handleDeleteReview"/>
+            :semester="review.semester" :text="review.text" :courseCode="review.courseCode"  :reviewId = "review.id" :showDelete ='true' @delete-review="handleDeleteReview"/>
           <!-- <button @click="deleteReview">Delete</button> -->
         </div>
       </div>
@@ -138,16 +138,19 @@ export default {
           });
       }
     },
+
     handleDeleteReview(reviewId) {
-      axiosClient.delete(`/review/${reviewId}`)
-        .then(response => {
-          console.log('Review deleted successfully!');
-          this.fetchReviews(); // Call the fetchReviews() method to refresh the reviews
-        })
-        .catch(error => {
-          console.error('Error deleting review:', error.response.data);
-          // Handle error
-        });
+      if (window.confirm('Are you sure you want to delete this review?')) {
+        axiosClient.delete(`/review/${reviewId}`)
+      .then(response => {
+        console.log('Review deleted successfully!');
+        this.fetchReviews(); // Call the fetchReviews() method to refresh the reviews
+      })
+      .catch(error => {
+        console.error('Error deleting review:', error.response.data);
+        // Handle error
+      });
+  }
       },
 
     submitForm() {

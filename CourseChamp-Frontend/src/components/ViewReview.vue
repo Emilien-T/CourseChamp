@@ -15,7 +15,7 @@
             ★
           </span>
         </div>
-        <button @click="deleteReview">Delete</button>
+        <button v-if="showDelete" @click="deleteReview">Delete</button>
       </div>
     </div>
   </template>
@@ -44,6 +44,11 @@
         type: String,
         default: "" 
       },
+      showDelete: {
+        type: Boolean,
+        default: false
+      }
+
     },
     computed: {
       computedRating() {
