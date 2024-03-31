@@ -139,16 +139,19 @@ export default {
           });
       }
     },
+
     handleDeleteReview(reviewId) {
-      axiosClient.delete(`/review/${reviewId}`)
-        .then(response => {
-          console.log('Review deleted successfully!');
-          this.fetchReviews(); // Call the fetchReviews() method to refresh the reviews
-        })
-        .catch(error => {
-          console.error('Error deleting review:', error.response.data);
-          // Handle error
-        });
+      if (window.confirm('Are you sure you want to delete this review?')) {
+        axiosClient.delete(`/review/${reviewId}`)
+      .then(response => {
+        console.log('Review deleted successfully!');
+        this.fetchReviews(); // Call the fetchReviews() method to refresh the reviews
+      })
+      .catch(error => {
+        console.error('Error deleting review:', error.response.data);
+        // Handle error
+      });
+  }
       },
 
     submitForm() {
