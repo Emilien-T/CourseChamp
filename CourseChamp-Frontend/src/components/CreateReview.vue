@@ -48,144 +48,173 @@
     
     
     
-<script>
-import axios from 'axios'
-import { BTable, BButton, BModal, BPagination, BFormGroup, BInput, BInputGroup, BFormSelect, BFormCheckboxGroup, BFormCheckbox } from 'bootstrap-vue'
-import CreateCourse from './CreateCourse.vue'
-import UpdateCourse from './UpdateCourse.vue'
-import config from '../../config'
-
-var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-
-var axiosClient = axios.create({
-  baseURL: backendUrl,
-  headers: { 'Access-Control-Allow-Origin': frontendUrl }
-})
-
-export default {
-  components: {
-    BTable,
-    BButton,
-    BModal,
-    BPagination,
-    BFormGroup,
-    BInput,
-    BInputGroup,
-    BFormSelect,
-    BFormCheckboxGroup,
-    BFormCheckbox,
-    CreateCourse,
-    UpdateCourse
+  <script>
+  import axios from 'axios'
+  import Vue from 'vue'
+import StudentNavBar from './StudentNavBar.vue'
+  var config = require('../../config')
+  
+  var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+  var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+  
+  var axiosClient = axios.create({
+    baseURL: backendUrl,
+    headers: { 'Access-Control-Allow-Origin': frontendUrl }
+  })
+  export default {
+    components: {
+    StudentNavBar
   },
-  data() {
-    return {
-      sortBy: '', // Sort by which field
-      sortDesc: false, // Sort direction
-      sortDirection: 'asc', // Initial sort direction
-      filter: '', // Filter value
-      filterOn: [], // Fields to filter on
-      perPage: 5, // Number of items per page
-      currentPage: 1, // Current page
-      totalRows: 0, // Total number of rows
-      courses: [], // Array to store courses
-      fields: [ // Table fields
-        { key: 'courseCode', label: 'Course Code', sortable: true },
-        { key: 'courseName', label: 'Course Name', sortable: true },
-        { key: 'department', label: 'Department', sortable: true },
-        { key: 'courseNumber', label: 'Course Number', sortable: true },
-        { key: 'actions', label: 'Actions' } // Actions column
-      ],
-      showAddModal: false, // Flag to control the visibility of the add course modal
-      showEditModal: false, // Flag to control the visibility of the edit course modal
-      selectedCourse: null // Selected course for editing
-    }
-  },
-  computed: {
-    // Sort options based on table fields
-    sortOptions() {
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => ({ text: f.label, value: f.key }))
-    }
-  },
-  methods: {
-    // Fetch courses from the server
-    fetchCourses() {
-      // Make API call to fetch courses
-      axiosClient.get('/courses')
+    data() {
+  return {
+    courseCode: '',
+    rating: '',
+    text: '',
+    semester: '',
+    msg: '',
+    courses: [], 
+    semesters: [
+      { code: 'W2023', name: 'Winter 2023' },
+      { code: 'S2023', name: 'Summer 2023' },
+      { code: 'F2023', name: 'Fall 2023' },
+      { code: 'W2024', name: 'Winter 2024' },
+    ]
+  };
+},
+
+    methods: {
+      redirectToStudentHome() {
+        // Redirect to the student signup page
+        this.$router.push('/studenthome');
+      },
+      submitReview() {
+        
+        // Handle review submission (e.g., send data to server)
+        const reviewData = {
+          rating: this.rating,
+          text: this.text,
+          studentEmail: this.logginInEmail,
+          courseCode: this.courseCode,
+          semester: this.semester
+        };
+        console.log(reviewData);
+        axiosClient.post('/review/create', reviewData).then(response =>{
+          this.msg = `Review created Successfully!`
+          this.rating = ''
+          this.text = ''
+        }  
+        ).catch(error =>{
+          if(error.response.status != 500){
+            this.msg = error.response.data
+          }
+        })
+      },
+      fetchCourses() {
+        axiosClient.get('/courses')
         .then(response => {
-          this.courses = response.data
-          this.totalRows = this.courses.length
+          this.courses = response.data;
         })
         .catch(error => {
-          console.error('Error fetching courses:', error)
-        })
-    },
-    // Add a new course
-    addCourse(course) {
-      // Make API call to add course
-      axiosClient.post('/course/create', course)
-        .then(response => {
-          this.fetchCourses() // Refresh courses after addition
-          this.showAddModal = false // Close the add course modal
-        })
-        .catch(error => {
-          console.error('Error adding course:', error)
-        })
-    },
-    // Edit an existing course
-    editCourse(course) {
-      this.selectedCourse = course // Set the selected course
-      this.showEditModal = true // Show the edit course modal
-    },
-    // Update a course after editing
-    updateCourse(course) {
-      // Make API call to update course
-      axiosClient.put(`/course/${course.courseCode}/update`, course)
-        .then(response => {
-          this.fetchCourses() // Refresh courses after update
-          this.showEditModal = false // Close the edit course modal
-        })
-        .catch(error => {
-          console.error('Error updating course:', error)
-        })
-    },
-    // Confirm and delete a course
-    confirmDelete(course) {
-      // Display confirmation message
-      if (confirm(`Are you sure you want to delete the course "${course.courseCode}"?`)) {
-        // Make API call to delete course
-        axiosClient.delete(`/course/delete/${course.courseCode}`)
-          .then(response => {
-            this.fetchCourses() // Refresh courses after deletion
-          })
-          .catch(error => {
-            console.error('Error deleting course:', error)
-          })
-      }
-    },
-    // Handler for course added event
-    courseAdded(course) {
-      this.addCourse(course)
-    },
-    // Handler for course updated event
-    courseUpdated(course) {
-      this.updateCourse(course)
-    },
-    // Handler for filter change event
-    onFiltered(filteredItems) {
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
-    },
-    // Handler for open add modal event
-    openAddModal() {
-      this.showAddModal = true
-    }
-  },
-  mounted() {
-    // Fetch courses when component is mounted
-    this.fetchCourses()
-  }
+          console.error('Error fetching courses:', error);
+        });
+      },
+},
+mounted() {
+  this.fetchCourses(); 
 }
-</script>
+  };
+  </script>
+  <style scoped>
+  body{
+    margin-top: 0px;
+    background-color: #f7f8f8; /* Off White */
+    height: 100vh; /* Full height of the viewport */
+    box-sizing: border-box; /* Includes padding in the element's total width and height */
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+  }
+  
+  .back-link {
+    color: #476141; /* Dark Fern */
+    text-decoration: none;
+  }
+  
+  .form-container {
+    background-color: #d4ded7; /* Sage but better */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 40px;
+
+    width: 50%; /* Adjust width as needed */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .form-group label {
+    font-weight: bold;
+    color: #000000; /* Black for the labels */
+  }
+  
+  .form-group {
+    background-color: #d4ded7; /* Sage but better */
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  input[type="text"],
+  textarea {
+    background-color: #d4ded7; /* Sage but better */
+    border: none;
+    border-bottom: 1px solid #c1c1c2; /* Silver Chalice */
+    color: #333a33; /* Dark Charcoal */
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  input[type="text"]::placeholder,
+  textarea::placeholder {
+    font-weight: normal;
+    color: #c1c1c2; /* Silver Chalice */
+  }
+  
+  .submit-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+  
+  .submit-button {
+    background-color: #386849; /* Bottle Green */
+    color: #ffffff; /* White */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: auto; /* Adjust width as needed */
+    justify-content: space-between;
+  }
+  .submit-button .arrow-icon img {
+    width: 16px; /* Adjust width as needed */
+    height: 16px; /* Adjust height as needed */
+  }
+  
+  .submit-button .arrow-icon {
+    background-color: #ffffff; /* White */
+    border-radius: 2px; /* Smaller radius for the arrow icon box */
+    padding: 5px;
+    margin-left: 8px;
+  }
+  .rating-options {
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: center; /* Aligns items vertically in the middle */
+  flex-wrap: nowrap; /* Prevents wrapping, ensuring all items are on one line */
+}
+
+  </style>
