@@ -23,7 +23,7 @@
             </div>
             <div>
               <p>Don't have an account?
-                <router-link to="/signup" style="text-decoration: underline;">Sign Up</router-link>
+                <router-link to="/signup/student" style="text-decoration: underline;">Sign Up</router-link>
               </p>
             </div>
           </form>
@@ -74,13 +74,13 @@ export default {
         Vue.prototype.logginInEmail = this.email
         Vue.prototype.userType = 'student'
       console.log(this.logginInEmail)
-        this.$router.push('/studenthome');
+        this.$router.push('/viewreview');
       }).catch(error1 =>{
         axiosClient.post(`/login/Admin/`, formData).then(response =>{
           this.msg = `Logged In successfully!`
         Vue.prototype.logginInEmail = this.email
         Vue.prototype.userType = 'admin'
-          this.$router.push('/adminhome');
+          this.$router.push('/admin/courses');
         }).catch(error2 =>{
           this.msg = error1.response.data + " " + error2.response.data
         })

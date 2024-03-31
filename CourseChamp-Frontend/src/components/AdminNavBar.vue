@@ -2,7 +2,7 @@
     <div>
       <nav>
         <ul class="navbar">
-          <li><router-link to="/admin/courses">ManageCourses</router-link></li>
+          <li><router-link to="/admin/courses">Manage Courses</router-link></li>
           <li><router-link to="/userportal">Account Settings</router-link></li>
           <li><router-link to="/signup/admin">Create Admin</router-link></li>
           <li><router-link to="/">Logout</router-link></li>

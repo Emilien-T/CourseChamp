@@ -44,7 +44,6 @@
             <label for="password">Enter Current Password<br>to Submit Changes:</label>
             <input type="password" id="oldPassword" v-model="enteredPassword" required>
             <button type="submit" @click="submitForm">Submit Changes</button>
-            <button @click="redirectToHome">Return to Homepage</button>
             <div class="msg">
               <p>{{ msg }}</p>
             </div>
