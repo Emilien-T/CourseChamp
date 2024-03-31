@@ -32,7 +32,7 @@
         </template>
         <!-- Name column -->
         <template v-slot:cell(name)="data">
-          <a :href="`#${data.value.replace(/[^a-z]+/i,'-').toLowerCase()}`">{{ data.value }}</a>
+          {{ data.value }}
         </template>
       </b-table>
   
