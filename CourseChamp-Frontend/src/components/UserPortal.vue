@@ -54,7 +54,7 @@
         <div v-if='isStudent'>
           <label>Your Reviews:</label>
           <CourseRating v-for="(review, index) in reviews" :key="index" :rating="review.rating"
-            :semester="review.semester" :text="review.text" :courseCode="review.courseCode"  :reviewId = "review.id"  @delete-review="handleDeleteReview"/>
+            :semester="review.semester" :text="review.text" :courseCode="review.courseCode"  :reviewId = "review.id" :showDelete ='true' @delete-review="handleDeleteReview"/>
           <!-- <button @click="deleteReview">Delete</button> -->
         </div>
       </div>
