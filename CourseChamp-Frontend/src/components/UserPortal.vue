@@ -54,7 +54,8 @@
         <div v-if='isStudent'>
           <label>Your Reviews:</label>
           <CourseRating v-for="(review, index) in reviews" :key="index" :rating="review.rating"
-            :semester="review.semester" :text="review.text" :courseCode="review.courseCode" />
+            :semester="review.semester" :text="review.text" :courseCode="review.courseCode"  :reviewId = "review.id"  @delete-review="handleDeleteReview"/>
+          <!-- <button @click="deleteReview">Delete</button> -->
         </div>
       </div>
     </div>
@@ -103,6 +104,7 @@ export default {
     this.fetchReviews();
   },
   methods: {
+    
     redirectToHome() {
       if (Vue.prototype.userType === 'student') {
         this.$router.push('/studenthome')
@@ -133,9 +135,22 @@ export default {
           })
           .catch(error => {
             console.error('Error fetching reviews:', error);
+            this.reviews = [];
           });
       }
     },
+    handleDeleteReview(reviewId) {
+      axiosClient.delete(`/review/${reviewId}`)
+        .then(response => {
+          console.log('Review deleted successfully!');
+          this.fetchReviews(); // Call the fetchReviews() method to refresh the reviews
+        })
+        .catch(error => {
+          console.error('Error deleting review:', error.response.data);
+          // Handle error
+        });
+      },
+
     submitForm() {
       // Handle form submission (e.g., send data to server)
       this.msg = ''
@@ -174,8 +189,9 @@ export default {
         }
       }
     }
-  }
+  },
 };
+
 </script>
 
 
