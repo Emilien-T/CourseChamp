@@ -39,12 +39,19 @@
       <!-- Modal for adding a new course -->
       <b-modal v-model="showAddModal" title="Add New Course" header-class="custom-modal-header" hide-footer hide-header>
         <!-- Include the CreateCourseForm component and emit event to close modal -->
+        <div style="font-size: 20px; text-align: center; display: block; margin: 0 auto;">
+          <label><strong>Add New Course</strong></label>
+        </div>
+        
         <CreateCourseForm @courseAdded="courseAdded" />
       </b-modal>
   
       <!-- Modal for editing a course -->
 
       <b-modal v-model="showEditModal" title="Edit Course" hide-footer hide-header>
+        <div style="font-size: 20px; text-align: center; display: block; margin: 0 auto;">
+          <label><strong>Edit Course</strong></label>
+        </div>
         <UpdateCourseForm :course="selectedCourse" @courseUpdated="courseUpdated" @closeModal="courseUpdate" />
         </b-modal>
 
@@ -117,6 +124,7 @@
         selectedCourse: null,
         selectedDepartment: null, 
         departmentOptions: [] 
+
       }
     },
     computed: {
@@ -234,6 +242,7 @@
     background: black;
     color: white;
     position: static;
+    
   }
   </style>
   

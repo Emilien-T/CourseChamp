@@ -3,7 +3,9 @@
       <form @submit.prevent="submitCourse">
         <div class="form-group">
           <label class="input-label">Enter the Department:</label>
-          <input type="text" id="department" v-model="department" required placeholder="Ex: ECSE">
+          <!--<input type="text" id="department" v-model="department" required placeholder="Ex: ECSE"> -->
+          <b-form-select v-model="department" :options="allDepartmentOptions" placeholder="ECSE">
+          </b-form-select>
         </div>
         <div class="form-group">
           <label class="input-label">Enter the Course Number:</label>
@@ -51,7 +53,16 @@
         courseNumber: '',
         name: '',
         description: '',
-        msg: ''
+        msg: '',
+        allDepartmentOptions: ['ACCT', 'AEBI', 'AEHM', 'AEMA', 'AEPH', 'AFRI', 'AGEC', 'AGRI', 'ANAT',
+    'ANSC', 'ANTH', 'ARCH', 'ARTH', 'ATOC', 'BIEN', 'BIOC', 'BIOL', 'BREE',
+    'CANS', 'CHEE', 'CHEM', 'CIVE', 'CLAS', 'COMP', 'EAST', 'ECON', 'ECSE',
+    'ENGL', 'ENVR', 'EPSC', 'EXMD', 'FACC', 'FINE', 'FREN', 'FRSL', 'GEOG',
+    'GERM', 'GSFS', 'HISP', 'HIST', 'IGFS', 'INDR', 'INSY', 'ISLA', 'ITAL',
+    'JWST', 'LING', 'LLCU', 'LSCI', 'MATH', 'MECH', 'MGCR', 'MGPO', 'MGSC',
+    'MICR', 'MIME', 'MIMM', 'MRKT', 'MUAR', 'MUMT', 'MUSP', 'MUTH', 'NEUR',
+    'NSCI', 'NUR1', 'NUR2', 'NUTR', 'PHAR', 'PHGY', 'PHIL', 'PHYS', 'PLNT',
+    'POLI', 'PSYC', 'PSYT', 'RELG', 'REDM', 'RUSS', 'SEAD', 'SOCI', 'WILD', 'WOOD'] 
       };
     },
     methods: {
